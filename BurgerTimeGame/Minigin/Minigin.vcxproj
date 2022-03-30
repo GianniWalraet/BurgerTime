@@ -228,6 +228,7 @@ xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(Output
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="ControllerInput.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="MiniginAPI.h" />
     <ClInclude Include="SDLKeyboardInput.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
