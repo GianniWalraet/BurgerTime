@@ -2,13 +2,13 @@
 #include "Timer.h"
 #include "SDL.h"
 
-void dae::Timer::Initialize()
+void Timer::Initialize()
 {
 	uint64_t countsPerSecond = SDL_GetPerformanceFrequency();
 	m_SecondsPerCount = 1.0f / (float)countsPerSecond;
 }
 
-void dae::Timer::Reset()
+void Timer::Reset()
 {
 	uint64_t currentTime = SDL_GetPerformanceCounter();
 
@@ -20,7 +20,7 @@ void dae::Timer::Reset()
 	m_IsStopped = false;
 }
 
-void dae::Timer::Start()
+void Timer::Start()
 {
 	uint64_t startTime = SDL_GetPerformanceCounter();
 
@@ -34,7 +34,7 @@ void dae::Timer::Start()
 	}
 }
 
-void dae::Timer::Update()
+void Timer::Update()
 {
 	if (m_IsStopped)
 	{
@@ -71,7 +71,7 @@ void dae::Timer::Update()
 	}
 }
 
-void dae::Timer::Stop()
+void Timer::Stop()
 {
 	if (!m_IsStopped)
 	{

@@ -1,7 +1,6 @@
 #pragma once
 struct SDL_Texture;
-namespace dae
-{
+
 	/**
 	 * Simple RAII wrapper for an SDL_Texture
 	 */
@@ -24,4 +23,4 @@ namespace dae
 		float m_Width{};
 		float m_Height{};
 	};
-}
+

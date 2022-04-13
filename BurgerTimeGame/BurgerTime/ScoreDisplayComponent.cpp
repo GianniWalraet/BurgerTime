@@ -1,16 +1,16 @@
-#include "MiniginPCH.h"
+#include "pch.h"
 #include "ScoreDisplayComponent.h"
 #include "PeterPepperComponent.h"
 #include "TextComponent.h"
 
-dae::ScoreDisplayComponent::ScoreDisplayComponent(PeterPepperComponent* pPlayer, TextComponent* pTxt)
+ScoreDisplayComponent::ScoreDisplayComponent(PeterPepperComponent* pPlayer, TextComponent* pTxt)
 {
 	m_pPlayer = pPlayer;
 	m_pText = pTxt;
 	m_pText->SetText("Score: " + std::to_string(m_pPlayer->GetScore()));
 }
 
-void dae::ScoreDisplayComponent::Notify(Event event)
+void ScoreDisplayComponent::Notify(Event event)
 {
 	switch (event)
 	{
@@ -20,7 +20,7 @@ void dae::ScoreDisplayComponent::Notify(Event event)
 	}
 }
 
-void dae::ScoreDisplayComponent::UpdateText()
+void ScoreDisplayComponent::UpdateText()
 {
 	if (!m_pPlayer || !m_pText)
 		return;

@@ -1,16 +1,16 @@
-#include "MiniginPCH.h"
+#include "pch.h"
 #include "HealthDisplayComponent.h"
 #include "TextComponent.h"
 #include "PeterPepperComponent.h"
 
-dae::HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayer, TextComponent* pTxt)
+HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayer, TextComponent* pTxt)
 {
 	m_pPlayer = pPlayer;
 	m_pText = pTxt;
 	m_pText->SetText("Lives: " + std::to_string(m_pPlayer->GetLives()));
 }
 
-void dae::HealthDisplayComponent::Notify(Event event)
+void HealthDisplayComponent::Notify(Event event)
 {
 	switch (event)
 	{
@@ -20,7 +20,7 @@ void dae::HealthDisplayComponent::Notify(Event event)
 	}
 }
 
-void dae::HealthDisplayComponent::UpdateText()
+void HealthDisplayComponent::UpdateText()
 {
 	if (!m_pPlayer || !m_pText)
 		return;

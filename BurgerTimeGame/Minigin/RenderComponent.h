@@ -2,8 +2,7 @@
 #include "BaseComponent.h"
 #include <vector>
 
-namespace dae
-{
+
 	class TextureComponent;
 	class SpriteComponent;
 
@@ -25,4 +24,4 @@ namespace dae
 		std::vector<TextureComponent*> m_pTextures;
 		std::vector<SpriteComponent*> m_pSprites;
 	};
-}
+

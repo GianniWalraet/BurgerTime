@@ -1,8 +1,7 @@
 #pragma once
 #include "TextureComponent.h"
 
-namespace dae
-{
+
 	class Font;
 	class Texture2D;
 
@@ -25,4 +24,4 @@ namespace dae
 		std::string m_Text{};
 		std::shared_ptr<Font> m_pFont{};
 	};
-}
+

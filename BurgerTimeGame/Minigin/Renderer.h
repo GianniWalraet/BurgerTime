@@ -1,8 +1,7 @@
 #pragma once
 #include "Singleton.h"
 
-namespace dae
-{
+
 	class Texture2D;
 	/**
 	 * Simple RAII wrapper for the SDL renderer
@@ -17,15 +16,15 @@ namespace dae
 		void Render() const;
 		void Destroy();
 
-		void RenderTexture(const Texture2D& texture, float x, float y) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, const glm::vec4& srcRect) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height, const glm::vec4& srcRect) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, bool mirror = false) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height, bool mirror = false) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, const glm::vec4& srcRect, bool mirror = false) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height, const glm::vec4& srcRect, bool mirror = false) const;
 
 		SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
 		
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
 		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }
 	};
-}
+
 

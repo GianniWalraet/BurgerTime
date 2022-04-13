@@ -5,8 +5,7 @@
 #include "SDLKeyboardInput.h"
 #include "Command.h"
 
-namespace dae
-{
+
 	using ControllerKey = std::pair<UINT, ControllerButton>;
 	class PeterPepperComponent;
 
@@ -54,5 +53,3 @@ namespace dae
 		std::map<ControllerKey, std::unique_ptr<Command>> m_pConsoleCommands{};
 		std::map<SDL_Keycode, std::unique_ptr<Command>> m_pKeyboardCommands{};
 	};
-
-}

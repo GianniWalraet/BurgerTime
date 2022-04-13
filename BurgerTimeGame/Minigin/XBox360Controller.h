@@ -1,8 +1,7 @@
 #pragma once
 #include "ControllerInput.h"
 
-namespace dae
-{
+
 	class XBox360Controller final : public ControllerInput
 	{
 	public:
@@ -21,6 +20,6 @@ namespace dae
 		class XBox360ControllerImpl;
 		XBox360ControllerImpl* m_pImpl;
 	};
-}
+
 
 

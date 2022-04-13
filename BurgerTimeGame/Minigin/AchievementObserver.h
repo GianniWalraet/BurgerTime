@@ -1,8 +1,7 @@
 #pragma once
 #include "Singleton.h"
 
-namespace dae
-{
+
 	enum class EAchievements
 	{
 		GameWin = 0,
@@ -20,5 +19,5 @@ namespace dae
 
 		virtual void Notify(EAchievements event);
 	};
-}
+
 

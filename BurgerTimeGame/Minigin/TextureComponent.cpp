@@ -5,7 +5,7 @@
 #include "Renderer.h"
 #include "TransformComponent.h"
 
-dae::TextureComponent::TextureComponent(const std::string& filename, const glm::vec4& srcRect, float w, float h)
+TextureComponent::TextureComponent(const std::string& filename, const glm::vec4& srcRect, float w, float h)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
 	m_SrcRect = srcRect;

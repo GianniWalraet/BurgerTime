@@ -1,8 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
 
-namespace dae
-{
 	class TransformComponent final : BaseComponent
 	{
 	public:
@@ -14,4 +12,4 @@ namespace dae
 	private:
 		glm::vec3 m_Position{};
 	};
-}
+

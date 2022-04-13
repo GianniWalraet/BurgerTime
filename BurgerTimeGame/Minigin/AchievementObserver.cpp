@@ -1,7 +1,7 @@
 #include "MiniginPCH.h"
 #include "AchievementObserver.h"
 
-void dae::AchievementObserver::Notify(EAchievements event)
+void AchievementObserver::Notify(EAchievements event)
 {
 	switch (event)
 	{

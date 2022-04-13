@@ -4,8 +4,7 @@
 #include <Windows.h>
 #include <Xinput.h>
 
-namespace dae
-{
+
 	class XBox360Controller::XBox360ControllerImpl
 	{
 	public:
@@ -22,37 +21,37 @@ namespace dae
 		unsigned int m_ButtonsReleasedThisFrame[XUSER_MAX_COUNT];
 		unsigned int m_ButtonsPressedThisFrame[XUSER_MAX_COUNT];
 	};
-}
 
 
-dae::XBox360Controller::XBox360Controller()
+
+XBox360Controller::XBox360Controller()
 	: ControllerInput()
 {
 	m_pImpl = new XBox360ControllerImpl();
 }
-dae::XBox360Controller::~XBox360Controller()
+XBox360Controller::~XBox360Controller()
 {
 	delete m_pImpl;
 	m_pImpl = nullptr;
 }
-void dae::XBox360Controller::HandleInput()
+void XBox360Controller::HandleInput()
 {
 	m_pImpl->HandleInput();
 }
-bool dae::XBox360Controller::IsPressed(UINT id, ControllerButton button)
+bool XBox360Controller::IsPressed(UINT id, ControllerButton button)
 {
 	return m_pImpl->IsPressed(id, button);
 }
-bool dae::XBox360Controller::WentDownThisFrame(UINT id, ControllerButton button)
+bool XBox360Controller::WentDownThisFrame(UINT id, ControllerButton button)
 {
 	return m_pImpl->WentDownThisFrame(id, button);
 }
-bool dae::XBox360Controller::WentUpThisFrame(UINT id, ControllerButton button)
+bool XBox360Controller::WentUpThisFrame(UINT id, ControllerButton button)
 {
 	return m_pImpl->WentUpThisFrame(id, button);
 }
 
-dae::XBox360Controller::XBox360ControllerImpl::XBox360ControllerImpl()
+XBox360Controller::XBox360ControllerImpl::XBox360ControllerImpl()
 	: m_CurrentStates{}
 	, m_PreviousStates{}
 	, m_ButtonsPressed{}
@@ -62,7 +61,7 @@ dae::XBox360Controller::XBox360ControllerImpl::XBox360ControllerImpl()
 	ZeroMemory(&m_CurrentStates, sizeof(XINPUT_STATE)* XUSER_MAX_COUNT);
 	ZeroMemory(&m_PreviousStates, sizeof(XINPUT_STATE) * XUSER_MAX_COUNT);
 }
-void dae::XBox360Controller::XBox360ControllerImpl::HandleInput()
+void XBox360Controller::XBox360ControllerImpl::HandleInput()
 {
 	std::swap(m_PreviousStates, m_CurrentStates);
 	ZeroMemory(&m_CurrentStates, sizeof(XINPUT_STATE) * XUSER_MAX_COUNT);
@@ -84,15 +83,15 @@ void dae::XBox360Controller::XBox360ControllerImpl::HandleInput()
 		}
 	}
 }
-bool dae::XBox360Controller::XBox360ControllerImpl::IsPressed(UINT id, ControllerButton button)
+bool XBox360Controller::XBox360ControllerImpl::IsPressed(UINT id, ControllerButton button)
 {
 	return (m_ButtonsPressed[id] & static_cast<unsigned int>(button));
 }
-bool dae::XBox360Controller::XBox360ControllerImpl::WentDownThisFrame(UINT id, ControllerButton button)
+bool XBox360Controller::XBox360ControllerImpl::WentDownThisFrame(UINT id, ControllerButton button)
 {
 	return (m_ButtonsPressedThisFrame[id] & static_cast<unsigned int>(button));
 }
-bool dae::XBox360Controller::XBox360ControllerImpl::WentUpThisFrame(UINT id, ControllerButton button)
+bool XBox360Controller::XBox360ControllerImpl::WentUpThisFrame(UINT id, ControllerButton button)
 {
 	return (m_ButtonsReleasedThisFrame[id] & static_cast<unsigned int>(button));
 }

@@ -2,8 +2,6 @@
 #include "BaseComponent.h"
 #include "Observer.h"
 
-namespace dae
-{
 	class TextComponent;
 	class PeterPepperComponent;
 
@@ -24,6 +22,5 @@ namespace dae
 
 		void UpdateText();
 	};
-}
 
 

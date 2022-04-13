@@ -1,8 +1,7 @@
 #pragma once
 #define MAX_OBSERVERS 5
 
-namespace dae
-{
+
 	enum class Event;
 	class GameObject;
 	class Observer;
@@ -18,6 +17,6 @@ namespace dae
 		Observer* m_Observers[MAX_OBSERVERS]{};
 		size_t m_NrOfObservers{};
 	};
-}
+
 
 

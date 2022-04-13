@@ -5,7 +5,7 @@
 #include "Font.h"
 #include "Texture2D.h"
 
-void dae::TextComponent::Update()
+void TextComponent::Update()
 {
 	if (m_NeedsUpdate)
 	{
@@ -27,13 +27,13 @@ void dae::TextComponent::Update()
 }
 
 // This implementation uses the "dirty flag" pattern
-void dae::TextComponent::SetFont(const std::shared_ptr<Font>& font)
+void TextComponent::SetFont(const std::shared_ptr<Font>& font)
 {
 	m_pFont = font;
 	m_NeedsUpdate = true;
 }
 
-void dae::TextComponent::SetText(const std::string& text)
+void TextComponent::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;

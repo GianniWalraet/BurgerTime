@@ -1,8 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 
-namespace dae
-{
+
 	class Texture2D;
 
 	class TextureComponent : public BaseComponent
@@ -33,5 +32,5 @@ namespace dae
 		bool m_HasCustomSource{};
 		bool m_HasCustomSize{};
 	};
-}
+
 

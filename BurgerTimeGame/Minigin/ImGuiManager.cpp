@@ -1,13 +1,10 @@
 #include "MiniginPCH.h"
 #include "ImGuiManager.h"
-#include <imgui.h>
-#include <backends/imgui_impl_sdl.h>
-#include <backends/imgui_impl_opengl2.h>
 #include <chrono>
 #include <numeric>
 #include "imgui_plot.h"
 
-void dae::ImGuiManager::Initialize(SDL_Window* pWindow)
+void ImGuiManager::Initialize(SDL_Window* pWindow)
 {
 	m_pWindow = pWindow;
 
@@ -16,14 +13,14 @@ void dae::ImGuiManager::Initialize(SDL_Window* pWindow)
 	ImGui_ImplSDL2_InitForOpenGL(pWindow, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL2_Init();
 }
-void dae::ImGuiManager::Destroy()
+void ImGuiManager::Destroy()
 {
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 }
 
-void dae::ImGuiManager::Render()
+void ImGuiManager::Render()
 {
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_pWindow);
@@ -33,12 +30,12 @@ void dae::ImGuiManager::Render()
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 }
 
-void dae::ImGuiManager::HandleInput(const SDL_Event& e)
+void ImGuiManager::HandleInput(const SDL_Event& e)
 {
 	ImGui_ImplSDL2_ProcessEvent(&e);
 }
 
-void dae::ImGuiManager::RenderPlotWindows()
+void ImGuiManager::RenderPlotWindows()
 {
 	ImGui::SetNextWindowSize({ 350,400 });
 	ImGui::Begin("Exercise1");
@@ -138,7 +135,7 @@ void dae::ImGuiManager::RenderPlotWindows()
 	ImGui::End();
 }
 
-void dae::ImGuiManager::CacheTheTrashInt(std::vector<float>& dataX, std::vector<float>& dataY)
+void ImGuiManager::CacheTheTrashInt(std::vector<float>& dataX, std::vector<float>& dataY)
 {
 	dataX.clear();
 	dataY.clear();
@@ -171,7 +168,7 @@ void dae::ImGuiManager::CacheTheTrashInt(std::vector<float>& dataX, std::vector<
 	}
 	delete[] arr;
 }
-void dae::ImGuiManager::CacheTheTrashGameObject3D(std::vector<float>& dataX, std::vector<float>& dataY)
+void ImGuiManager::CacheTheTrashGameObject3D(std::vector<float>& dataX, std::vector<float>& dataY)
 {
 	dataX.clear();
 	dataY.clear();
@@ -204,7 +201,7 @@ void dae::ImGuiManager::CacheTheTrashGameObject3D(std::vector<float>& dataX, std
 	}
 	delete[] arr;
 }
-void dae::ImGuiManager::CacheTheTrashGameObject3DAlt(std::vector<float>& dataX, std::vector<float>& dataY)
+void ImGuiManager::CacheTheTrashGameObject3DAlt(std::vector<float>& dataX, std::vector<float>& dataY)
 {
 	dataX.clear();
 	dataY.clear();

@@ -1,8 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
 
-namespace dae
-{
 	class Texture2D;
 
 	class SpriteComponent : public BaseComponent
@@ -39,6 +37,6 @@ namespace dae
 		float GetFrameWidth();
 		float GetFrameHeight();
 	};
-}
+
 
 

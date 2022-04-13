@@ -4,7 +4,7 @@
 #include "Timer.h"
 #include "ResourceManager.h"
 
-dae::SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const glm::vec4& srcRect, float w, float h)
+SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const glm::vec4& srcRect, float w, float h)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPath);
 	m_Cols = nrOfCols;
@@ -28,7 +28,7 @@ dae::SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfCols
 		m_DstHeight = m_pTexture->GetHeight();
 	}
 }
-void dae::SpriteComponent::Update()
+void SpriteComponent::Update()
 {
 	m_AccuSec += Timer::GetInstance().GetElapsed();
 
@@ -46,12 +46,12 @@ void dae::SpriteComponent::Update()
 	}
 }
 
-float dae::SpriteComponent::GetFrameWidth()
+float SpriteComponent::GetFrameWidth()
 {
 	return (m_SrcRectTex.z / m_Cols);
 }
 
-float dae::SpriteComponent::GetFrameHeight()
+float SpriteComponent::GetFrameHeight()
 {
 	return (m_SrcRectTex.w / m_Rows);
 }

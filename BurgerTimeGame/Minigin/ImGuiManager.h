@@ -2,8 +2,7 @@
 #include "Singleton.h"
 #include <vector>
 
-namespace dae
-{
+
 	class ImGuiManager : public Singleton<ImGuiManager>
 	{
 	public:
@@ -53,6 +52,6 @@ namespace dae
 			int ID;
 		};
 	};
-}
+
 
 

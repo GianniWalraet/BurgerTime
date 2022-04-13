@@ -6,7 +6,7 @@
 #include "Texture2D.h"
 #include "GameObject.h"
 
-void dae::RenderComponent::Render()
+void RenderComponent::Render()
 {
 	auto& renderer = Renderer::GetInstance();
 	for (const auto& t : m_pTextures)
@@ -45,12 +45,12 @@ void dae::RenderComponent::Render()
 	}
 }
 
-void dae::RenderComponent::AddTexture(TextureComponent* tex)
+void RenderComponent::AddTexture(TextureComponent* tex)
 {
 	m_pTextures.push_back(tex);
 }
 
-void dae::RenderComponent::AddSprite(SpriteComponent* sprite)
+void RenderComponent::AddSprite(SpriteComponent* sprite)
 {
 	m_pSprites.push_back(sprite);
 }

@@ -4,11 +4,18 @@
 // However, files listed here are ALL re-compiled if any one of them is updated between builds.
 // Do not add files here that you will be updating frequently as this negates the performance advantage.
 
-#ifndef PCH_H
-#define PCH_H
+#include <stdio.h>
+#include <iostream> // std::cout
+#include <sstream> // stringstream
+#include <memory> // smart pointers
+#include <vector>
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
-// add headers that you want to pre-compile here
+#pragma warning(push, 0)
+#include <glm/glm.hpp>
+#include <SDL.h>
+#pragma warning (pop)
 
-
-#endif //PCH_H
+#include "MiniginAPI.h"

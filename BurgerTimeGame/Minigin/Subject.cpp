@@ -2,11 +2,11 @@
 #include "Subject.h"
 #include "Observer.h"
 
-void dae::Subject::AddObserver(Observer* observer)
+void Subject::AddObserver(Observer* observer)
 {
 	m_Observers[m_NrOfObservers++] = observer;
 }
-void dae::Subject::RemoveObserver(Observer* observer)
+void Subject::RemoveObserver(Observer* observer)
 {
 	Observer* temp[MAX_OBSERVERS]{};
 	int curIdx = 0;
@@ -22,7 +22,7 @@ void dae::Subject::RemoveObserver(Observer* observer)
 	memmove(m_Observers, temp, sizeof(m_Observers));
 }
 
-void dae::Subject::NotifyAll(Event event)
+void Subject::NotifyAll(Event event)
 {
 	for (size_t i = 0; i < m_NrOfObservers; i++)
 	{

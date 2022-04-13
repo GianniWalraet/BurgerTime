@@ -1,8 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 
-namespace dae
-{
+
 	class TextureComponent;
 	class TextComponent;
 
@@ -22,4 +21,4 @@ namespace dae
 	private:
 		TextComponent* m_pText;
 	};
-}
+

@@ -2,8 +2,7 @@
 #include "Singleton.h"
 
 // Taken from graphics programming 1 timer class
-namespace dae
-{
+
 	class Timer final : public Singleton<Timer>
 	{
 	public:
@@ -37,4 +36,3 @@ namespace dae
 		bool m_IsStopped = true;
 		bool m_ForceElapsedUpperBound = false;
 	};
-}

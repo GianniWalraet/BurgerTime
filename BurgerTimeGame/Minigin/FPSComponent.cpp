@@ -4,7 +4,7 @@
 #include "ResourceManager.h"
 #include "Timer.h"
 
-void dae::FPSComponent::Update()
+void FPSComponent::Update()
 {
 	if (m_pText)
 	{

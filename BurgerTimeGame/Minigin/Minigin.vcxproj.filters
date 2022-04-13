@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Imgui">
-      <UniqueIdentifier>{a2fe249d-3d19-485b-b649-43d48287d09c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui\backends">
-      <UniqueIdentifier>{3ca2b343-1b1f-40f0-bb77-aadde04cd0ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui\plots">
-      <UniqueIdentifier>{110db7d1-5326-43e9-8422-331749ba8ce7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Base">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -58,33 +49,6 @@
     <ClInclude Include="RenderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\3rdParty\imgui-docking\imconfig.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\imgui-docking\imgui.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\imgui-docking\imgui_internal.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\imgui-docking\imstb_rectpack.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\imgui-docking\imstb_textedit.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\imgui-docking\imstb_truetype.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\imgui-docking\backends\imgui_impl_opengl2.h">
-      <Filter>Imgui\backends</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\imgui-docking\backends\imgui_impl_sdl.h">
-      <Filter>Imgui\backends</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\imgui-docking\imgui_plot.h">
-      <Filter>Imgui\plots</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Singletons</Filter>
     </ClInclude>
@@ -96,9 +60,6 @@
     </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGuiManager.h">
-      <Filter>Singletons</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Command</Filter>
@@ -114,15 +75,6 @@
     </ClInclude>
     <ClInclude Include="AchievementObserver.h">
       <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthDisplayComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PeterPepperComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreDisplayComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Subject.h">
       <Filter>Observer</Filter>
@@ -150,9 +102,7 @@
     <ClInclude Include="InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="MiniginAPI.h">
-      <Filter>Singletons</Filter>
-    </ClInclude>
+    <ClInclude Include="MiniginAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -173,30 +123,6 @@
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\3rdParty\imgui-docking\imgui.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\3rdParty\imgui-docking\imgui_demo.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\3rdParty\imgui-docking\imgui_draw.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\3rdParty\imgui-docking\imgui_tables.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\3rdParty\imgui-docking\imgui_widgets.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\3rdParty\imgui-docking\backends\imgui_impl_opengl2.cpp">
-      <Filter>Imgui\backends</Filter>
-    </ClCompile>
-    <ClCompile Include="..\3rdParty\imgui-docking\backends\imgui_impl_sdl.cpp">
-      <Filter>Imgui\backends</Filter>
-    </ClCompile>
-    <ClCompile Include="..\3rdParty\imgui-docking\imgui_plot.cpp">
-      <Filter>Imgui\plots</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Singletons</Filter>
     </ClCompile>
@@ -206,23 +132,11 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>SceneGraph</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuiManager.cpp">
-      <Filter>Singletons</Filter>
-    </ClCompile>
     <ClCompile Include="XBox360Controller.cpp">
       <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="AchievementObserver.cpp">
       <Filter>Observer</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthDisplayComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PeterPepperComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreDisplayComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Observer</Filter>
@@ -234,7 +148,6 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="MiniginPCH.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="GameObject.cpp">
       <Filter>SceneGraph</Filter>
