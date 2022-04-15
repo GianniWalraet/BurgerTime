@@ -39,11 +39,10 @@ void Scene::Render() const
 {
 	for (const auto& object : m_Objects)
 	{
-		auto renderComp = object->GetComponent<RenderComponent>();
+		const auto& renderComp = object->GetComponent<RenderComponent>();
 		if (renderComp) renderComp->Render();
 
-		const auto renderComps = object->GetComponentsFromChildren<RenderComponent>();
-		for (const auto& comp : renderComps)
+		for (const auto& comp : object->GetComponentsFromChildren<RenderComponent>())
 		{
 			comp->Render();
 		}

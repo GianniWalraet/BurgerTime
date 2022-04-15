@@ -53,14 +53,14 @@ public:
 	template <typename T> std::vector<T*> GetComponentsFromChildren() const
 	{
 		std::vector<T*> comps{};
+
+		if (GetChildCount() == 0) return comps;
+
 		for (const auto& child : m_pChildren)
 		{
-			if (child->GetChildCount() > 0)
-			{
-				const std::vector<T*> subComps = child->GetComponentsFromChildren<T>();
-				comps.insert(comps.end(), subComps.begin(), subComps.end());
-			}
-			auto comp = child->GetComponent<T>();
+			const auto comp = child->GetComponent<T>();
+			const auto subComps = child->GetComponentsFromChildren<T>();
+			if (comps.size() > 0)comps.insert(comps.end(), subComps.begin(), subComps.end());
 			if (comp) comps.push_back(comp);
 		}
 		return comps;
@@ -90,6 +90,7 @@ public:
 	void SetPosition(const glm::vec3& pos) { GetComponent<TransformComponent>()->SetPosition(pos.x, pos.y, pos.z); }
 	const glm::vec3& GetPosition() const { return GetComponent<TransformComponent>()->GetPosition(); }
 private:
+	TransformComponent* m_Transform{};
 	std::vector<BaseComponent*> m_pComponents{};
 
 	std::vector<std::shared_ptr<GameObject>> m_pChildren{};

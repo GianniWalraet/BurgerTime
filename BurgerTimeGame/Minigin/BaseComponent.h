@@ -16,6 +16,7 @@ public:
 	virtual void Initialize() {};
 	virtual void Update() {};
 protected:
+	friend class GameObject;
 	std::weak_ptr<GameObject> m_pOwner;
 };
 

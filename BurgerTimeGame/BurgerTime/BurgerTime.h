@@ -4,7 +4,7 @@
 class BurgerTime : public Minigin
 {
 public:
-	BurgerTime();
+	BurgerTime() = default;
 	~BurgerTime() = default;
 	BurgerTime(const BurgerTime& other) = delete;
 	BurgerTime(BurgerTime&& other) noexcept = delete;

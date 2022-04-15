@@ -8,11 +8,6 @@
 #define GRID_SIZE 16.f
 #define GAME_SCALE 3.f
 
-BurgerTime::BurgerTime()
-{
-
-}
-
 void BurgerTime::LoadGame() const
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");

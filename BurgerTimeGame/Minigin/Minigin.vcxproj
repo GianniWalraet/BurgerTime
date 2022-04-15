@@ -220,6 +220,7 @@
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ControllerInput.h" />
+    <ClInclude Include="Structs.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MiniginAPI.h" />
     <ClInclude Include="SDLKeyboardInput.h" />

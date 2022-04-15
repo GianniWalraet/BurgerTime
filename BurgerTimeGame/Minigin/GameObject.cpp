@@ -7,7 +7,7 @@
 GameObject::GameObject()
 {
 	// Each gameobject has a transform
-	AddComponent<TransformComponent>(new TransformComponent(std::shared_ptr<GameObject>()));
+	m_Transform = AddComponent<TransformComponent>(new TransformComponent(std::shared_ptr<GameObject>()));
 }
 
 GameObject::~GameObject()
@@ -21,6 +21,8 @@ GameObject::~GameObject()
 
 void GameObject::Initialize()
 {
+	m_Transform->m_pOwner = shared_from_this();
+
 	for (auto& c : m_pComponents)
 	{
 		c->Initialize();
