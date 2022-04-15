@@ -8,6 +8,7 @@
 	public:
 		Scene& CreateScene(const std::string& name);
 
+		void Initialize();
 		void Update();
 		void Render() const;
 	private:

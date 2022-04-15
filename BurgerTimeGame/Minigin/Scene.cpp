@@ -14,6 +14,19 @@ void Scene::Add(const std::shared_ptr<GameObject>& object)
 	m_Objects.push_back(object);
 }
 
+void Scene::Initialize()
+{
+	for (auto& object : m_Objects)
+	{
+		object->Initialize();
+
+		for (auto& child : object->GetChildren())
+		{
+			child->Initialize();
+		}
+	}
+}
+
 void Scene::Update()
 {
 	for(auto& object : m_Objects)

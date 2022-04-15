@@ -1,7 +1,7 @@
 #pragma once
 
 
-class Command
+class Command abstract
 {
 public:
 	explicit Command() = default;

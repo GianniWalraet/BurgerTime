@@ -8,13 +8,13 @@
 	class HealthDisplayComponent final : public BaseComponent, public Observer
 	{
 	public:
-		HealthDisplayComponent(PeterPepperComponent* pPlayer, TextComponent* pTxt);
+		HealthDisplayComponent(const std::shared_ptr<GameObject>& pOwner, PeterPepperComponent* pPlayerC, TextComponent* pTextC);
 		virtual ~HealthDisplayComponent() = default;
 		HealthDisplayComponent(const HealthDisplayComponent& other) = delete;
 		HealthDisplayComponent(HealthDisplayComponent&& other) = delete;
 		HealthDisplayComponent& operator=(const HealthDisplayComponent& other) = delete;
 		HealthDisplayComponent& operator=(HealthDisplayComponent&& other) = delete;
-		
+
 		void Notify(Event event) override;
 	private:
 		PeterPepperComponent* m_pPlayer{};

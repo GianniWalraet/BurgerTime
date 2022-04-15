@@ -9,27 +9,25 @@ class BaseComponent;
 class GameObject final : public std::enable_shared_from_this<GameObject>
 {
 public:
-	GameObject(const glm::vec3& position = { 0,0,0 }) { m_WorldTransform.SetPosition(position.x, position.y, position.z); }
+	GameObject();
 	~GameObject();
 	GameObject(const GameObject& other) = delete;
 	GameObject(GameObject&& other) = delete;
 	GameObject& operator=(const GameObject& other) = delete;
 	GameObject& operator=(GameObject&& other) = delete;
 
+	void Initialize();
 	void Update();
 
-	template <typename T> T* AddComponent()
+	template <typename T, typename... Args> T* AddComponent(Args... args)
 	{
-		if (!std::is_default_constructible<T>()) return nullptr;
-		auto co = new T();
+		auto co = new T(shared_from_this(), std::forward<Args>(args)...);
 		m_pComponents.push_back(co);
-		co->SetOwner(shared_from_this());
 		return co;
 	}
 	template <typename T> T* AddComponent(T* comp)
 	{
 		m_pComponents.push_back(comp);
-		comp->SetOwner(shared_from_this());
 		return comp;
 	}
 	template <typename T> T* GetComponent() const
@@ -89,12 +87,9 @@ public:
 	void AddChild(const std::shared_ptr<GameObject>& obj);
 	void RemoveChild(const std::shared_ptr<GameObject>& obj);
 
-	void SetPosition(const glm::vec3& pos) { m_WorldTransform.SetPosition(pos.x, pos.y, pos.z); }
-	const glm::vec3& GetPosition() const { return m_WorldTransform.GetPosition(); }
+	void SetPosition(const glm::vec3& pos) { GetComponent<TransformComponent>()->SetPosition(pos.x, pos.y, pos.z); }
+	const glm::vec3& GetPosition() const { return GetComponent<TransformComponent>()->GetPosition(); }
 private:
-	TransformComponent m_WorldTransform{};
-	TransformComponent m_LocalTransform{};
-
 	std::vector<BaseComponent*> m_pComponents{};
 
 	std::vector<std::shared_ptr<GameObject>> m_pChildren{};

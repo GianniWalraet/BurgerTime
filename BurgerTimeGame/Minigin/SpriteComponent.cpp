@@ -4,7 +4,8 @@
 #include "Timer.h"
 #include "ResourceManager.h"
 
-SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const glm::vec4& srcRect, float w, float h)
+SpriteComponent::SpriteComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const glm::vec4& srcRect, float w, float h)
+	: BaseComponent::BaseComponent(pOwner)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPath);
 	m_Cols = nrOfCols;

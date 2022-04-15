@@ -6,51 +6,55 @@
 #include "Texture2D.h"
 #include "GameObject.h"
 
+void RenderComponent::Initialize()
+{
+	auto texComp = m_pOwner.lock()->GetComponent<TextureComponent>();
+	auto spriteComp = m_pOwner.lock()->GetComponent<SpriteComponent>();
+
+	if (texComp) m_pTexture = texComp;
+	if (spriteComp) m_pSprite = spriteComp;
+}
+
 void RenderComponent::Render()
 {
 	auto& renderer = Renderer::GetInstance();
-	for (const auto& t : m_pTextures)
+	if(m_pTexture)
 	{
 		auto& pos = m_pOwner.lock()->GetPosition();
-		auto& texture = *t->GetTexture().get();
+		auto& texture = *m_pTexture->GetTexture().get();
 		
-		bool customSource = t->HasCustomSource();
-		bool customSize = t->HasCustomSize();
+		bool customSource = m_pTexture->HasCustomSource();
+		bool customSize = m_pTexture->HasCustomSize();
 
 		if (customSource && customSize)
 		{
-			renderer.RenderTexture(texture, pos.x, pos.y, t->GetWidth(), t->GetHeight(), t->GetSrcRect());
-			continue;
+			renderer.RenderTexture(texture, pos.x, pos.y, m_pTexture->GetWidth(), m_pTexture->GetHeight(), m_pTexture->GetSrcRect());
 		}
-
-		if (customSource && !customSize)
+		else if (customSource && !customSize)
 		{
-			renderer.RenderTexture(texture, pos.x, pos.y, t->GetSrcRect());
-			continue;
+			renderer.RenderTexture(texture, pos.x, pos.y, m_pTexture->GetSrcRect());
 		}
-
-		if (!customSource && customSize)
+		else if (!customSource && customSize)
 		{
-			renderer.RenderTexture(texture, pos.x, pos.y, t->GetWidth(), t->GetHeight());
-			continue;
+			renderer.RenderTexture(texture, pos.x, pos.y, m_pTexture->GetWidth(), m_pTexture->GetHeight());
 		}
 
 		renderer.RenderTexture(texture, pos.x, pos.y);
 	}
 
-	for (const auto& p : m_pSprites)
+	if(m_pSprite)
 	{
 		auto& pos = m_pOwner.lock()->GetPosition();
-		renderer.RenderTexture(*p->GetTexture().get(), pos.x, pos.y, p->GetDstWidth(), p->GetDstHeight(), p->GetFrameSrc());
+		renderer.RenderTexture(*m_pSprite->GetTexture().get(), pos.x, pos.y, m_pSprite->GetDstWidth(), m_pSprite->GetDstHeight(), m_pSprite->GetFrameSrc());
 	}
 }
 
-void RenderComponent::AddTexture(TextureComponent* tex)
-{
-	m_pTextures.push_back(tex);
-}
-
-void RenderComponent::AddSprite(SpriteComponent* sprite)
-{
-	m_pSprites.push_back(sprite);
-}
+//void RenderComponent::AddTexture(TextureComponent* tex)
+//{
+//	m_pTexture.push_back(tex);
+//}
+//
+//void RenderComponent::AddSprite(SpriteComponent* sprite)
+//{
+//	m_pSprite.push_back(sprite);
+//}

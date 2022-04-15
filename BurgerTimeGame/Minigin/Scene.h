@@ -9,6 +9,7 @@ class Scene
 public:
 	void Add(const std::shared_ptr<GameObject>& object);
 
+	void Initialize();
 	void Update();
 	void Render() const;
 

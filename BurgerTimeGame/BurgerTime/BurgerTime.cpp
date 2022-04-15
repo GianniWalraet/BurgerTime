@@ -5,8 +5,8 @@
 #include "HealthDisplayComponent.h"
 #include "PlayerCommands.h"
 
-#define GRID_SIZE 16
-#define GAME_SCALE 3
+#define GRID_SIZE 16.f
+#define GAME_SCALE 3.f
 
 BurgerTime::BurgerTime()
 {
@@ -19,15 +19,15 @@ void BurgerTime::LoadGame() const
 
 	// Main gameObject and background
 	auto go = std::make_shared<GameObject>();
-	auto texComp = go->AddComponent<TextureComponent>(new TextureComponent("background.jpg"));
+	auto texComp = go->AddComponent<TextureComponent>("background.jpg");
 	auto renderComp = go->AddComponent<RenderComponent>();
-	renderComp->AddTexture(texComp);
+	//renderComp->AddTexture(texComp);
 
 	// dae logo
 	auto child = std::make_shared<GameObject>();
-	texComp = child->AddComponent<TextureComponent>(new TextureComponent("logo.png"));
+	texComp = child->AddComponent<TextureComponent>("logo.png");
 	renderComp = child->AddComponent<RenderComponent>();
-	renderComp->AddTexture(texComp);
+	//renderComp->AddTexture(texComp);
 	child->SetPosition({ 216, 50, 0 });
 	go->AddChild(child);
 
@@ -46,10 +46,9 @@ void BurgerTime::LoadGame() const
 	auto fpsComp = child->AddComponent<FPSComponent>();
 	auto txtComp = child->AddComponent<TextComponent>();
 	renderComp = child->AddComponent<RenderComponent>();
-	fpsComp->SetTextComponent(txtComp);
 	txtComp->SetFont(ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
 	txtComp->SetText("0");
-	renderComp->AddTexture(txtComp);
+	//renderComp->AddTexture(txtComp);
 	go->AddChild(child);
 
 	// Players
@@ -79,10 +78,10 @@ PeterPepperComponent* BurgerTime::AddPlayer(GameObject* parent, uint32_t playerI
 	auto ppComp = child->AddComponent<PeterPepperComponent>();
 	glm::vec4 srcRect = { 0,0,GRID_SIZE,GRID_SIZE };
 	//auto texComp = child->AddComponent<TextureComponent>(new TextureComponent("BurgerTimeSprite.png", srcRect, GRID_SIZE * GAME_SCALE, GRID_SIZE * GAME_SCALE));
-	auto sprComp = child->AddComponent<SpriteComponent>(new SpriteComponent("BurgerTimeSprite.png", 3, 1, 1.f / 10.f,
-		glm::vec4{ GRID_SIZE * 3, 0, GRID_SIZE * 3, GRID_SIZE }, GRID_SIZE * GAME_SCALE, GRID_SIZE * GAME_SCALE));
+	auto sprComp = child->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f,
+	glm::vec4{ GRID_SIZE * 3.f, 0.f, GRID_SIZE * 3.f, GRID_SIZE }, GRID_SIZE * GAME_SCALE, GRID_SIZE * GAME_SCALE);
 	auto renderComp = child->AddComponent<RenderComponent>();
-	renderComp->AddSprite(sprComp);
+	//renderComp->AddSprite(sprComp);
 	//renderComp->AddTexture(texComp);
 	child->SetPosition(playerPos);
 	parent->AddChild(child);
@@ -90,23 +89,23 @@ PeterPepperComponent* BurgerTime::AddPlayer(GameObject* parent, uint32_t playerI
 	child = std::make_shared<GameObject>();
 	auto txtComp = child->AddComponent<TextComponent>();
 	renderComp = child->AddComponent<RenderComponent>();
-	auto hdComp = child->AddComponent<HealthDisplayComponent>(new HealthDisplayComponent(ppComp, txtComp));
+	auto hdComp = child->AddComponent<HealthDisplayComponent>(ppComp, txtComp);
 
 	txtComp->SetFont(font);
-	renderComp->AddTexture(txtComp);
+	//renderComp->AddTexture(txtComp);
 	child->SetPosition(healthDisplayPos);
 	parent->AddChild(child);
 
-	child = std::make_shared<GameObject>();
-	txtComp = child->AddComponent<TextComponent>();
-	renderComp = child->AddComponent<RenderComponent>();
-	auto sdComp = child->AddComponent<ScoreDisplayComponent>(new ScoreDisplayComponent(ppComp, txtComp));
+	child =			std::make_shared<GameObject>();
+	txtComp =		child->AddComponent<TextComponent>();
+	renderComp =	child->AddComponent<RenderComponent>();
+	auto sdComp = child->AddComponent<ScoreDisplayComponent>(ppComp, txtComp);
 
 	ppComp->AddObserver(hdComp);
 	ppComp->AddObserver(sdComp);
 
 	txtComp->SetFont(font);
-	renderComp->AddTexture(txtComp);
+	//renderComp->AddTexture(txtComp);
 	child->SetPosition(scoreDisplayPos);
 	parent->AddChild(child);
 

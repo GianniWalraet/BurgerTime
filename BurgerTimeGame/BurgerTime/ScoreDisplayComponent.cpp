@@ -3,10 +3,22 @@
 #include "PeterPepperComponent.h"
 #include "TextComponent.h"
 
-ScoreDisplayComponent::ScoreDisplayComponent(PeterPepperComponent* pPlayer, TextComponent* pTxt)
+//ScoreDisplayComponent::ScoreDisplayComponent(PeterPepperComponent* pPlayer, TextComponent* pTxt)
+//{
+//	m_pPlayer = pPlayer;
+//	m_pText = pTxt;
+//	m_pText->SetText("Score: " + std::to_string(m_pPlayer->GetScore()));
+//}
+
+ScoreDisplayComponent::ScoreDisplayComponent(const std::shared_ptr<GameObject>& pOwner, PeterPepperComponent* pPlayerC, TextComponent* pTextC)
+	: BaseComponent::BaseComponent(pOwner)
 {
-	m_pPlayer = pPlayer;
-	m_pText = pTxt;
+	m_pPlayer = pPlayerC;
+	m_pText = pTextC;
+
+	assert(m_pPlayer != nullptr);
+	assert(m_pText != nullptr);
+
 	m_pText->SetText("Score: " + std::to_string(m_pPlayer->GetScore()));
 }
 

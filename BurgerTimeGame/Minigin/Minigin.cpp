@@ -77,6 +77,9 @@ void Minigin::Run()
 		// Init input
 		input.Initialize();
 
+		// Init objects
+		sceneManager.Initialize();
+
 		// Start timer
 		timer.Start();
 

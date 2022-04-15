@@ -6,11 +6,7 @@
 #include "GameObject.h"
 #include "Timer.h"
 
-PeterPepperComponent::PeterPepperComponent()
-	: m_Lives{ 3 }
-{
 
-}
 PeterPepperComponent::~PeterPepperComponent()
 {
 }

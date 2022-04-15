@@ -5,7 +5,8 @@
 #include "Renderer.h"
 #include "TransformComponent.h"
 
-TextureComponent::TextureComponent(const std::string& filename, const glm::vec4& srcRect, float w, float h)
+TextureComponent::TextureComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& filename, const glm::vec4& srcRect, float w, float h)
+	: BaseComponent::BaseComponent(pOwner)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
 	m_SrcRect = srcRect;

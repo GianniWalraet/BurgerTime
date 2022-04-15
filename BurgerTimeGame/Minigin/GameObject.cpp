@@ -4,12 +4,26 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
+GameObject::GameObject()
+{
+	// Each gameobject has a transform
+	AddComponent<TransformComponent>(new TransformComponent(std::shared_ptr<GameObject>()));
+}
+
 GameObject::~GameObject()
 {
 	for (size_t i = 0; i < m_pComponents.size(); i++)
 	{
 		delete m_pComponents[i];
 		m_pComponents[i] = nullptr;
+	}
+}
+
+void GameObject::Initialize()
+{
+	for (auto& c : m_pComponents)
+	{
+		c->Initialize();
 	}
 }
 

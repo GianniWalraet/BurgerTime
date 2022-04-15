@@ -3,11 +3,23 @@
 #include "TextComponent.h"
 #include "PeterPepperComponent.h"
 
-HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayer, TextComponent* pTxt)
+//HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayer, TextComponent* pTxt)
+//{
+//	m_pPlayer = pPlayer;
+//	m_pText = pTxt;
+//	m_pText->SetText("Lives: " + std::to_string(m_pPlayer->GetLives()));
+//}
+
+HealthDisplayComponent::HealthDisplayComponent(const std::shared_ptr<GameObject>& pOwner, PeterPepperComponent* pPlayerC, TextComponent* pTextC)
+	: BaseComponent::BaseComponent(pOwner)
 {
-	m_pPlayer = pPlayer;
-	m_pText = pTxt;
-	m_pText->SetText("Lives: " + std::to_string(m_pPlayer->GetLives()));
+	m_pPlayer = pPlayerC;
+	m_pText = pTextC;
+
+	assert(m_pPlayer != nullptr);
+	assert(m_pText != nullptr);
+
+	UpdateText();
 }
 
 void HealthDisplayComponent::Notify(Event event)
