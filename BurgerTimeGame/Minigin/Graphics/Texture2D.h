@@ -16,11 +16,11 @@ struct SDL_Texture;
 		Texture2D& operator= (const Texture2D&) = delete;
 		Texture2D& operator= (const Texture2D&&) = delete;
 
-		const float GetWidth() const { return m_Width; }
-		const float GetHeight() const { return m_Height; }
+		const int GetWidth() const { return m_Width; }
+		const int GetHeight() const { return m_Height; }
 	private:
 		SDL_Texture* m_Texture{};
-		float m_Width{};
-		float m_Height{};
+		int m_Width{};
+		int m_Height{};
 	};
 

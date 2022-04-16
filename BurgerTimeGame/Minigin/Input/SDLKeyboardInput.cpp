@@ -4,6 +4,7 @@
 
 bool SDLKeyboardInput::HandleInput()
 {
+	m_PressedThisFrame.clear();
 	m_ReleasedThisFrame.clear();
 
 	SDL_Event e;
@@ -18,7 +19,10 @@ bool SDLKeyboardInput::HandleInput()
 		if (e.type == SDL_KEYDOWN)
 		{
 			if (std::find(m_Pressed.begin(), m_Pressed.end(), static_cast<uint32_t>(e.key.keysym.sym)) == m_Pressed.end())
+			{
+				m_PressedThisFrame.push_back(e.key.keysym.sym);
 				m_Pressed.push_back(e.key.keysym.sym);
+			}
 		}
 		if (e.type == SDL_KEYUP)
 		{
@@ -48,7 +52,11 @@ bool SDLKeyboardInput::IsKeyPressed(SDL_Keycode key)
 {
 	return (std::find(m_Pressed.begin(), m_Pressed.end(), static_cast<uint32_t>(key)) != m_Pressed.end());
 }
-bool SDLKeyboardInput::KeyWentUpThisFrame(SDL_Keycode key)
+bool SDLKeyboardInput::WentUpThisFrame(SDL_Keycode key)
 {
 	return (std::find(m_ReleasedThisFrame.begin(), m_ReleasedThisFrame.end(), static_cast<uint32_t>(key)) != m_ReleasedThisFrame.end());
+}
+bool SDLKeyboardInput::WentDownThisFrame(SDL_Keycode key)
+{
+	return (std::find(m_PressedThisFrame.begin(), m_PressedThisFrame.end(), static_cast<uint32_t>(key)) != m_PressedThisFrame.end());;
 }

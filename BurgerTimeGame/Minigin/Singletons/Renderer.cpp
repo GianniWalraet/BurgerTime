@@ -48,52 +48,52 @@ void Renderer::Destroy()
 	}
 }
 
-void Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, bool /*mirror*/) const
+void Renderer::RenderTexture(const Texture2D& texture, const int x, const int y, bool mirror) const
 {
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
-	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
-}
+	SDL_RendererFlip flip = mirror ? SDL_RendererFlip::SDL_FLIP_HORIZONTAL : SDL_RendererFlip::SDL_FLIP_NONE;
 
-void Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height, bool /*mirror*/) const
-{
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
-	dst.w = static_cast<int>(width);
-	dst.h = static_cast<int>(height);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
-}
-
-void Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const glm::vec4& srcRect, bool /*mirror*/) const
-{
-	SDL_Rect src{};
-	src.x = static_cast<int>(srcRect.x);
-	src.y = static_cast<int>(srcRect.y);
-	src.w = static_cast<int>(srcRect.z);
-	src.h = static_cast<int>(srcRect.w);
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
 
 	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, 0.f, nullptr, flip);
 }
 
-void Renderer::RenderTexture(const Texture2D& texture, float x, float y, float width, float height, const glm::vec4& srcRect, bool /*mirror*/) const
+void Renderer::RenderTexture(const Texture2D& texture, const int x, const int y, const int width, const int height, bool mirror) const
 {
-	SDL_Rect src{};
-	src.x = static_cast<int>(srcRect.x);
-	src.y = static_cast<int>(srcRect.y);
-	src.w = static_cast<int>(srcRect.z);
-	src.h = static_cast<int>(srcRect.w);
+	SDL_RendererFlip flip = mirror ? SDL_RendererFlip::SDL_FLIP_HORIZONTAL : SDL_RendererFlip::SDL_FLIP_NONE;
+
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, 0.f, nullptr, flip);
+}
+
+void Renderer::RenderTexture(const Texture2D& texture, const int x, const int y, const SDL_Rect& srcRect, bool mirror) const
+{
+	SDL_RendererFlip flip = mirror ? SDL_RendererFlip::SDL_FLIP_HORIZONTAL : SDL_RendererFlip::SDL_FLIP_NONE;
+
+	SDL_Rect dst{};
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(y);
+
+	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dst, 0.f, nullptr, flip);
+}
+
+void Renderer::RenderTexture(const Texture2D& texture, const int x, const int y, const int width, const int height, const SDL_Rect& srcRect, bool mirror) const
+{
+	SDL_RendererFlip flip = mirror ? SDL_RendererFlip::SDL_FLIP_HORIZONTAL : SDL_RendererFlip::SDL_FLIP_NONE;
+
+	SDL_Rect dst{};
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(y);
+	dst.w = static_cast<int>(width);
+	dst.h = static_cast<int>(height);
+
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dst, 0.f, nullptr, flip);
 }

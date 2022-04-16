@@ -1,6 +1,6 @@
 #pragma once
 
-enum class State
+enum class PlayerState
 {
 	Walking,
 	OnLadder,
@@ -31,19 +31,19 @@ public:
 	void OnDie();
 	void OnBurgerDropped();
 
-	void SetState(State state, Direction dir);
+	void SetState(PlayerState state, Direction dir);
 
 	const uint8_t GetLives() const { return m_Lives; }
 	const int GetScore() const { return m_Score; }
 private:
 	uint8_t m_Lives{};
-	int m_Score{};
+	uint32_t m_Score{};
 	bool m_HasWon{};
 
 	static const int m_MovementSpeed = 100;
 
 	static const uint32_t m_ScoreGain = 30;
-	static const int m_ScoreLoss = 50;
+	static const uint32_t m_ScoreLoss = 50;
 
 	void Move(Direction dir);
 	void Climb(Direction dir);

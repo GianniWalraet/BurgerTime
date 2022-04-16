@@ -4,7 +4,7 @@
 #include "Base/Timer.h"
 #include "Singletons/ResourceManager.h"
 
-SpriteComponent::SpriteComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const glm::vec4& srcRect, float w, float h)
+SpriteComponent::SpriteComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const SDL_Rect& srcRect, int w, int h)
 	: BaseComponent::BaseComponent(pOwner)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPath);
@@ -17,10 +17,10 @@ SpriteComponent::SpriteComponent(const std::shared_ptr<GameObject>& pOwner, cons
 	m_DstHeight = h;
 
 	const float epsilon{ 0.001f };
-	if (!(srcRect.z > epsilon && srcRect.w > epsilon))
+	if (!(srcRect.w > 0 && srcRect.h > 0))
 	{
-		m_SrcRectTex.z = m_pTexture->GetWidth();
-		m_SrcRectTex.w = m_pTexture->GetHeight();
+		m_SrcRectTex.w = m_pTexture->GetWidth();
+		m_SrcRectTex.h = m_pTexture->GetHeight();
 	}
 
 	if (!(w > epsilon && h > epsilon))
@@ -38,21 +38,21 @@ void SpriteComponent::Update()
 		++m_ActFrame %= (m_Cols * m_Rows);
 		m_AccuSec -= m_FrameSec;
 
-		m_SrcRectFrame.z = GetFrameWidth();
-		m_SrcRectFrame.w = GetFrameHeight();
+		m_SrcRectFrame.w = GetFrameWidth();
+		m_SrcRectFrame.h = GetFrameHeight();
 		int col{ m_ActFrame % m_Cols };
 		int row{ m_ActFrame / m_Cols };
-		m_SrcRectFrame.x = m_SrcRectTex.x + (m_SrcRectFrame.z * col);
-		m_SrcRectFrame.y = m_SrcRectTex.y + (m_SrcRectFrame.w * row);
+		m_SrcRectFrame.x = m_SrcRectTex.x + (m_SrcRectFrame.w * col);
+		m_SrcRectFrame.y = m_SrcRectTex.y + (m_SrcRectFrame.h * row);
 	}
 }
 
-float SpriteComponent::GetFrameWidth()
+int SpriteComponent::GetFrameWidth()
 {
-	return (m_SrcRectTex.z / m_Cols);
+	return (m_SrcRectTex.w / m_Cols);
 }
 
-float SpriteComponent::GetFrameHeight()
+int SpriteComponent::GetFrameHeight()
 {
-	return (m_SrcRectTex.w / m_Rows);
+	return (m_SrcRectTex.h / m_Rows);
 }

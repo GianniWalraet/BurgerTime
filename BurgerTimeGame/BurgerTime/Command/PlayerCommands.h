@@ -38,7 +38,7 @@ public:
 	explicit MoveLeftCommand(PeterPepperComponent* actor) : PlayerCommand(actor) {}
 	void Execute() override
 	{
-		GetActor()->SetState(State::Walking, Direction::Left);
+		GetActor()->SetState(PlayerState::Walking, Direction::Left);
 	}
 };
 
@@ -48,7 +48,7 @@ public:
 	explicit MoveRightCommand(PeterPepperComponent* actor) : PlayerCommand(actor) {}
 	void Execute() override
 	{
-		GetActor()->SetState(State::Walking, Direction::Right);
+		GetActor()->SetState(PlayerState::Walking, Direction::Right);
 	}
 };
 
@@ -58,7 +58,7 @@ public:
 	explicit MoveUpCommand(PeterPepperComponent* actor) : PlayerCommand(actor) {}
 	void Execute() override
 	{
-		GetActor()->SetState(State::OnLadder, Direction::Up);
+		GetActor()->SetState(PlayerState::OnLadder, Direction::Up);
 	}
 };
 
@@ -68,6 +68,6 @@ public:
 	explicit MoveDownCommand(PeterPepperComponent* actor) : PlayerCommand(actor) {}
 	void Execute() override
 	{
-		GetActor()->SetState(State::OnLadder, Direction::Down);
+		GetActor()->SetState(PlayerState::OnLadder, Direction::Down);
 	}
 };

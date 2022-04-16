@@ -14,8 +14,5 @@ SDL_Texture* Texture2D::GetSDLTexture() const
 Texture2D::Texture2D(SDL_Texture* texture)
 {
 	m_Texture = texture;
-	int w, h;
-	SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-	m_Width = static_cast<float>(w);
-	m_Height = static_cast<float>(h);
+	SDL_QueryTexture(texture, nullptr, nullptr, &m_Width, &m_Height);
 }

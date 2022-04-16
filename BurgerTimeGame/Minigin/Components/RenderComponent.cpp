@@ -26,26 +26,28 @@ void RenderComponent::Render()
 		bool customSource = m_pTexture->HasCustomSource();
 		bool customSize = m_pTexture->HasCustomSize();
 
+		int x{ static_cast<int>(pos.x) }, y{ static_cast<int>(pos.y) };
+
 		if (customSource && customSize)
 		{
-			renderer.RenderTexture(texture, pos.x, pos.y, m_pTexture->GetWidth(), m_pTexture->GetHeight(), m_pTexture->GetSrcRect());
+			renderer.RenderTexture(texture, x, y, m_pTexture->GetWidth(), m_pTexture->GetHeight(), m_pTexture->GetSrcRect());
 		}
 		else if (customSource && !customSize)
 		{
-			renderer.RenderTexture(texture, pos.x, pos.y, m_pTexture->GetSrcRect());
+			renderer.RenderTexture(texture, x, y, m_pTexture->GetSrcRect());
 		}
 		else if (!customSource && customSize)
 		{
-			renderer.RenderTexture(texture, pos.x, pos.y, m_pTexture->GetWidth(), m_pTexture->GetHeight());
+			renderer.RenderTexture(texture, x, y, m_pTexture->GetWidth(), m_pTexture->GetHeight());
 		}
 
-		renderer.RenderTexture(texture, pos.x, pos.y);
+		renderer.RenderTexture(texture, x, y);
 	}
 
 	if(m_pSprite)
 	{
 		auto& pos = m_pOwner.lock()->GetPosition();
-		renderer.RenderTexture(*m_pSprite->GetTexture().get(), pos.x, pos.y, m_pSprite->GetDstWidth(), m_pSprite->GetDstHeight(), m_pSprite->GetFrameSrc());
+		renderer.RenderTexture(*m_pSprite->GetTexture().get(), static_cast<int>(pos.x), static_cast<int>(pos.y), m_pSprite->GetDstWidth(), m_pSprite->GetDstHeight(), m_pSprite->GetFrameSrc());
 	}
 }
 

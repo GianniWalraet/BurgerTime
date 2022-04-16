@@ -9,8 +9,8 @@
 #include "Components/ScoreDisplayComponent.h"
 #include "Components/HealthDisplayComponent.h"
 
-#define GRID_SIZE 16.f
-#define GAME_SCALE 3.f
+#define GRID_SIZE 16
+#define GAME_SCALE 3
 
 void BurgerTime::LoadGame() const
 {
@@ -34,12 +34,13 @@ void BurgerTime::LoadGame() const
 	auto txtComp =		child->AddComponent<TextComponent>();
 	renderComp =		child->AddComponent<RenderComponent>();
 	txtComp->SetFont(ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
-	txtComp->SetText("0");
 	go->AddChild(child);
 
 	// Players
 	auto p1 = AddPlayer(go.get(), 0, { 200,200,0 }, { 0,430,0 }, { 0,450,0 });
 	auto p2 = AddPlayer(go.get(), 1, { 300,200,0 }, { 550,430,0 }, { 550,450,0 });
+
+	// Keyboard input (add seperately since it's not attached to an id)
 	InputManager::GetInstance().AddCommand<KillCommand>(p1, SDLK_j);
 	InputManager::GetInstance().AddCommand<ScoreCommand>(p1, SDLK_k);
 	InputManager::GetInstance().AddCommand<KillCommand>(p2, SDLK_l);
@@ -56,13 +57,25 @@ PeterPepperComponent* BurgerTime::AddPlayer(GameObject* parent, uint32_t playerI
 {
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
 
+	// Variables for sprite
+	SDL_Rect source{};
+	source.x = GRID_SIZE * 3;
+	source.y = 0;
+	source.w = GRID_SIZE * 3;
+	source.h = GRID_SIZE;
+
+	int width = GRID_SIZE * GAME_SCALE;
+	int height = GRID_SIZE * GAME_SCALE;
+
+	// PeterPepper object
 	auto child =		std::make_shared<GameObject>();
 	auto ppComp =		child->AddComponent<PeterPepperComponent>();
-	auto sprComp =		child->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, glm::vec4{ GRID_SIZE * 3.f, 0.f, GRID_SIZE * 3.f, GRID_SIZE }, GRID_SIZE * GAME_SCALE, GRID_SIZE * GAME_SCALE);
+	auto sprComp =		child->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, source, width, height);
 	auto renderComp =	child->AddComponent<RenderComponent>();
 	child->SetPosition(playerPos);
 	parent->AddChild(child);
 
+	// HealthDisplay object
 	child =				std::make_shared<GameObject>();
 	auto txtComp =		child->AddComponent<TextComponent>();
 	renderComp =		child->AddComponent<RenderComponent>();
@@ -71,6 +84,7 @@ PeterPepperComponent* BurgerTime::AddPlayer(GameObject* parent, uint32_t playerI
 	child->SetPosition(healthDisplayPos);
 	parent->AddChild(child);
 
+	// ScoreDisplay object
 	child =				std::make_shared<GameObject>();
 	txtComp =			child->AddComponent<TextComponent>();
 	renderComp =		child->AddComponent<RenderComponent>();

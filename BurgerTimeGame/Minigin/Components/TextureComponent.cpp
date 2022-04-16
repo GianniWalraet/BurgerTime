@@ -5,7 +5,7 @@
 #include "Singletons/Renderer.h"
 #include "TransformComponent.h"
 
-TextureComponent::TextureComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& filename, const glm::vec4& srcRect, float w, float h)
+TextureComponent::TextureComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& filename, const SDL_Rect& srcRect, int w, int h)
 	: BaseComponent::BaseComponent(pOwner)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
@@ -14,6 +14,6 @@ TextureComponent::TextureComponent(const std::shared_ptr<GameObject>& pOwner, co
 	m_Height = h;
 
 	const float epsilon{ 0.001f };
-	m_HasCustomSource = (!(srcRect.z > epsilon && srcRect.w > epsilon)) ? false : true;
+	m_HasCustomSource = (!(srcRect.w > 0 && srcRect.h > 0)) ? false : true;
 	m_HasCustomSize = (!(w > epsilon && h > epsilon)) ? false : true;
 }

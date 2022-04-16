@@ -30,19 +30,19 @@ void PeterPepperComponent::OnBurgerDropped()
 	}
 }
 
-void PeterPepperComponent::SetState(State state, Direction dir)
+void PeterPepperComponent::SetState(PlayerState state, Direction dir)
 {
 	switch (state)
 	{
-	case State::Walking:
+	case PlayerState::Walking:
 		Move(dir);
 		break;
-	case State::OnLadder:
+	case PlayerState::OnLadder:
 		Climb(dir);
 		break;
-	case State::ThrowSalt:
+	case PlayerState::ThrowSalt:
 		break;
-	case State::Dead:
+	case PlayerState::Dead:
 		break;
 	}
 }
