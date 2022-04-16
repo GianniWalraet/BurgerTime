@@ -13,30 +13,22 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BurgerTime.cpp" />
-    <ClCompile Include="HealthDisplayComponent.cpp">
+    <ClCompile Include="Components\HealthDisplayComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="PeterPepperComponent.cpp">
+    <ClCompile Include="Components\PeterPepperComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreDisplayComponent.cpp">
+    <ClCompile Include="Components\ScoreDisplayComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="BurgerTime.h" />
-    <ClInclude Include="PlayerCommands.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthDisplayComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PeterPepperComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreDisplayComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
+    <ClInclude Include="Command\PlayerCommands.h" />
+    <ClInclude Include="Components\HealthDisplayComponent.h" />
+    <ClInclude Include="Components\PeterPepperComponent.h" />
+    <ClInclude Include="Components\ScoreDisplayComponent.h" />
   </ItemGroup>
 </Project>

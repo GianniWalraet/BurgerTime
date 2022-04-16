@@ -28,144 +28,94 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scene.h">
-      <Filter>SceneGraph</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TextComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Singletons</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Singletons</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>SceneGraph</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllerInput.h">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="XBox360Controller.h">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="AchievementObserver.h">
-      <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="Subject.h">
-      <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="SDLKeyboardInput.h">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="MiniginPCH.h" />
     <ClInclude Include="Minigin.h" />
-    <ClInclude Include="GameObject.h">
-      <Filter>SceneGraph</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture2D.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="MiniginAPI.h" />
-    <ClInclude Include="Structs.h">
-      <Filter>Base</Filter>
-    </ClInclude>
+    <ClInclude Include="Singletons\Renderer.h" />
+    <ClInclude Include="Singletons\ResourceManager.h" />
+    <ClInclude Include="SceneGraph\GameObject.h" />
+    <ClInclude Include="SceneGraph\Scene.h" />
+    <ClInclude Include="SceneGraph\SceneManager.h" />
+    <ClInclude Include="Observer\Subject.h" />
+    <ClInclude Include="Observer\AchievementObserver.h" />
+    <ClInclude Include="Observer\Observer.h" />
+    <ClInclude Include="Input\ControllerInput.h" />
+    <ClInclude Include="Input\InputManager.h" />
+    <ClInclude Include="Input\SDLKeyboardInput.h" />
+    <ClInclude Include="Input\XBox360Controller.h" />
+    <ClInclude Include="Graphics\Font.h" />
+    <ClInclude Include="Graphics\Texture2D.h" />
+    <ClInclude Include="Components\BaseComponent.h" />
+    <ClInclude Include="Components\FPSComponent.h" />
+    <ClInclude Include="Components\RenderComponent.h" />
+    <ClInclude Include="Components\SpriteComponent.h" />
+    <ClInclude Include="Components\TextComponent.h" />
+    <ClInclude Include="Components\TextureComponent.h" />
+    <ClInclude Include="Components\TransformComponent.h" />
+    <ClInclude Include="Command\Command.h" />
+    <ClInclude Include="Base\Singleton.h" />
+    <ClInclude Include="Base\Structs.h" />
+    <ClInclude Include="Base\Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Scene.cpp">
-      <Filter>SceneGraph</Filter>
-    </ClCompile>
-    <ClCompile Include="TransformComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TextComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="FPSComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Singletons</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Singletons</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>SceneGraph</Filter>
-    </ClCompile>
-    <ClCompile Include="XBox360Controller.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="AchievementObserver.cpp">
-      <Filter>Observer</Filter>
-    </ClCompile>
-    <ClCompile Include="Subject.cpp">
-      <Filter>Observer</Filter>
-    </ClCompile>
-    <ClCompile Include="SDLKeyboardInput.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="MiniginPCH.cpp" />
     <ClCompile Include="Minigin.cpp" />
-    <ClCompile Include="GameObject.cpp">
-      <Filter>SceneGraph</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
+    <ClCompile Include="Singletons\Renderer.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Input</Filter>
+    <ClCompile Include="Singletons\ResourceManager.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGraph\GameObject.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGraph\Scene.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGraph\SceneManager.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer\AchievementObserver.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer\Subject.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\SDLKeyboardInput.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\XBox360Controller.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Font.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Texture2D.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\FPSComponent.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\RenderComponent.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\SpriteComponent.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\TextComponent.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\TextureComponent.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\TransformComponent.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\Timer.cpp">
+      <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

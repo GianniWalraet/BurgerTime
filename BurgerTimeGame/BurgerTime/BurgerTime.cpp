@@ -1,9 +1,13 @@
 #include "pch.h"
 #include "BurgerTime.h"
-#include "PeterPepperComponent.h"
-#include "ScoreDisplayComponent.h"
-#include "HealthDisplayComponent.h"
-#include "PlayerCommands.h"
+
+// Command includes
+#include "Command/PlayerCommands.h"
+
+// Component includes
+#include "Components/PeterPepperComponent.h"
+#include "Components/ScoreDisplayComponent.h"
+#include "Components/HealthDisplayComponent.h"
 
 #define GRID_SIZE 16.f
 #define GAME_SCALE 3.f
@@ -12,38 +16,25 @@ void BurgerTime::LoadGame() const
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	// Main gameObject and background
-	auto go = std::make_shared<GameObject>();
-	auto texComp = go->AddComponent<TextureComponent>("background.jpg");
-	auto renderComp = go->AddComponent<RenderComponent>();
-	//renderComp->AddTexture(texComp);
+	// Background (everything is attached to this)
+	auto go =			std::make_shared<GameObject>();
+	auto texComp =		go->AddComponent<TextureComponent>("background.jpg");
+	auto renderComp =	go->AddComponent<RenderComponent>();
 
-	// dae logo
-	auto child = std::make_shared<GameObject>();
-	texComp = child->AddComponent<TextureComponent>("logo.png");
-	renderComp = child->AddComponent<RenderComponent>();
-	//renderComp->AddTexture(texComp);
+	// DAE logo
+	auto child =		std::make_shared<GameObject>();
+	texComp =			child->AddComponent<TextureComponent>("logo.png");
+	renderComp =		child->AddComponent<RenderComponent>();
 	child->SetPosition({ 216, 50, 0 });
 	go->AddChild(child);
 
-	// Text
-	//child = std::make_shared<GameObject>();
-	//auto txtComp = child->AddComponent<TextComponent>();
-	//renderComp = child->AddComponent<RenderComponent>();
-	//txtComp->SetFont(ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
-	//txtComp->SetText("Programming 4 Assignment");
-	//renderComp->AddTexture(txtComp);
-	//child->SetPosition({ 80, 20, 0 });
-	//go->AddChild(child);
-
 	// FPS
-	child = std::make_shared<GameObject>();
-	auto fpsComp = child->AddComponent<FPSComponent>();
-	auto txtComp = child->AddComponent<TextComponent>();
-	renderComp = child->AddComponent<RenderComponent>();
+	child =				std::make_shared<GameObject>();
+	auto fpsComp =		child->AddComponent<FPSComponent>();
+	auto txtComp =		child->AddComponent<TextComponent>();
+	renderComp =		child->AddComponent<RenderComponent>();
 	txtComp->SetFont(ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
 	txtComp->SetText("0");
-	//renderComp->AddTexture(txtComp);
 	go->AddChild(child);
 
 	// Players
@@ -59,50 +50,37 @@ void BurgerTime::LoadGame() const
 	InputManager::GetInstance().AddCommand<MoveDownCommand>(p1, SDLK_s);
 
 	scene.Add(go);
-
-	std::cout << "Player dead: Press BUTTON_SOUTH\n";
-	std::cout << "Player Gain Score: Press BUTTON WEST\n";
-	std::cout << "Player Win: Reach 500 score\n";
 }
 
 PeterPepperComponent* BurgerTime::AddPlayer(GameObject* parent, uint32_t playerId, const glm::vec3& playerPos, const glm::vec3& healthDisplayPos, const glm::vec3& scoreDisplayPos) const
 {
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
 
-	auto child = std::make_shared<GameObject>();
-	auto ppComp = child->AddComponent<PeterPepperComponent>();
-	glm::vec4 srcRect = { 0,0,GRID_SIZE,GRID_SIZE };
-	//auto texComp = child->AddComponent<TextureComponent>(new TextureComponent("BurgerTimeSprite.png", srcRect, GRID_SIZE * GAME_SCALE, GRID_SIZE * GAME_SCALE));
-	auto sprComp = child->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f,
-	glm::vec4{ GRID_SIZE * 3.f, 0.f, GRID_SIZE * 3.f, GRID_SIZE }, GRID_SIZE * GAME_SCALE, GRID_SIZE * GAME_SCALE);
-	auto renderComp = child->AddComponent<RenderComponent>();
-	//renderComp->AddSprite(sprComp);
-	//renderComp->AddTexture(texComp);
+	auto child =		std::make_shared<GameObject>();
+	auto ppComp =		child->AddComponent<PeterPepperComponent>();
+	auto sprComp =		child->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, glm::vec4{ GRID_SIZE * 3.f, 0.f, GRID_SIZE * 3.f, GRID_SIZE }, GRID_SIZE * GAME_SCALE, GRID_SIZE * GAME_SCALE);
+	auto renderComp =	child->AddComponent<RenderComponent>();
 	child->SetPosition(playerPos);
 	parent->AddChild(child);
 
-	child = std::make_shared<GameObject>();
-	auto txtComp = child->AddComponent<TextComponent>();
-	renderComp = child->AddComponent<RenderComponent>();
-	auto hdComp = child->AddComponent<HealthDisplayComponent>(ppComp, txtComp);
-
+	child =				std::make_shared<GameObject>();
+	auto txtComp =		child->AddComponent<TextComponent>();
+	renderComp =		child->AddComponent<RenderComponent>();
+	auto hdComp =		child->AddComponent<HealthDisplayComponent>(ppComp, txtComp);
 	txtComp->SetFont(font);
-	//renderComp->AddTexture(txtComp);
 	child->SetPosition(healthDisplayPos);
 	parent->AddChild(child);
 
-	child =			std::make_shared<GameObject>();
-	txtComp =		child->AddComponent<TextComponent>();
-	renderComp =	child->AddComponent<RenderComponent>();
-	auto sdComp = child->AddComponent<ScoreDisplayComponent>(ppComp, txtComp);
+	child =				std::make_shared<GameObject>();
+	txtComp =			child->AddComponent<TextComponent>();
+	renderComp =		child->AddComponent<RenderComponent>();
+	auto sdComp =		child->AddComponent<ScoreDisplayComponent>(ppComp, txtComp);
+	txtComp->SetFont(font);
+	child->SetPosition(scoreDisplayPos);
+	parent->AddChild(child);
 
 	ppComp->AddObserver(hdComp);
 	ppComp->AddObserver(sdComp);
-
-	txtComp->SetFont(font);
-	//renderComp->AddTexture(txtComp);
-	child->SetPosition(scoreDisplayPos);
-	parent->AddChild(child);
 
 	InputManager::GetInstance().AddCommand<KillCommand>(playerId, ppComp, ControllerButton::GAMEPAD_BUTTON_SOUTH);
 	InputManager::GetInstance().AddCommand<ScoreCommand>(playerId, ppComp, ControllerButton::GAMEPAD_BUTTON_WEST);

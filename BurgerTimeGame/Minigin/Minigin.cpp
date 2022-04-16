@@ -2,11 +2,12 @@
 #include "Minigin.h"
 #include <thread>
 #include <chrono>
-#include "Timer.h"
-#include "InputManager.h"
-#include "SceneManager.h"
-#include "Renderer.h"
-#include "ResourceManager.h"
+
+#include "Base/Timer.h"
+#include "Input/InputManager.h"
+#include "SceneGraph/SceneManager.h"
+#include "Singletons/Renderer.h"
+#include "Singletons/ResourceManager.h"
 
 using namespace std;
 
