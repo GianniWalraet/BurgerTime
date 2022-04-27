@@ -26,9 +26,10 @@
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="BurgerTime.h" />
-    <ClInclude Include="Command\PlayerCommands.h" />
+    <ClInclude Include="Implementations\Command\PlayerCommands.h" />
     <ClInclude Include="Components\HealthDisplayComponent.h" />
     <ClInclude Include="Components\PeterPepperComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
+    <ClInclude Include="Implementations\State\PlayerStates.h" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 #include "BurgerTime.h"
 
 // Command includes
-#include "Command/PlayerCommands.h"
+#include "Implementations/Command/PlayerCommands.h"
 
 // Component includes
 #include "Components/PeterPepperComponent.h"

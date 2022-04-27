@@ -213,10 +213,11 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h" />
-    <ClInclude Include="Command\PlayerCommands.h" />
+    <ClInclude Include="Implementations\Command\PlayerCommands.h" />
     <ClInclude Include="Components\HealthDisplayComponent.h" />
     <ClInclude Include="Components\PeterPepperComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
+    <ClInclude Include="Implementations\State\PlayerStates.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
