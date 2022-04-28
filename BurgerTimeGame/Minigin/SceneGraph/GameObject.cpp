@@ -19,18 +19,27 @@ GameObject::~GameObject()
 	}
 }
 
-void GameObject::Initialize()
+void GameObject::RootInitialize()
 {
+	Initialize();
+
 	m_Transform->m_pOwner = shared_from_this();
 
 	for (auto& c : m_pComponents)
 	{
 		c->Initialize();
 	}
+
+	for (auto& c : m_pChildren)
+	{
+		c->RootInitialize();
+	}
 }
 
-void GameObject::Update()
+void GameObject::RootUpdate()
 {
+	Update();
+
 	for (auto& c : m_pComponents)
 	{
 		c->Update();
@@ -38,7 +47,7 @@ void GameObject::Update()
 
 	for (auto& c : m_pChildren)
 	{
-		c->Update();
+		c->RootUpdate();
 	}
 }
 
@@ -47,9 +56,11 @@ void GameObject::SetParent(const std::shared_ptr<GameObject>& parent)
 	if (m_pParent.lock()) m_pParent.lock()->RemoveChild(shared_from_this());
 	m_pParent = parent;
 	if (!m_pParent.lock()) return;
-	auto& children = parent->GetChildren();
-	if (std::find(children.begin(), children.end(), shared_from_this()) != children.end())
-		return;
+	for (size_t i = 0; i < m_pParent.lock()->GetChildCount(); i++)
+	{
+		if (m_pParent.lock()->GetChildAt(i) == shared_from_this())
+			return;
+	}
 	parent->AddChild(shared_from_this());
 }
 std::shared_ptr<GameObject> GameObject::GetParent() const

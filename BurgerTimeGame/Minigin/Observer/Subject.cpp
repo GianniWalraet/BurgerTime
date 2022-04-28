@@ -19,7 +19,7 @@ void Subject::RemoveObserver(Observer* observer)
 		}
 	}
 
-	memmove(m_Observers, temp, sizeof(m_Observers));
+	memmove(m_Observers, temp, sizeof(Observer) * MAX_OBSERVERS);
 }
 
 void Subject::NotifyAll(Event event)

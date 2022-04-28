@@ -243,8 +243,11 @@
     <ClInclude Include="SceneGraph\GameObject.h" />
     <ClInclude Include="SceneGraph\Scene.h" />
     <ClInclude Include="SceneGraph\SceneManager.h" />
+    <ClInclude Include="Sound\SDLSoundEffect.h" />
     <ClInclude Include="Singletons\Renderer.h" />
     <ClInclude Include="Singletons\ResourceManager.h" />
+    <ClInclude Include="Sound\SoundStream.h" />
+    <ClInclude Include="Sound\SoundEffect.h" />
     <ClInclude Include="State\State.h" />
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +276,7 @@
     <ClCompile Include="SceneGraph\GameObject.cpp" />
     <ClCompile Include="SceneGraph\Scene.cpp" />
     <ClCompile Include="SceneGraph\SceneManager.cpp" />
+    <ClCompile Include="Sound\SDLSoundEffect.cpp" />
     <ClCompile Include="Singletons\Renderer.cpp" />
     <ClCompile Include="Singletons\ResourceManager.cpp" />
   </ItemGroup>

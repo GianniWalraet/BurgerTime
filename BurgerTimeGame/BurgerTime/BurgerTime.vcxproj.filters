@@ -22,6 +22,9 @@
     <ClCompile Include="Components\ScoreDisplayComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Prefabs\PeterPepper.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -31,5 +34,6 @@
     <ClInclude Include="Components\PeterPepperComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
     <ClInclude Include="Implementations\State\PlayerStates.h" />
+    <ClInclude Include="Prefabs\PeterPepper.h" />
   </ItemGroup>
 </Project>

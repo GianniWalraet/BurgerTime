@@ -18,12 +18,7 @@ void Scene::Initialize()
 {
 	for (auto& object : m_Objects)
 	{
-		object->Initialize();
-
-		for (auto& child : object->GetChildren())
-		{
-			child->Initialize();
-		}
+		object->RootInitialize();
 	}
 }
 
@@ -31,7 +26,7 @@ void Scene::Update()
 {
 	for(auto& object : m_Objects)
 	{
-		object->Update();
+		object->RootUpdate();
 	}
 }
 

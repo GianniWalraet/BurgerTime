@@ -8,6 +8,7 @@ class Texture2D;
  */
 class Renderer final : public Singleton<Renderer>
 {
+	friend class Singleton<Renderer>;
 	SDL_Renderer* m_Renderer{};
 	SDL_Window* m_Window{};
 	SDL_Color m_clearColor{};

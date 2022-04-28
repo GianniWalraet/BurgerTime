@@ -57,6 +57,9 @@
     <ClInclude Include="Base\Structs.h" />
     <ClInclude Include="Base\Timer.h" />
     <ClInclude Include="State\State.h" />
+    <ClInclude Include="Sound\SoundEffect.h" />
+    <ClInclude Include="Sound\SoundStream.h" />
+    <ClInclude Include="Sound\SDLSoundEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp" />
@@ -116,6 +119,9 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Base\Timer.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound\SDLSoundEffect.cpp">
       <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>

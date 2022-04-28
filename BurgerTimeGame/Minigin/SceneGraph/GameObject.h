@@ -2,22 +2,18 @@
 #include <vector>
 #include "Components/TransformComponent.h"
 
-
 class Texture2D;
 class BaseComponent;
 
-class GameObject final : public std::enable_shared_from_this<GameObject>
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 	GameObject();
-	~GameObject();
+	virtual ~GameObject();
 	GameObject(const GameObject& other) = delete;
 	GameObject(GameObject&& other) = delete;
 	GameObject& operator=(const GameObject& other) = delete;
 	GameObject& operator=(GameObject&& other) = delete;
-
-	void Initialize();
-	void Update();
 
 	template <typename T, typename... Args> T* AddComponent(Args... args)
 	{
@@ -82,17 +78,23 @@ public:
 
 	size_t GetChildCount() const;
 	const std::shared_ptr<GameObject>& GetChildAt(size_t index) const { return m_pChildren.at(index); }
-	const std::vector<std::shared_ptr<GameObject>>& GetChildren() const { return m_pChildren; }
 	void RemoveChildAt(size_t index);
 	void AddChild(const std::shared_ptr<GameObject>& obj);
 	void RemoveChild(const std::shared_ptr<GameObject>& obj);
 
-	void SetPosition(const glm::vec3& pos) { GetComponent<TransformComponent>()->SetPosition(pos.x, pos.y, pos.z); }
-	const glm::vec3& GetPosition() const { return GetComponent<TransformComponent>()->GetPosition(); }
+	void SetPosition(const glm::vec3& pos) { m_Transform->SetPosition(pos.x, pos.y, pos.z); }
+	const glm::vec3& GetPosition() const { return m_Transform->GetPosition(); }
+protected:
+	virtual void Initialize() {}
+	virtual void Update() {}
 private:
+	friend class Scene;
 	TransformComponent* m_Transform{};
 	std::vector<BaseComponent*> m_pComponents{};
 
 	std::vector<std::shared_ptr<GameObject>> m_pChildren{};
 	std::weak_ptr<GameObject> m_pParent{};
+
+	void RootInitialize();
+	void RootUpdate();
 };

@@ -57,7 +57,8 @@ public:
 	}
 
 private:
-	std::unique_ptr<XBox360Controller> m_pControllerInput;
+	friend class Singleton<InputManager>;
+	std::unique_ptr<ControllerInput> m_pControllerInput;
 	std::unique_ptr<SDLKeyboardInput> m_pKeyboardInput;
 
 	std::map<ControllerKey, std::unique_ptr<Command>> m_pConsoleCommands{};

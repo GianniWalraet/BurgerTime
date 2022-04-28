@@ -18,6 +18,8 @@ public:
 	AchievementObserver& operator=(AchievementObserver&& other) = delete;
 
 	virtual void Notify(EAchievements event);
+private:
+	friend class Singleton<AchievementObserver>;
 };
 
 
