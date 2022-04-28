@@ -23,6 +23,7 @@ void GameObject::RootInitialize()
 {
 	Initialize();
 
+	// set owner here since we can't pass shared_from_this in the constructor
 	m_Transform->m_pOwner = shared_from_this();
 
 	for (auto& c : m_pComponents)
@@ -95,4 +96,29 @@ void GameObject::RemoveChild(const std::shared_ptr<GameObject>& obj)
 	auto child = std::find_if(m_pChildren.begin(), m_pChildren.end(), [&](std::shared_ptr<GameObject>& lhs) { return lhs == obj; });
 	if (child == m_pChildren.end()) return;
 	m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), *child), m_pChildren.end());
+}
+
+void GameObject::SetPosition(const glm::vec3& pos)
+{
+
+}
+
+const glm::vec3& GameObject::GetPositionLocal() const
+{
+	return m_Transform->GetPosition();
+}
+
+const glm::vec3& GameObject::GetPositionWorld() const
+{
+	const auto& pos = m_Transform->GetPosition();
+	if (m_pParent.lock())
+	{
+		auto& parentPos = m_pParent.lock()->GetPositionWorld();
+		
+		return glm::vec3(pos + parentPos);
+	}
+	else
+	{
+		return pos;
+	}
 }

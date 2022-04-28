@@ -50,14 +50,14 @@ void PeterPepperComponent::SetState(PlayerState state, Direction dir)
 void PeterPepperComponent::Move(Direction dir)
 {
 	const float movement = (dir == Direction::Left) ? -1.f : 1.f;
-	const auto& pos = m_pOwner.lock()->GetPosition();
+	const auto& pos = m_pOwner.lock()->GetPositionLocal();
 
 	m_pOwner.lock()->SetPosition({ pos.x + (m_MovementSpeed * movement) * Timer::GetInstance().GetElapsed(), pos.y, pos.z });
 }
 void PeterPepperComponent::Climb(Direction dir)
 {
 	const float movement = (dir == Direction::Up) ? -1.f : 1.f;
-	const auto& pos = m_pOwner.lock()->GetPosition();
+	const auto& pos = m_pOwner.lock()->GetPositionLocal();
 
 	m_pOwner.lock()->SetPosition({ pos.x, pos.y + (m_MovementSpeed * movement) * Timer::GetInstance().GetElapsed(), pos.z });
 }

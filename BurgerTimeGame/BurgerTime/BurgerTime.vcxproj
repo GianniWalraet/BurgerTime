@@ -118,6 +118,7 @@
       <Command>xcopy $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
+xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -145,6 +146,7 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
       <Command>xcopy $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
+xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -168,6 +170,7 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
       <Command>xcopy $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
+xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -195,6 +198,7 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
       <Command>xcopy $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
+xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath) /R /Y
 xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

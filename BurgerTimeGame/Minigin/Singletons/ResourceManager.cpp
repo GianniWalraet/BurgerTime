@@ -1,10 +1,10 @@
 #include "MiniginPCH.h"
 #include "ResourceManager.h"
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 #include "Renderer.h"
 #include "Graphics/Texture2D.h"
 #include "Graphics/Font.h"
+#include "Sound/SoundEffect.h"
+#include "Sound/SoundStream.h"
 
 void ResourceManager::Init(const std::string& dataPath)
 {
@@ -26,6 +26,14 @@ void ResourceManager::Init(const std::string& dataPath)
 	{
 		throw std::runtime_error(std::string("Failed to load support for fonts: ") + SDL_GetError());
 	}
+
+	// load support for audio
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		throw std::runtime_error(std::string("error when calling Mix_OpenAudio:") + Mix_GetError());
+	}
+
 }
 
 std::shared_ptr<Texture2D> ResourceManager::LoadTexture(const std::string& file) const
@@ -42,4 +50,14 @@ std::shared_ptr<Texture2D> ResourceManager::LoadTexture(const std::string& file)
 std::shared_ptr<Font> ResourceManager::LoadFont(const std::string& file, unsigned int size) const
 {
 	return std::make_shared<Font>(m_DataPath + file, size);
+}
+
+std::shared_ptr<SoundEffect> ResourceManager::LoadSoundEffect(const std::string& file)
+{
+	return std::make_shared<SoundEffect>(m_DataPath + file);
+}
+
+std::shared_ptr<SoundStream> ResourceManager::LoadSoundStream(const std::string& file)
+{
+	return std::make_shared<SoundStream>(m_DataPath + file);
 }

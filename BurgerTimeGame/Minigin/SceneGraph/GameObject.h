@@ -82,8 +82,9 @@ public:
 	void AddChild(const std::shared_ptr<GameObject>& obj);
 	void RemoveChild(const std::shared_ptr<GameObject>& obj);
 
-	void SetPosition(const glm::vec3& pos) { m_Transform->SetPosition(pos.x, pos.y, pos.z); }
-	const glm::vec3& GetPosition() const { return m_Transform->GetPosition(); }
+	void SetPosition(const glm::vec3& pos);
+	const glm::vec3& GetPositionLocal() const;
+	const glm::vec3& GetPositionWorld() const;
 protected:
 	virtual void Initialize() {}
 	virtual void Update() {}

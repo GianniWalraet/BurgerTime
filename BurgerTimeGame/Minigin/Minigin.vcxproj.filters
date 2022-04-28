@@ -59,7 +59,8 @@
     <ClInclude Include="State\State.h" />
     <ClInclude Include="Sound\SoundEffect.h" />
     <ClInclude Include="Sound\SoundStream.h" />
-    <ClInclude Include="Sound\SDLSoundEffect.h" />
+    <ClInclude Include="Sound\ServiceLocator.h" />
+    <ClInclude Include="Sound\SoundManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp" />
@@ -121,7 +122,16 @@
     <ClCompile Include="Base\Timer.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="Sound\SDLSoundEffect.cpp">
+    <ClCompile Include="Sound\SoundEffect.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound\SoundStream.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound\ServiceLocator.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound\SoundManager.cpp">
       <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>

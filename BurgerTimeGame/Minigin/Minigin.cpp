@@ -8,6 +8,8 @@
 #include "SceneGraph/SceneManager.h"
 #include "Singletons/Renderer.h"
 #include "Singletons/ResourceManager.h"
+#include "Sound/ServiceLocator.h"
+#include "Sound/SoundManager.h"
 
 using namespace std;
 
@@ -28,7 +30,7 @@ void Minigin::InitEngine()
 {
 	PrintSDLVersion();
 
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
@@ -74,9 +76,16 @@ void Minigin::Run()
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
+		auto& serviceLocator = ServiceLocator::GetInstance();
 
 		// Init input
 		input.Initialize();
+
+		// Init sound
+		serviceLocator.RegisterSoundManager(new SoundManager());
+		auto& soundManager = serviceLocator.GetSoundManager();
+
+		soundManager.AddStream(0, "Sounds/gustavo.wav");
 
 		// Init objects
 		sceneManager.Initialize();
@@ -93,6 +102,12 @@ void Minigin::Run()
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
 			renderer.Render();
+
+			if (input.WentDownThisFrame(SDLK_e))
+			{
+				soundManager.LoadStream(0);
+				soundManager.PlayStream(0, 100, 0);
+			}
 
 			const auto sleepTime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime + std::chrono::milliseconds(MsPerFrame) - std::chrono::high_resolution_clock::now());
 			this_thread::sleep_for(sleepTime);

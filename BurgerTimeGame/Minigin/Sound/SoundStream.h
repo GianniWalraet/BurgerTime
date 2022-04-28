@@ -1,19 +1,24 @@
 #pragma once
+#include "SoundStream.h"
 
-
-class SoundStream abstract
+class SoundStream final
 {
 public:
-	SoundStream() = default;
-	virtual ~SoundStream() = default;
+	SoundStream(const std::string& path);
+	virtual ~SoundStream();
 
-	virtual void Load() = 0;
-	virtual bool IsLoaded() = 0;
+	void Load();
+	bool IsLoaded();
 
-	virtual void Play() = 0;
-	virtual void Pause() = 0;
-	virtual void Stop() = 0;
-	virtual bool IsPlaying() = 0;
+	bool Play(bool repeat);
+	void Pause();
+	void Stop();
+	bool IsPlaying();
+
+	void SetVolume(int value);
+	int GetVolume();
 private:
+	class SoundStreamImpl;
+	SoundStreamImpl* m_pImpl;
 };
 

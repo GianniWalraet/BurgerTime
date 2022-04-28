@@ -1,19 +1,26 @@
 #pragma once
+#include "SoundEffect.h"
+#include <string>
 
-
-class SoundEffect abstract
+class SoundEffect final
 {
 public:
-	SoundEffect() = default;
-	virtual ~SoundEffect() = default;
+	explicit SoundEffect(const std::string& path);
+	~SoundEffect();
+	SoundEffect(const SoundEffect& other) = delete;
+	SoundEffect& operator=(const SoundEffect& rhs) = delete;
+	SoundEffect(SoundEffect&& other) = delete;
+	SoundEffect& operator=(SoundEffect&& rhs) = delete;
 
-	virtual void Load() = 0;
-	virtual bool IsLoaded() const = 0;
+	void Load();
+	bool IsLoaded() const;
 
-	virtual void Play() const = 0;
+	bool Play(int loops) const;
 
-	virtual void SetVolume(int volume) = 0;
+	void SetVolume(int value);
+	int GetVolume();
 private:
-
+	class SoundEffectImpl;
+	SoundEffectImpl* m_pImpl;
 };
 
