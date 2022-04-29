@@ -8,16 +8,23 @@ class SoundEffect::SoundEffectImpl
 public:
 	explicit SoundEffectImpl(const std::string& path);
 	~SoundEffectImpl();
+	SoundEffectImpl(const SoundEffectImpl& other) = delete;
+	SoundEffectImpl& operator=(const SoundEffectImpl& rhs) = delete;
+	SoundEffectImpl(SoundEffectImpl&& other) = delete;
+	SoundEffectImpl& operator=(SoundEffectImpl&& rhs) = delete;
 
 	void Load();
 	bool IsLoaded() const;
 
-	bool Play(int loops) const;
+	void Play(int loops);
+	bool IsPlaying();
 
 	void SetVolume(int value);
 	int GetVolume();
 private:
+	friend class SoundEffect;
 	Mix_Chunk* m_pMixChunk{};
+	int m_ActiveChannel{};
 	std::string m_Path{};
 };
 
@@ -26,12 +33,10 @@ SoundEffect::SoundEffect(const std::string& path)
 {
 	m_pImpl = new SoundEffectImpl(path);
 }
-
 SoundEffect::~SoundEffect()
 {
 	delete m_pImpl;
 }
-
 void SoundEffect::Load()
 {
 	m_pImpl->Load();
@@ -40,9 +45,13 @@ bool SoundEffect::IsLoaded() const
 {
 	return m_pImpl->IsLoaded();
 }
-bool SoundEffect::Play(int loops) const
+void SoundEffect::Play(int loops)
 {
-	return m_pImpl->Play(loops);
+	m_pImpl->Play(loops);
+}
+bool SoundEffect::IsPlaying()
+{
+	return m_pImpl->IsPlaying();
 }
 void SoundEffect::SetVolume(int value)
 {
@@ -80,17 +89,16 @@ bool SoundEffect::SoundEffectImpl::IsLoaded() const
 {
 	return m_pMixChunk != nullptr;
 }
-bool SoundEffect::SoundEffectImpl::Play(int loops) const
+void SoundEffect::SoundEffectImpl::Play(int loops)
 {
 	if (m_pMixChunk != nullptr)
 	{
-		int channel{ Mix_PlayChannel(-1, m_pMixChunk, loops) };
-		return channel == -1 ? false : true;
+		m_ActiveChannel = Mix_PlayChannel(-1, m_pMixChunk, loops);
 	}
-	else
-	{
-		return false;
-	}
+}
+bool SoundEffect::SoundEffectImpl::IsPlaying()
+{
+	return Mix_Playing(m_ActiveChannel) == 0 ? false : true;
 }
 void SoundEffect::SoundEffectImpl::SetVolume(int value)
 {

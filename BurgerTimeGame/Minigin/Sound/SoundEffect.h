@@ -15,7 +15,8 @@ public:
 	void Load();
 	bool IsLoaded() const;
 
-	bool Play(int loops) const;
+	void Play(int loops);
+	bool IsPlaying();
 
 	void SetVolume(int value);
 	int GetVolume();

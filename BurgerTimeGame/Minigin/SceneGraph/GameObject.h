@@ -84,7 +84,7 @@ public:
 
 	void SetPosition(const glm::vec3& pos);
 	const glm::vec3& GetPositionLocal() const;
-	const glm::vec3& GetPositionWorld() const;
+	const glm::vec3 GetPositionWorld() const;
 protected:
 	virtual void Initialize() {}
 	virtual void Update() {}

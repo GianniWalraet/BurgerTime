@@ -5,102 +5,127 @@
 #include "Sound/SoundStream.h"
 
 SoundManager::SoundManager()
-	: m_LoaderThread{ &SoundManager::ThreadedLoadFunc, this }
+	: m_EffectQueueThread{ &SoundManager::EffectPlayerQueueThread, this }
+	, m_StreamThread{ &SoundManager::StreamPlayerThread, this }
+	, m_EffectConcurrentThread{ &SoundManager::EffectPlayerConcurrentThread, this }
+	, m_RunThreads{ true }
 {
-	
+
 }
 
 SoundManager::~SoundManager()
 {
-	m_LoaderThread.join();
+	m_RunThreads = false;
+	m_CvEffectQueue.notify_one();
+	m_CvStream.notify_one();
+	m_CvEffectConcurrent.notify_one();
+
+	m_EffectQueueThread.join();
+	m_StreamThread.join();
+	m_EffectConcurrentThread.join();
 }
 
-void SoundManager::AddEffect(const soundID id, const std::string& path)
+std::shared_ptr<SoundEffect> SoundManager::LoadEffect(const soundID& id)
 {
-	if (m_pSoundEffects.find(id) == m_pSoundEffects.end())
+	return ResourceManager::GetInstance().LoadSoundEffect(id);
+}
+std::shared_ptr<SoundStream> SoundManager::LoadStream(const soundID& id)
+{
+	return ResourceManager::GetInstance().LoadSoundStream(id);
+}
+
+void SoundManager::PlayEffect(const soundID id, const int volume, const int loops, bool waitInQueue)
+{
+	std::unique_lock<std::mutex> lk(m_Mutex);
+	EffectInfo info{ id, volume, loops };
+	if (waitInQueue)
 	{
-		m_pSoundEffects[id] = ResourceManager::GetInstance().LoadSoundEffect(path);
+		m_SoundEffectQueue.push_back(info);
+		m_CvEffectQueue.notify_one();
 	}
 	else
 	{
-		std::string errorMsg = "SoundManager: Failed to add new effect with id " + std::to_string(id) + "\nid already exists\n";
-		std::cerr << errorMsg;
-	}
-}
-void SoundManager::AddStream(const soundID id, const std::string& path)
-{
-	if (m_pSoundStreams.find(id) == m_pSoundStreams.end())
-	{
-		m_pSoundStreams[id] = ResourceManager::GetInstance().LoadSoundStream(path);
-	}
-	else
-	{
-		std::string errorMsg = "SoundManager: Failed to add new stream with id " + std::to_string(id) + "\nid already exists\n";
-		std::cerr << errorMsg;
-	}
-}
-
-void SoundManager::LoadEffect(const soundID id)
-{
-	m_LoadID = id;
-	m_IsEffect = true;
-	m_Cv.notify_all();
-}
-void SoundManager::LoadStream(const soundID id)
-{
-	m_LoadID = id;
-	m_IsEffect = false;
-	m_Cv.notify_all();
-}
-
-void SoundManager::PlayEffect(const soundID id, const int volume, const int loops)
-{
-	if (IsValid(id, true))
-	{
-		m_pSoundEffects[id]->SetVolume(volume);
-		m_pSoundEffects[id]->Play(loops);
+		m_ConcurrentEffects.push_back(info);
+		m_CvEffectConcurrent.notify_all();
 	}
 }
 void SoundManager::PlayStream(const soundID id, const int volume, const bool repeat)
 {
-	if (IsValid(id, false))
+	StreamInfo info{ id, volume, repeat };
+	m_SoundStreamQueue.push_back(info);
+	m_CvStream.notify_one();
+}
+
+void SoundManager::EffectPlayerConcurrentThread()
+{
+	std::vector<std::shared_ptr<SoundEffect>> sounds{};
+	std::unique_lock<std::mutex> lk(m_Mutex);
+	while (m_RunThreads)
 	{
-		m_pSoundStreams[id]->SetVolume(volume);
-		m_pSoundStreams[id]->Play(repeat);
+		m_CvEffectConcurrent.wait(lk);
+
+		while (!m_ConcurrentEffects.empty())
+		{
+			auto soundInfo = m_ConcurrentEffects.front();
+			m_ConcurrentEffects.pop_front();
+
+			lk.unlock();
+			auto sound = LoadEffect(soundInfo.id);
+			sound->Load();
+			sound->SetVolume(soundInfo.volume);
+			sound->Play(soundInfo.loops);
+			sounds.push_back(std::move(sound));
+			lk.lock();
+		}
 	}
 }
 
-void SoundManager::ThreadedLoadFunc()
+void SoundManager::EffectPlayerQueueThread()
 {
-	while(true)
+	std::shared_ptr<SoundEffect> sound{};
+	std::unique_lock<std::mutex> lk(m_Mutex);
+	while (m_RunThreads)
 	{
-		std::unique_lock<std::mutex> lk(m_Mutex);
-		m_Cv.wait(lk);
+		m_CvEffectQueue.wait(lk);
 
-		if (m_IsEffect)
+		while (!m_SoundEffectQueue.empty())
 		{
-			if (IsValid(m_LoadID, m_IsEffect))
-				m_pSoundEffects[m_LoadID]->Load();
-		}
-		else
-		{
-			if (IsValid(m_LoadID, m_IsEffect))
-				m_pSoundStreams[m_LoadID]->Load();
+			auto soundInfo = m_SoundEffectQueue.front();
+			m_SoundEffectQueue.pop_front();
+
+			lk.unlock();
+			sound = LoadEffect(soundInfo.id);
+			sound->Load();
+			sound->SetVolume(soundInfo.volume);
+			sound->Play(soundInfo.loops);
+
+			while (sound->IsPlaying() && m_RunThreads) {}
+			lk.lock();
 		}
 	}
 }
 
-bool SoundManager::IsValid(const soundID id, bool isEffect)
+void SoundManager::StreamPlayerThread()
 {
-	bool isValid = false;
-	if (isEffect) { if (m_pSoundEffects.find(id) != m_pSoundEffects.end()) isValid = true; }
-	else { if (m_pSoundStreams.find(id) != m_pSoundStreams.end()) isValid = true; }
-
-	if (!isValid)
+	std::shared_ptr<SoundStream> currentSound{};
+	std::unique_lock<std::mutex> lk(m_Mutex);
+	while (m_RunThreads)
 	{
-		std::string errorMsg = "SoundManager: Stream with id " + std::to_string(id) + " doesn't exist\n";
-		std::cerr << errorMsg;
-	}
+		m_CvStream.wait(lk);
 
-	return isValid;
+		while (!m_SoundStreamQueue.empty())
+		{
+			auto soundInfo = m_SoundStreamQueue.front();
+			m_SoundStreamQueue.pop_front();
+
+			lk.unlock();
+			currentSound = LoadStream(soundInfo.id);
+			currentSound->Load();
+			currentSound->SetVolume(soundInfo.volume);
+			currentSound->Play(soundInfo.repeat);
+
+			while (currentSound->IsPlaying() && m_RunThreads) {}
+			lk.lock();
+		}
+	}
 }

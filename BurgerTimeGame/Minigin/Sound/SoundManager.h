@@ -1,7 +1,7 @@
 #pragma once
 #include <condition_variable>
 
-using soundID = unsigned short;
+using soundID = std::string;
 
 class SoundEffect;
 class SoundStream;
@@ -12,25 +12,39 @@ public:
 	SoundManager();
 	~SoundManager();
 
-	void AddEffect(const soundID id, const std::string& path);
-	void AddStream(const soundID id, const std::string& path);
-
-	void LoadEffect(const soundID id);
-	void LoadStream(const soundID id);
-
-	void PlayEffect(const soundID id, const int volume, const int loops);
-	void PlayStream(const soundID id, const int volume, const bool repeat);
+	void PlayEffect(const soundID id, const int volume, const int loops = 0, bool waitInQueue = true);
+	void PlayStream(const soundID id, const int volume, const bool repeat = false);
 private:
-	std::unordered_map<soundID, std::shared_ptr<SoundEffect>> m_pSoundEffects{};
-	std::unordered_map<soundID, std::shared_ptr<SoundStream>> m_pSoundStreams{};
+	struct EffectInfo
+	{
+		soundID id{};
+		int volume{};
+		int loops{};
+	};
 
-	soundID m_LoadID{};
-	bool m_IsEffect{};
-	std::thread m_LoaderThread{};
+	struct StreamInfo
+	{
+		soundID id{};
+		int volume{};
+		bool repeat{};
+	};
+
+	std::deque<EffectInfo> m_ConcurrentEffects{};
+	std::deque<EffectInfo> m_SoundEffectQueue{};
+	std::deque<StreamInfo> m_SoundStreamQueue{};
+
+	std::condition_variable m_CvEffectQueue{}, m_CvEffectConcurrent{};
+	std::condition_variable m_CvStream{};
+
+	bool m_RunThreads{};
 	std::mutex m_Mutex;
-	std::condition_variable m_Cv{};
+	std::thread m_EffectQueueThread{}, m_EffectConcurrentThread{}, m_StreamThread{};
 
-	void ThreadedLoadFunc();
-	bool IsValid(const soundID id, bool isEffect);
+	void EffectPlayerConcurrentThread();
+	void EffectPlayerQueueThread();
+	void StreamPlayerThread();
+
+	std::shared_ptr<SoundEffect> LoadEffect(const soundID& id);
+	std::shared_ptr<SoundStream> LoadStream(const soundID& id);
 };
 

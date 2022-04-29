@@ -2,4 +2,4 @@
 #include "ServiceLocator.h"
 #include "SoundManager.h"
 
-SoundManager* ServiceLocator::s_SMInstance{};
+std::shared_ptr<SoundManager> ServiceLocator::s_SMInstance{};
