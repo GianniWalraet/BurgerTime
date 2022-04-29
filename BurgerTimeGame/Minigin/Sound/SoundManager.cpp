@@ -45,7 +45,6 @@ void SoundManager::LoadEffect(const soundID id)
 	m_LoadID = id;
 	m_IsEffect = true;
 	m_Cv.notify_all();
-	
 }
 void SoundManager::LoadStream(const soundID id)
 {
