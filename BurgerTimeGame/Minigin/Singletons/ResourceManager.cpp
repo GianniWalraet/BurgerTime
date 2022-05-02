@@ -33,7 +33,6 @@ void ResourceManager::Init(const std::string& dataPath)
 	{
 		throw std::runtime_error(std::string("error when calling Mix_OpenAudio:") + Mix_GetError());
 	}
-
 }
 
 std::shared_ptr<Texture2D> ResourceManager::LoadTexture(const std::string& file) const

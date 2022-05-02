@@ -79,7 +79,7 @@ public:
 	size_t GetChildCount() const;
 	const std::shared_ptr<GameObject>& GetChildAt(size_t index) const { return m_pChildren.at(index); }
 	void RemoveChildAt(size_t index);
-	void AddChild(const std::shared_ptr<GameObject>& obj);
+	std::shared_ptr<GameObject> AddChild(const std::shared_ptr<GameObject>& obj);
 	void RemoveChild(const std::shared_ptr<GameObject>& obj);
 
 	void SetPosition(const glm::vec3& pos);

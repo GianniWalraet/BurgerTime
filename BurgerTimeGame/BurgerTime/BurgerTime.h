@@ -13,6 +13,6 @@ public:
 
 	void LoadGame() const override;
 private:
-	PeterPepperComponent* AddPlayer(GameObject* parent, uint32_t playerId, const glm::vec3& playerPos, const glm::vec3& healthDisplayPos, const glm::vec3& scoreDisplayPos) const;
+	void PrintGameInfo() const;
 };
 

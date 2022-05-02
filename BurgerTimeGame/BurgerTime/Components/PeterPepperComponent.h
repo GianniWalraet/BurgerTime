@@ -36,8 +36,8 @@ public:
 	const uint8_t GetLives() const { return m_Lives; }
 	const int GetScore() const { return m_Score; }
 private:
-	uint8_t m_Lives{};
-	uint32_t m_Score{};
+	int8_t m_Lives{};
+	int32_t m_Score{};
 	bool m_HasWon{};
 
 	static const int m_MovementSpeed = 100;

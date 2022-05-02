@@ -22,7 +22,6 @@ public:
 	void SetVolume(int value);
 	int GetVolume();
 private:
-	friend class SoundEffect;
 	Mix_Chunk* m_pMixChunk{};
 	int m_ActiveChannel{};
 	std::string m_Path{};

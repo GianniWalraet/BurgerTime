@@ -79,17 +79,18 @@ void GameObject::RemoveChildAt(size_t index)
 	m_pChildren[index]->SetParent(nullptr);
 	m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), m_pChildren[index]), m_pChildren.end());
 }
-void GameObject::AddChild(const std::shared_ptr<GameObject>& obj)
+std::shared_ptr<GameObject> GameObject::AddChild(const std::shared_ptr<GameObject>& obj)
 {
 	// Return if child was already added
 	auto child = std::find_if(m_pChildren.begin(), m_pChildren.end(), [&](std::shared_ptr<GameObject>& lhs) { return lhs == obj; });
-	if (child != m_pChildren.end()) return;
+	if (child != m_pChildren.end()) return obj;
 	// Add child to children
 	m_pChildren.push_back(obj);
 	// If child has a parent, remove child from parent
 	if (obj->GetParent()) obj->GetParent()->RemoveChild(obj);
 	// Set child's new parent if not already done
 	if(obj->GetParent() != shared_from_this()) obj->SetParent(shared_from_this());
+	return obj;
 }
 void GameObject::RemoveChild(const std::shared_ptr<GameObject>& obj)
 {

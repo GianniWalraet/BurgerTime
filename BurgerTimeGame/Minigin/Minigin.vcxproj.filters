@@ -61,6 +61,8 @@
     <ClInclude Include="Sound\SoundStream.h" />
     <ClInclude Include="Sound\ServiceLocator.h" />
     <ClInclude Include="Sound\SoundManager.h" />
+    <ClInclude Include="Sound\LoggedSoundManager.h" />
+    <ClInclude Include="Sound\NullSoundManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp" />

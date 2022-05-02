@@ -4,16 +4,21 @@
 // Command includes
 #include "Implementations/Command/PlayerCommands.h"
 
-// Component includes
-#include "Components/PeterPepperComponent.h"
-#include "Components/ScoreDisplayComponent.h"
-#include "Components/HealthDisplayComponent.h"
-
-#define GRID_SIZE 16
-#define GAME_SCALE 3
+// Prefab includes
+#include "Prefabs/PeterPepper.h"
 
 void BurgerTime::LoadGame() const
 {
+	auto& locator = ServiceLocator::GetInstance();
+#ifdef _DEBUG
+	locator.RegisterSoundManager(std::make_shared<SoundManager>());
+	locator.RegisterSoundManager(std::make_shared<LoggedSoundManager>(locator.GetSoundManager()));
+#else
+	locator.RegisterSoundManager(std::make_shared<SoundManager>());
+#endif
+
+	PrintGameInfo();
+
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
 	// Background (everything is attached to this)
@@ -30,73 +35,47 @@ void BurgerTime::LoadGame() const
 
 	// FPS
 	child =				std::make_shared<GameObject>();
-	auto fpsComp =		child->AddComponent<FPSComponent>();
 	auto txtComp =		child->AddComponent<TextComponent>();
 	renderComp =		child->AddComponent<RenderComponent>();
+	child->AddComponent<FPSComponent>();
 	txtComp->SetFont(ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
 	go->AddChild(child);
 
 	// Players
-	auto p1 = AddPlayer(go.get(), 0, { 200,200,0 }, { 0,430,0 }, { 0,450,0 });
-	auto p2 = AddPlayer(go.get(), 1, { 300,200,0 }, { 550,430,0 }, { 550,450,0 });
-
-	// Keyboard input (add seperately since it's not attached to an id)
-	InputManager::GetInstance().AddCommand<KillCommand>(p1, SDLK_j);
-	InputManager::GetInstance().AddCommand<ScoreCommand>(p1, SDLK_k);
-	InputManager::GetInstance().AddCommand<KillCommand>(p2, SDLK_l);
-	InputManager::GetInstance().AddCommand<ScoreCommand>(p2, SDLK_m);
-	InputManager::GetInstance().AddCommand<MoveLeftCommand>(p1, SDLK_a);
-	InputManager::GetInstance().AddCommand<MoveRightCommand>(p1, SDLK_d);
-	InputManager::GetInstance().AddCommand<MoveUpCommand>(p1, SDLK_w);
-	InputManager::GetInstance().AddCommand<MoveDownCommand>(p1, SDLK_s);
+	go->AddChild(std::make_shared<PeterPepper>());
+	go->AddChild(std::make_shared<PeterPepper>());
 
 	scene.Add(go);
+
+	ServiceLocator::GetInstance().GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
+	ServiceLocator::GetInstance().GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);
 }
 
-PeterPepperComponent* BurgerTime::AddPlayer(GameObject* parent, uint32_t playerId, const glm::vec3& playerPos, const glm::vec3& healthDisplayPos, const glm::vec3& scoreDisplayPos) const
+void BurgerTime::PrintGameInfo() const
 {
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+	std::cout << "BURGER TIME GAME INFO\n";
 
-	// Variables for sprite
-	SDL_Rect source{};
-	source.x = GRID_SIZE * 3;
-	source.y = 0;
-	source.w = GRID_SIZE * 3;
-	source.h = GRID_SIZE;
+	std::cout << '\n';
 
-	int width = GRID_SIZE * GAME_SCALE;
-	int height = GRID_SIZE * GAME_SCALE;
+	std::cout << "PLAYER CONTROLS - XBOX CONTROLLER:\n";
+	std::cout << "Movement: DPAD left-right-up-down\n";
+	std::cout << "Health Decrease: A\n";
+	std::cout << "Score Increase: X\n";
 
-	// PeterPepper object
-	auto child =		std::make_shared<GameObject>();
-	auto ppComp =		child->AddComponent<PeterPepperComponent>();
-	auto sprComp =		child->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, source, width, height);
-	auto renderComp =	child->AddComponent<RenderComponent>();
-	child->SetPosition(playerPos);
-	parent->AddChild(child);
+	std::cout << '\n';
 
-	// HealthDisplay object
-	child =				std::make_shared<GameObject>();
-	auto txtComp =		child->AddComponent<TextComponent>();
-	renderComp =		child->AddComponent<RenderComponent>();
-	auto hdComp =		child->AddComponent<HealthDisplayComponent>(ppComp, txtComp);
-	txtComp->SetFont(font);
-	child->SetPosition(healthDisplayPos);
-	parent->AddChild(child);
+	std::cout << "PLAYER CONTROLS - KEYBOARD:\n";
+	std::cout << "PLAYER 1:\n";
+	std::cout << "Movement: W(up), A(left), S(down), D(right)\n";
+	std::cout << "Health Decrease: J\n";
+	std::cout << "Score Increase: K\n";
+	std::cout << "PLAYER 2:\n";
+	std::cout << "Movement: ARROW KEYS\n";
+	std::cout << "Health Decrease: L\n";
+	std::cout << "Score Increase: M\n";
 
-	// ScoreDisplay object
-	child =				std::make_shared<GameObject>();
-	txtComp =			child->AddComponent<TextComponent>();
-	renderComp =		child->AddComponent<RenderComponent>();
-	auto sdComp =		child->AddComponent<ScoreDisplayComponent>(ppComp, txtComp);
-	txtComp->SetFont(font);
-	child->SetPosition(scoreDisplayPos);
-	parent->AddChild(child);
+	std::cout << '\n';
 
-	ppComp->AddObserver(hdComp);
-	ppComp->AddObserver(sdComp);
-
-	InputManager::GetInstance().AddCommand<KillCommand>(playerId, ppComp, ControllerButton::GAMEPAD_BUTTON_SOUTH);
-	InputManager::GetInstance().AddCommand<ScoreCommand>(playerId, ppComp, ControllerButton::GAMEPAD_BUTTON_WEST);
-	return ppComp;
+	std::cout << "Losing Health will add a sound to the queue\nGaining Score will play a sound over other other sounds\n";
+	std::cout << "\nADDITIONAL INFO: Once you reach 0 lives, gaining score or losing health will not be possible anymore,\nso no sounds will play either\n";
 }

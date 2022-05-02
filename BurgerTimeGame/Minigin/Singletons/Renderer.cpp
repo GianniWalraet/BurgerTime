@@ -97,3 +97,17 @@ void Renderer::RenderTexture(const Texture2D& texture, const int x, const int y,
 
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dst, 0.f, nullptr, flip);
 }
+
+const int Renderer::GetWindowWidth() const
+{
+	int w, h;
+	SDL_GetWindowSize(m_Window, &w, &h);
+	return w;
+}
+
+const int Renderer::GetWindowHeight() const
+{
+	int w, h;
+	SDL_GetWindowSize(m_Window, &w, &h);
+	return h;
+}

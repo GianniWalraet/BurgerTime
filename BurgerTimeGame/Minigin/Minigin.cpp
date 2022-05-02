@@ -76,14 +76,9 @@ void Minigin::Run()
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
-		auto& serviceLocator = ServiceLocator::GetInstance();
 
 		// Init input
 		input.Initialize();
-
-		// Init sound
-		serviceLocator.RegisterSoundManager(std::make_shared<SoundManager>());
-		auto& soundManager = serviceLocator.GetSoundManager();
 
 		// Init objects
 		sceneManager.Initialize();
@@ -100,12 +95,6 @@ void Minigin::Run()
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
 			renderer.Render();
-
-			if (input.WentDownThisFrame(SDLK_e))
-			{
-				soundManager.PlayEffect("Sounds/gustavo.wav", 100, 0, true);
-				soundManager.PlayEffect("Sounds/dream.wav", 100, 0, false);
-			}
 
 			const auto sleepTime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime + std::chrono::milliseconds(MsPerFrame) - std::chrono::high_resolution_clock::now());
 			this_thread::sleep_for(sleepTime);

@@ -243,6 +243,8 @@
     <ClInclude Include="SceneGraph\GameObject.h" />
     <ClInclude Include="SceneGraph\Scene.h" />
     <ClInclude Include="SceneGraph\SceneManager.h" />
+    <ClInclude Include="Sound\NullSoundManager.h" />
+    <ClInclude Include="Sound\LoggedSoundManager.h" />
     <ClInclude Include="Sound\SoundManager.h" />
     <ClInclude Include="Sound\ServiceLocator.h" />
     <ClInclude Include="Sound\SoundStream.h" />

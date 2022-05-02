@@ -97,6 +97,7 @@ bool SoundStream::SoundStreamImpl::Play(bool repeat)
 	if (m_pMixMusic != nullptr)
 	{
 		int result{ Mix_PlayMusic(m_pMixMusic, repeat ? -1 : 1) };
+		std::cout << Mix_GetError();
 		return result == 0 ? true : false;
 	}
 	else

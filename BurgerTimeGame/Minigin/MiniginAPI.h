@@ -27,6 +27,8 @@
 #include "Components/TextComponent.h"
 #include "Components/TransformComponent.h"
 
+#include "Sound/ServiceLocator.h"
+
 #include "Command/Command.h"
 
 #include "State/State.h"
