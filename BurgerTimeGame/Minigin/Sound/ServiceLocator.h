@@ -4,9 +4,10 @@
 #include "NullSoundManager.h"
 #include "LoggedSoundManager.h"
 
-class ServiceLocator final : public Singleton<ServiceLocator>
+class ServiceLocator final
 {
 public:
+	static void Initialize() { s_SMInstance = std::make_shared<NullSoundManager>(); }
 	static std::shared_ptr<SoundManager> GetSoundManager() { return s_SMInstance; }
 	static void RegisterSoundManager(std::shared_ptr<SoundManager> sm)
 	{ 
@@ -20,12 +21,6 @@ public:
 		}
 	}
 private:
-	friend class Singleton;
-	ServiceLocator()
-	{
-		s_SMInstance = std::make_shared<NullSoundManager>();
-	}
-
 	static std::shared_ptr<SoundManager> s_SMInstance;
 };
 

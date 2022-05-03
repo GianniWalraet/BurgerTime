@@ -66,6 +66,9 @@ void Minigin::Run()
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
 
+	// Init servicelocator so it uses nullaudiomanager if no manager is registered
+	ServiceLocator::Initialize();
+
 	LoadGame();
 
 	// Init timer

@@ -9,12 +9,12 @@
 
 void BurgerTime::LoadGame() const
 {
-	auto& locator = ServiceLocator::GetInstance();
 #ifdef _DEBUG
-	locator.RegisterSoundManager(std::make_shared<SoundManager>());
-	locator.RegisterSoundManager(std::make_shared<LoggedSoundManager>(locator.GetSoundManager()));
+	ServiceLocator::RegisterSoundManager(std::make_shared<SoundManager>());
+	ServiceLocator::RegisterSoundManager(std::make_shared<LoggedSoundManager>(ServiceLocator::GetSoundManager()));
 #else
-	locator.RegisterSoundManager(std::make_shared<SoundManager>());
+	ServiceLocator::RegisterSoundManager(std::make_shared<SoundManager>());
+	
 #endif
 
 	PrintGameInfo();
@@ -47,8 +47,8 @@ void BurgerTime::LoadGame() const
 
 	scene.Add(go);
 
-	ServiceLocator::GetInstance().GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
-	ServiceLocator::GetInstance().GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);
+	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
+	ServiceLocator::GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);
 }
 
 void BurgerTime::PrintGameInfo() const
