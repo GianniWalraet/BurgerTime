@@ -13,9 +13,10 @@ void PeterPepperComponent::OnDie()
 
 	--m_Lives;
 	m_Score -= m_ScoreLoss;
+	ServiceLocator::GetSoundManager()->PlayEffect("Sounds/LoseLife.mp3", 50);
+
 	if (m_Score < 0) m_Score = 0;
 
-	ServiceLocator::GetSoundManager()->PlayEffect("Sounds/LoseLife.mp3", 50);
 	NotifyAll(Event::PlayerDied);
 }
 void PeterPepperComponent::OnBurgerDropped()

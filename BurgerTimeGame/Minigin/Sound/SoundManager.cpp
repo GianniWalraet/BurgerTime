@@ -39,22 +39,26 @@ void SoundManager::PlayEffect(const soundID id, const int volume, const int loop
 	EffectInfo info{ id, volume, loops };
 	if (waitInQueue)
 	{
-		m_SoundEffectQueue.push_back(info);
-		assert(m_SoundEffectQueue.size() < m_MaxQueued);
+		if ((m_SoundEffectQueue.size() + 1) >= m_MaxQueued)
+		{
+			std::cerr << "Sound not added to queue, queue is full!\n";
+			return;
+		}
+		m_SoundEffectQueue.push(info);
 		m_CvEffectQueue.notify_one();
 	}
 	else
 	{
-		m_SoundEffectsConcurrent.push_back(info);
+		m_SoundEffectsConcurrent.push(info);
 		assert(m_SoundEffectQueue.size() < m_MaxQueued);
-		m_CvEffectConcurrent.notify_all();
+		m_CvEffectConcurrent.notify_one();
 	}
 }
 void SoundManager::PlayStream(const soundID id, const int volume, const bool repeat)
 {
 	std::unique_lock<std::mutex> lk(m_Mutex);
 	StreamInfo info{ id, volume, repeat };
-	m_SoundStreamQueue.push_back(info);
+	m_SoundStreamQueue.push(info); 
 	m_CvStream.notify_one();
 }
 
@@ -78,7 +82,7 @@ void SoundManager::EffectConcurrentThread()
 		while (!m_SoundEffectsConcurrent.empty())
 		{
 			auto soundInfo = m_SoundEffectsConcurrent.front();
-			m_SoundEffectsConcurrent.pop_front();
+			m_SoundEffectsConcurrent.pop();
 
 			lk.unlock();
 			auto sound = LoadEffect(soundInfo.id);
@@ -103,7 +107,7 @@ void SoundManager::EffectQueueThread()
 		{
 			
 			auto soundInfo = m_SoundEffectQueue.front();
-			m_SoundEffectQueue.pop_front();
+			m_SoundEffectQueue.pop();
 
 			lk.unlock();
 			sound = LoadEffect(soundInfo.id);
@@ -111,7 +115,7 @@ void SoundManager::EffectQueueThread()
 			sound->SetVolume(soundInfo.volume);
 			sound->Play(soundInfo.loops);
 
-			while (sound->IsPlaying() && m_RunThreads) { Sleep(16); }
+			while (sound->IsPlaying() && m_RunThreads) { Sleep(5); }
 			lk.lock();
 		}
 	}
@@ -128,7 +132,7 @@ void SoundManager::StreamQueueThread()
 		while (!m_SoundStreamQueue.empty())
 		{
 			auto soundInfo = m_SoundStreamQueue.front();
-			m_SoundStreamQueue.pop_front();
+			m_SoundStreamQueue.pop();
 
 			lk.unlock();
 			sound = LoadStream(soundInfo.id);
@@ -140,7 +144,7 @@ void SoundManager::StreamQueueThread()
 
 			while (sound->IsPlaying() && m_RunThreads) 
 			{ 
-				Sleep(16);
+				Sleep(5);
 				if (m_StopCurrentStream) 
 				{
 					sound->Stop();

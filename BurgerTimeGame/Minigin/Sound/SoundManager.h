@@ -21,8 +21,8 @@ public:
 	virtual void PlayStream(const soundID id, const int volume, const bool repeat = false);
 
 	virtual void StopStream() { m_StopCurrentStream = true; }
-	virtual void ClearEffectQueue() { m_SoundEffectQueue.clear(); }
-	virtual void ClearStreamQueue() { m_SoundStreamQueue.clear(); }
+	virtual void ClearEffectQueue() { while (m_SoundEffectQueue.size() != 0) { m_SoundEffectQueue.pop(); } }
+	virtual void ClearStreamQueue() { while (m_SoundStreamQueue.size() != 0) { m_SoundStreamQueue.pop(); } }
 private:
 	struct EffectInfo
 	{
@@ -39,9 +39,9 @@ private:
 	};
 
 	static const int m_MaxQueued = 10;
-	std::deque<EffectInfo> m_SoundEffectsConcurrent;
-	std::deque<EffectInfo> m_SoundEffectQueue;
-	std::deque<StreamInfo> m_SoundStreamQueue;
+	std::queue<EffectInfo> m_SoundEffectsConcurrent;
+	std::queue<EffectInfo> m_SoundEffectQueue;
+	std::queue<StreamInfo> m_SoundStreamQueue;
 
 	std::condition_variable m_CvEffectQueue{}, m_CvEffectConcurrent{};
 	std::condition_variable m_CvStream{};
