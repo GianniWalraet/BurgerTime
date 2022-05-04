@@ -102,24 +102,16 @@ void GameObject::RemoveChild(const std::shared_ptr<GameObject>& obj)
 void GameObject::SetPosition(const glm::vec3& pos)
 {
 	m_Transform->SetPosition(pos.x, pos.y, pos.z);
+
+	for  (auto& child : m_pChildren)
+	{
+		auto& childPos = child->GetPosition();
+
+		child->SetPosition(childPos);
+	}
 }
 
-const glm::vec3& GameObject::GetPositionLocal() const
+const glm::vec3& GameObject::GetPosition() const
 {
 	return m_Transform->GetPosition();
-}
-
-const glm::vec3 GameObject::GetPositionWorld() const
-{
-	const auto& pos = m_Transform->GetPosition();
-	if (m_pParent.lock())
-	{
-		auto& parentPos = m_pParent.lock()->GetPositionWorld();
-		
-		return glm::vec3(pos + parentPos);
-	}
-	else
-	{
-		return pos;
-	}
 }

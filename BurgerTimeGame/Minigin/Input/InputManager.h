@@ -28,8 +28,8 @@ public:
 	bool WentUpThisFrame(UINT id, ControllerButton button) const;
 
 	// Templated for command and actor who uses the command
-	template <typename T, typename U>
-	void AddCommand(UINT id, U* actor, ControllerButton button, InputState state = InputState::pressed)
+	template <typename T>
+	void AddCommand(UINT id, std::shared_ptr<GameObject> actor, ControllerButton button, InputState state = InputState::pressed)
 	{
 		m_pConsoleCommands[ControllerKey{ { id, button}, state }] = std::make_unique<T>(actor);
 	}
@@ -45,8 +45,8 @@ public:
 	bool WentUpThisFrame(SDL_Keycode key) const;
 
 	// Templated for command and actor who uses the command
-	template <typename T, typename U>
-	void AddCommand(U* actor, SDL_Keycode key, InputState state = InputState::pressed)
+	template <typename T>
+	void AddCommand(std::shared_ptr<GameObject> actor, SDL_Keycode key, InputState state = InputState::pressed)
 	{
 		m_pKeyboardCommands[KeyboardKey{ key, state }] = std::make_unique<T>(actor);
 	}
@@ -58,6 +58,8 @@ public:
 
 private:
 	friend class Singleton<InputManager>;
+	InputManager() = default;
+
 	std::unique_ptr<ControllerInput> m_pControllerInput;
 	std::unique_ptr<SDLKeyboardInput> m_pKeyboardInput;
 

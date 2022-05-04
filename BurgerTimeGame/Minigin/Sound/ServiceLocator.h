@@ -7,7 +7,6 @@
 class ServiceLocator final
 {
 public:
-	static void Initialize() { s_SMInstance = std::make_shared<NullSoundManager>(); }
 	static std::shared_ptr<SoundManager> GetSoundManager() { return s_SMInstance; }
 	static void RegisterSoundManager(std::shared_ptr<SoundManager> sm)
 	{ 
