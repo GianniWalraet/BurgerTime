@@ -1,7 +1,6 @@
 #pragma once
 #include "SceneGraph/SceneManager.h"
 
-
 class GameObject;
 class Scene
 {

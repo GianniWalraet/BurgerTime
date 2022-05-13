@@ -47,7 +47,8 @@ void RenderComponent::Render()
 	if(m_pSprite)
 	{
 		auto& pos = m_pOwner.lock()->GetPosition();
-		renderer.RenderTexture(*m_pSprite->GetTexture().get(), static_cast<int>(pos.x), static_cast<int>(pos.y), m_pSprite->GetDstWidth(), m_pSprite->GetDstHeight(), m_pSprite->GetFrameSrc());
+
+		renderer.RenderTexture(*m_pSprite->GetTexture().get(), static_cast<int>(pos.x), static_cast<int>(pos.y), m_pSprite->GetDstWidth(), m_pSprite->GetDstHeight(), m_pSprite->GetFrameSrc(), m_pSprite->GetIsMirrored());
 	}
 }
 

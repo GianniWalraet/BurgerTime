@@ -38,12 +38,12 @@ void SpriteComponent::Update()
 		++m_ActFrame %= (m_Cols * m_Rows);
 		m_AccuSec -= m_FrameSec;
 
-		m_SrcRectFrame.w = GetFrameWidth();
-		m_SrcRectFrame.h = GetFrameHeight();
+		m_CurrentFrame.w = GetFrameWidth();
+		m_CurrentFrame.h = GetFrameHeight();
 		int col{ m_ActFrame % m_Cols };
 		int row{ m_ActFrame / m_Cols };
-		m_SrcRectFrame.x = m_SrcRectTex.x + (m_SrcRectFrame.w * col);
-		m_SrcRectFrame.y = m_SrcRectTex.y + (m_SrcRectFrame.h * row);
+		m_CurrentFrame.x = m_SrcRectTex.x + (m_CurrentFrame.w * col);
+		m_CurrentFrame.y = m_SrcRectTex.y + (m_CurrentFrame.h * row);
 	}
 }
 

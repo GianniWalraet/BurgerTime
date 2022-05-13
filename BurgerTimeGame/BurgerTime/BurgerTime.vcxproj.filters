@@ -25,6 +25,9 @@
     <ClCompile Include="Prefabs\PeterPepper.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Implementations\State\PlayerStates.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

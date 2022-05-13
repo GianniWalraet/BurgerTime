@@ -21,7 +21,7 @@ enum class Direction
 class PeterPepperComponent final : public BaseComponent, public Subject
 {
 public:
-	PeterPepperComponent(const std::shared_ptr<GameObject>& pOwner) : BaseComponent::BaseComponent(pOwner), m_Lives{3} {}
+	PeterPepperComponent(const std::shared_ptr<GameObject>& pOwner) : BaseComponent(pOwner), m_Lives{3} {}
 	virtual ~PeterPepperComponent();
 	PeterPepperComponent(const PeterPepperComponent& other) = delete;
 	PeterPepperComponent(PeterPepperComponent&& other) = delete;

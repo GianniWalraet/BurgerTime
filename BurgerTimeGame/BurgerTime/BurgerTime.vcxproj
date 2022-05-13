@@ -211,6 +211,7 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClCompile Include="Components\HealthDisplayComponent.cpp" />
     <ClCompile Include="Components\PeterPepperComponent.cpp" />
     <ClCompile Include="Components\ScoreDisplayComponent.cpp" />
+    <ClCompile Include="Implementations\State\PlayerStates.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
