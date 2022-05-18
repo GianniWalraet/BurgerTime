@@ -17,7 +17,7 @@ public:
 	void Update() override;
 
 	const std::shared_ptr<Texture2D>& GetTexture() const { return m_pTexture; }
-	const SDL_Rect& GetFrameSrc() const { return m_SrcRectTex; }
+	const SDL_Rect& GetCurrentFrame() const { return m_CurrentFrame; }
 
 	const int GetDstWidth() const { return m_DstWidth; }
 	const int GetDstHeight() const { return m_DstHeight; }

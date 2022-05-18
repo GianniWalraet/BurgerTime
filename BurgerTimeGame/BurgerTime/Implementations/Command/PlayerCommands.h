@@ -1,5 +1,6 @@
 #pragma once
 #include "Components/PeterPepperComponent.h"
+#include "Implementations/State/PlayerStates.h"
 
 class PlayerCommand : public Command
 {
@@ -41,7 +42,7 @@ public:
 	explicit MoveLeftCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
-		GetActor()->SetState(PlayerState::Walking, Direction::Left);
+		GetActor()->SetState<WalkingLeftState>();
 	}
 };
 
@@ -51,7 +52,7 @@ public:
 	explicit MoveRightCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
-		GetActor()->SetState(PlayerState::Walking, Direction::Right);
+		GetActor()->SetState<WalkingRightState>();
 	}
 };
 
@@ -61,7 +62,7 @@ public:
 	explicit MoveUpCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
-		GetActor()->SetState(PlayerState::OnLadder, Direction::Up);
+		//GetActor()->SetState(PlayerState::OnLadder, Direction::Up);
 	}
 };
 
@@ -71,6 +72,6 @@ public:
 	explicit MoveDownCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
-		GetActor()->SetState(PlayerState::OnLadder, Direction::Down);
+		//GetActor()->SetState(PlayerState::OnLadder, Direction::Down);
 	}
 };

@@ -5,6 +5,11 @@
 
 PeterPepperComponent::~PeterPepperComponent()
 {
+	if (m_pState)
+	{
+		delete m_pState;
+		m_pState = nullptr;
+	}
 }
 
 void PeterPepperComponent::OnDie()
@@ -33,36 +38,4 @@ void PeterPepperComponent::OnBurgerDropped()
 		AchievementObserver::GetInstance().Notify(EAchievements::GameWin);
 		m_HasWon = true;
 	}
-}
-
-void PeterPepperComponent::SetState(PlayerState state, Direction dir)
-{
-	switch (state)
-	{
-	case PlayerState::Walking:
-		Move(dir);
-		break;
-	case PlayerState::OnLadder:
-		Climb(dir);
-		break;
-	case PlayerState::ThrowSalt:
-		break;
-	case PlayerState::Dead:
-		break;
-	}
-}
-
-void PeterPepperComponent::Move(Direction dir)
-{
-	const float movement = (dir == Direction::Left) ? -1.f : 1.f;
-	const auto& pos = m_pOwner.lock()->GetPosition();
-
-	m_pOwner.lock()->SetPosition({ pos.x + (m_MovementSpeed * movement) * Timer::GetInstance().GetElapsed(), pos.y, pos.z });
-}
-void PeterPepperComponent::Climb(Direction dir)
-{
-	const float movement = (dir == Direction::Up) ? -1.f : 1.f;
-	const auto& pos = m_pOwner.lock()->GetPosition();
-
-	m_pOwner.lock()->SetPosition({ pos.x, pos.y + (m_MovementSpeed * movement) * Timer::GetInstance().GetElapsed(), pos.z });
 }

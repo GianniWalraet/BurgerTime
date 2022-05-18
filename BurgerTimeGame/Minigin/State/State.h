@@ -1,7 +1,8 @@
 #pragma once
 
-class State abstract
+class State
 {
 public:
+	State() = default;
 	virtual ~State() = default;
 };

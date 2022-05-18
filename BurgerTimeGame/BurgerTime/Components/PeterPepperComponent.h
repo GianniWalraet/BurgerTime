@@ -1,22 +1,6 @@
 #pragma once
+#include "Implementations/State/PlayerStates.h"
 
-enum class PlayerState
-{
-	Walking,
-	OnLadder,
-	ThrowSalt,
-	Dead,
-	None
-};
-
-enum class Direction
-{
-	Left,
-	Right,
-	Up,
-	Down,
-	None
-};
 
 class PeterPepperComponent final : public BaseComponent, public Subject
 {
@@ -31,7 +15,15 @@ public:
 	void OnDie();
 	void OnBurgerDropped();
 
-	void SetState(PlayerState state, Direction dir);
+	template <typename T>
+	void SetState()
+	{
+		if (dynamic_cast<T*>(m_pState) == nullptr)
+		{
+			if (m_pState) delete m_pState;
+			m_pState = new T(m_pOwner.lock()->GetComponent<PeterPepperComponent>());
+		}
+	}
 
 	const uint8_t GetLives() const { return m_Lives; }
 	const int GetScore() const { return m_Score; }
@@ -45,8 +37,7 @@ private:
 	static const uint32_t m_ScoreGain = 30;
 	static const uint32_t m_ScoreLoss = 50;
 
-	void Move(Direction dir);
-	void Climb(Direction dir);
+	PlayerState* m_pState{};
 };
 
 

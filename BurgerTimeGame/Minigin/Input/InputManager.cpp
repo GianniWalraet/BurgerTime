@@ -20,13 +20,16 @@ bool InputManager::ProcessInput()
 		switch (command.first.second)
 		{
 		case InputState::pressed:
-			if (IsPressed(id, button)) command.second->Execute();
+			if (IsPressed(id, button)) 
+				command.second->Execute();
 			break;
 		case InputState::down:
-			if (WentDownThisFrame(id, button)) command.second->Execute();
+			if (WentDownThisFrame(id, button)) 
+				command.second->Execute();
 			break;
 		case InputState::up:
-			if (WentUpThisFrame(id, button)) command.second->Execute();
+			if (WentUpThisFrame(id, button)) 
+				command.second->Execute();
 			break;
 		}
 		
@@ -47,7 +50,8 @@ bool InputManager::ProcessInput()
 				command.second->Execute();
 			break;
 		case InputState::up:
-			if (WentUpThisFrame(key)) command.second->Execute();
+			if (WentUpThisFrame(key)) 
+				command.second->Execute();
 			break;
 		}
 		

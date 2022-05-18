@@ -1,27 +1,26 @@
 #pragma once
 
-class PlayerState abstract : public State
+class PlayerState : public State
 {
 public:
-	PlayerState(SpriteComponent* spriteComp) : m_pSpriteComp{ spriteComp } {}
+	PlayerState(PeterPepperComponent* pOwner) : m_pOwner{ pOwner } {}
 	virtual ~PlayerState() override = default;
-	virtual void HandleState() = 0;
+	virtual void HandleState() {};
 protected:
-	SpriteComponent* m_pSpriteComp;
+	PeterPepperComponent* m_pOwner;
+	float m_PlayerMovementSpeed = 100.f;
 };
 
 class WalkingLeftState : public PlayerState
 {
 public:
-	WalkingLeftState(SpriteComponent* spriteComp);
+	WalkingLeftState(PeterPepperComponent* pOwner);
 	void HandleState() override;
-private:
 };
 
 class WalkingRightState : public PlayerState
 {
 public:
-	WalkingRightState(SpriteComponent* spriteComp);
+	WalkingRightState(PeterPepperComponent* pOwner);
 	void HandleState() override;
-private:
 };
