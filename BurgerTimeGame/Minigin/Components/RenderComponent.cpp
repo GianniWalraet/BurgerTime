@@ -6,9 +6,9 @@
 
 void RenderComponent::Initialize()
 {
-	m_pTexture = m_pOwner.lock()->GetComponent<TextureComponent>();
-	m_pSprite =  m_pOwner.lock()->GetComponent<SpriteComponent>();
-	m_pText = m_pOwner.lock()->GetComponent<TextComponent>();
+	m_pTexture = m_pGameObject.lock()->GetComponent<TextureComponent>();
+	m_pSprite =  m_pGameObject.lock()->GetComponent<SpriteComponent>();
+	m_pText = m_pGameObject.lock()->GetComponent<TextComponent>();
 }
 
 void RenderComponent::Render()
@@ -17,26 +17,26 @@ void RenderComponent::Render()
 	if(m_pTexture)
 	{
 		const Texture2D& texture = *m_pTexture->GetTexture().get();
-		const glm::vec3& pos = m_pOwner.lock()->GetTransform()->GetPosition();
-		const glm::vec2& scale = m_pOwner.lock()->GetTransform()->GetScale();
+		const glm::vec3& pos = m_pGameObject.lock()->GetTransform()->GetPosition();
+		const glm::vec2& scale = m_pGameObject.lock()->GetTransform()->GetScale();
 
-		renderer.RenderTexture(texture, { pos.x, pos.y }, texture.GetSource(), scale, m_pTexture->IsMirrored());
+		renderer.RenderTexture(texture, { pos.x, pos.y }, texture.GetSource(), m_pTexture->GetPivot(), scale, m_pTexture->IsMirrored());
 	}
 
 	if(m_pSprite)
 	{
-		const glm::vec3& pos = m_pOwner.lock()->GetTransform()->GetPosition();
-		const glm::vec2& scale = m_pOwner.lock()->GetTransform()->GetScale();
+		const glm::vec3& pos = m_pGameObject.lock()->GetTransform()->GetPosition();
+		const glm::vec2& scale = m_pGameObject.lock()->GetTransform()->GetScale();
 
-		renderer.RenderTexture(*m_pSprite->GetTexture().get(), { pos.x, pos.y }, m_pSprite->GetCurrentFrame(), scale, m_pSprite->IsMirrored());
+		renderer.RenderTexture(*m_pSprite->GetTexture().get(), { pos.x, pos.y }, m_pSprite->GetCurrentFrame(), m_pSprite->GetPivot(), scale, m_pSprite->IsMirrored());
 	}
 
 	if (m_pText)
 	{
 		const Texture2D& texture = *m_pText->GetTexture().get();
-		const glm::vec3& pos = m_pOwner.lock()->GetTransform()->GetPosition();
-		const glm::vec2& scale = m_pOwner.lock()->GetTransform()->GetScale();
+		const glm::vec3& pos = m_pGameObject.lock()->GetTransform()->GetPosition();
+		const glm::vec2& scale = m_pGameObject.lock()->GetTransform()->GetScale();
 
-		renderer.RenderTexture(texture, { pos.x, pos.y }, texture.GetSource(), scale);
+		renderer.RenderTexture(texture, { pos.x, pos.y }, texture.GetSource(), m_pText->GetPivot(), scale);
 	}
 }

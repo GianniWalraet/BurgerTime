@@ -4,12 +4,13 @@
 #include "Base/Timer.h"
 #include "Singletons/ResourceManager.h"
 
-SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const SDL_Rect& srcRect)
+SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const glm::vec2& pivot, const SDL_Rect& srcRect)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPath);
 	m_Cols = nrOfCols;
 	m_Rows = nrOfRows;
 	m_FrameSec = frameSec;
+	m_Pivot = pivot;
 
 	if (srcRect.w != 0 && srcRect.h != 0)
 	{

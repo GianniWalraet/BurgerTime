@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "BurgerTime.h"
 
-// Command includes
-#include "Implementations/Command/PlayerCommands.h"
-
 // Prefab includes
 #include "Prefabs/PeterPepper.h"
-#include "Prefabs/Level.h"
+
+// Other
+#include "LevelParser/LevelParser.h"
+#include "Singletons/GridManager.h"
 
 void BurgerTime::LoadGame() const
 {
@@ -15,28 +15,66 @@ void BurgerTime::LoadGame() const
 	ServiceLocator::RegisterSoundManager(std::make_shared<LoggedSoundManager>(ServiceLocator::GetSoundManager()));
 #else
 	ServiceLocator::RegisterSoundManager(std::make_shared<SoundManager>());
-	
+
 #endif
 
 	PrintGameInfo();
 
-	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
+	auto& scene = SceneManager::GetInstance().CreateScene("Level01");
 
-	scene.Add(std::make_shared<Level>("../Data/Levels/Level01.txt"));
+	// level
+	{
+		auto& gridManager = GridManager::GetInstance();
+		auto lvlSprite = ResourceManager::GetInstance().LoadTexture("LevelSprite.png");
+		auto grid = LevelParser::ParseFile("../Data/Levels/Level01.txt");
 
-	// FPS
-	auto child = std::make_shared<GameObject>();
-	child->AddComponent<TextComponent>(ResourceManager::GetInstance().LoadFont("Lingua.otf", 12));
-	child->AddComponent<RenderComponent>();
-	child->AddComponent<FPSComponent>();
-	scene.Add(child);
+		for (int i = 0; i < grid.size(); i++)
+		{
+			for (int j = 0; j < grid[i].size(); j++)
+			{
+				auto c = std::make_shared<GameObject>();
+				c->GetTransform()->SetScale(4.f);
+				auto scale = c->GetTransform()->GetScale();
+				const auto& data = grid[i][j];
+
+				int w = static_cast<int>(data.first.w * scale.x);
+				int h = static_cast<int>(data.first.h * scale.y);
+				int xPos = w * j;
+				int yPos = h * i;
+
+				c->GetTransform()->SetPosition(static_cast<float>(xPos), static_cast<float>(yPos), 0.f);
+				c->AddComponent<TextureComponent>("LevelSprite.png", glm::vec2{ 0, 0 }, false, data.first);
+				c->AddComponent<RenderComponent>();
+
+				GridBox newBox{};
+				newBox.boundingbox = { xPos, yPos, w, h };
+				newBox.isSolid = data.second;
+				gridManager.AddBox(newBox);
+
+				scene.Add(c);
+			}
+		}
+	}
+
+	// FPS Counter
+	{
+		auto child = std::make_shared<GameObject>();
+		child->AddComponent<TextComponent>(ResourceManager::GetInstance().LoadFont("Lingua.otf", 32));
+		child->AddComponent<RenderComponent>();
+		child->AddComponent<FPSComponent>();
+		scene.Add(child);
+	}
 
 	// Players
-	scene.Add(std::make_shared<PeterPepper>());
-	//scene.Add(std::make_shared<PeterPepper>());
+	{
+		auto pp = std::make_shared<PeterPepper>();
+		pp->GetTransform()->SetPosition(0, 100, 0);
+		pp->GetTransform()->SetScale(4.f);
+		scene.Add(pp);
+	}
 
-	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
-	ServiceLocator::GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);
+	//ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
+	//ServiceLocator::GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);
 }
 
 void BurgerTime::PrintGameInfo() const

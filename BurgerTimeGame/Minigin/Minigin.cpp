@@ -95,6 +95,7 @@ void Minigin::Run()
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
 			renderer.Render();
+			renderer.Clear();
 
 			const auto sleepTime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime + std::chrono::milliseconds(MsPerFrame) - std::chrono::high_resolution_clock::now());
 			this_thread::sleep_for(sleepTime);

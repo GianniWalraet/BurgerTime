@@ -9,6 +9,7 @@ public:
 	virtual void OnStateSwitch() {};
 	virtual void HandleState() {};
 protected:
+	std::weak_ptr<GameObject> m_pGameObj;
 	PeterPepperComponent* m_pOwner{};
 	ControllerComponent* m_pController{};
 };

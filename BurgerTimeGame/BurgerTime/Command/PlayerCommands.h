@@ -1,6 +1,6 @@
 #pragma once
 #include "Components/PeterPepperComponent.h"
-#include "Implementations/State/PlayerStates.h"
+#include "State/PlayerStates.h"
 
 class PlayerCommand : public Command
 {

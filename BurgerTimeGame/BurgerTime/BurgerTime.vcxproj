@@ -208,11 +208,12 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BurgerTime.cpp" />
+    <ClCompile Include="Command\PlayerCommands.cpp" />
     <ClCompile Include="Components\HealthDisplayComponent.cpp" />
     <ClCompile Include="Components\PeterPepperComponent.cpp" />
     <ClCompile Include="Components\ScoreDisplayComponent.cpp" />
-    <ClCompile Include="Implementations\State\PlayerStates.cpp" />
-    <ClCompile Include="Prefabs\Level.cpp" />
+    <ClCompile Include="Singletons\GridManager.cpp" />
+    <ClCompile Include="State\PlayerStates.cpp" />
     <ClCompile Include="LevelParser\LevelParser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
@@ -225,12 +226,12 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h" />
-    <ClInclude Include="Implementations\Command\PlayerCommands.h" />
+    <ClInclude Include="Singletons\GridManager.h" />
+    <ClInclude Include="Command\PlayerCommands.h" />
     <ClInclude Include="Components\HealthDisplayComponent.h" />
     <ClInclude Include="Components\PeterPepperComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
-    <ClInclude Include="Implementations\State\PlayerStates.h" />
-    <ClInclude Include="Prefabs\Level.h" />
+    <ClInclude Include="State\PlayerStates.h" />
     <ClInclude Include="LevelParser\LevelParser.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Prefabs\PeterPepper.h" />

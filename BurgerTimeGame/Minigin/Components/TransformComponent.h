@@ -20,7 +20,7 @@
 		bool m_UpdatePos{};
 
 		glm::vec3 m_Position{};
-		glm::vec2 m_Scale{ 4.f, 4.f };
+		glm::vec2 m_Scale{ 1.f, 1.f };
 		glm::mat4x4 m_World{1.f};
 	};
 

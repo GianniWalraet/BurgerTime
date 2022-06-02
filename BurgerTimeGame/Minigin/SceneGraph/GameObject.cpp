@@ -25,7 +25,7 @@ void GameObject::RootInitialize()
 
 	Initialize();
 	// set owner here since we can't pass shared_from_this in the constructor
-	m_Transform->m_pOwner = shared_from_this();
+	m_Transform->m_pGameObject = shared_from_this();
 
 	for (auto& c : m_pComponents)
 	{
@@ -55,7 +55,7 @@ void GameObject::RootUpdate()
 
 void GameObject::RootAddComponent(BaseComponent* pComp)
 {
-	pComp->m_pOwner = shared_from_this();
+	pComp->m_pGameObject = shared_from_this();
 	m_pComponents.emplace_back(pComp);
 }
 

@@ -3,7 +3,7 @@
 #include "Components/PeterPepperComponent.h"
 #include "Components/HealthDisplayComponent.h"
 #include "Components/ScoreDisplayComponent.h"
-#include "Implementations/Command/PlayerCommands.h"
+#include "Command/PlayerCommands.h"
 
 uint8_t PeterPepper::m_PlayerID = 0;
 uint8_t PeterPepper::m_MaxPlayers = 4;
@@ -25,10 +25,10 @@ void PeterPepper::Initialize()
 	// PeterPepper object
 	AddComponent<PeterPepperComponent>();
 	AddComponent<RenderComponent>();
-	AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, source);
+	AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, glm::vec2{ 0.5f, 1.f }, source);
 	AddComponent<ControllerComponent>(150.f);
 
-	// HealthDisplay object
+	//HealthDisplay object
 	//child = AddChild(std::make_shared<GameObject>());
 	//auto txtComp = child->AddComponent<TextComponent>(font);
 	//child->AddComponent<RenderComponent>();

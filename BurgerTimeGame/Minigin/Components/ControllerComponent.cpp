@@ -11,7 +11,7 @@ void ControllerComponent::Move(float dispX, float dispY)
 
 void ControllerComponent::Initialize()
 {
-	m_pTransform = GetOwner().lock()->GetTransform();
+	m_pTransform = GetGameObject().lock()->GetTransform();
 }
 
 void ControllerComponent::Update()

@@ -6,11 +6,24 @@ HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayerC, T
 {
 	m_pPlayer = pPlayerC;
 	m_pText = pTextC;
+	m_pTexture = ResourceManager::GetInstance().LoadTexture("BurgerTimeSprite.png");
+	m_pTexture->SetSource({ 0,0,16,16 });
 
 	assert(m_pPlayer != nullptr);
 	assert(m_pText != nullptr);
 
 	UpdateText();
+}
+
+void HealthDisplayComponent::Update()
+{
+	auto& renderer = Renderer::GetInstance();
+	glm::vec2 pos{ renderer.GetWindowWidth(), 0.f }, pivot{ 1.f, 0.f }, scale{ 1.f, 1.f };
+	for (size_t i = 0; i < m_pPlayer->GetLives(); ++i)
+	{
+		renderer.AppendTexture(m_pTexture.get(), pos, m_pTexture->GetSource(), pivot, scale);
+		pos.x -= m_pTexture->GetWidth();
+	}
 }
 
 void HealthDisplayComponent::Notify(Event event)

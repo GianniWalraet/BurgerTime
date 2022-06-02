@@ -3,11 +3,6 @@
 #include "SpriteComponent.h"
 #include "TextComponent.h"
 
-
-class TextureComponent;
-class SpriteComponent;
-class GameObject;
-
 class RenderComponent final : public BaseComponent
 {
 public:

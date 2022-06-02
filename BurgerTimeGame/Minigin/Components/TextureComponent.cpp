@@ -5,8 +5,9 @@
 #include "Singletons/Renderer.h"
 #include "TransformComponent.h"
 
-TextureComponent::TextureComponent(const std::string& filename, bool mirrored, const SDL_Rect& srcRect)
+TextureComponent::TextureComponent(const std::string& filename, const glm::vec2& pivot, bool mirrored, const SDL_Rect& srcRect)
 	: m_IsMirrored{ mirrored }
+	, m_Pivot{ pivot }
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
 	if (srcRect.w != 0 && srcRect.h != 0)

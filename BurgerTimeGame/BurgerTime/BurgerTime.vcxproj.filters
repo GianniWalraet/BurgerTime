@@ -25,26 +25,29 @@
     <ClCompile Include="Prefabs\PeterPepper.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Implementations\State\PlayerStates.cpp">
+    <ClCompile Include="State\PlayerStates.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="LevelParser\LevelParser.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Prefabs\Level.cpp">
+    <ClCompile Include="Singletons\GridManager.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\PlayerCommands.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="BurgerTime.h" />
-    <ClInclude Include="Implementations\Command\PlayerCommands.h" />
+    <ClInclude Include="Command\PlayerCommands.h" />
     <ClInclude Include="Components\HealthDisplayComponent.h" />
     <ClInclude Include="Components\PeterPepperComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
-    <ClInclude Include="Implementations\State\PlayerStates.h" />
+    <ClInclude Include="State\PlayerStates.h" />
     <ClInclude Include="Prefabs\PeterPepper.h" />
     <ClInclude Include="LevelParser\LevelParser.h" />
-    <ClInclude Include="Prefabs\Level.h" />
+    <ClInclude Include="Singletons\GridManager.h" />
   </ItemGroup>
 </Project>
