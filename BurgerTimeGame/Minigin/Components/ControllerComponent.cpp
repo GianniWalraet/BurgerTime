@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "ControllerComponent.h"
 #include "Components/TransformComponent.h"
+#include "SceneGraph/GameObject.h"
 
 void ControllerComponent::Move(float dispX, float dispY)
 {
@@ -10,7 +11,7 @@ void ControllerComponent::Move(float dispX, float dispY)
 
 void ControllerComponent::Initialize()
 {
-
+	m_pTransform = GetOwner().lock()->GetTransform();
 }
 
 void ControllerComponent::Update()

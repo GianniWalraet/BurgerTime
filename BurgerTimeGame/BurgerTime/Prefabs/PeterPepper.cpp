@@ -27,6 +27,7 @@ void PeterPepper::Initialize()
 	child->AddComponent<PeterPepperComponent>();
 	child->AddComponent<RenderComponent>();
 	child->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, source);
+	child->AddComponent<ControllerComponent>(150.f);
 
 	// HealthDisplay object
 	//child = AddChild(std::make_shared<GameObject>());

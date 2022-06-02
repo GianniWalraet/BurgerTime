@@ -23,7 +23,6 @@ void Level::Initialize()
 			c->GetTransform()->SetPosition(static_cast<float>(src.w * j * scale.x), static_cast<float>(src.h * i * scale.y), 0.f);
 			c->AddComponent<TextureComponent>("LevelSprite.png", false, src);
 			c->AddComponent<RenderComponent>();
-			//renderer.RenderTexture(*m_pLvlSprite, { src.w * j, src.h * i }, src);
 		}
 	}
 }

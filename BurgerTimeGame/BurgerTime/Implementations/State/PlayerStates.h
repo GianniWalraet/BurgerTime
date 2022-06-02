@@ -3,14 +3,14 @@
 class PlayerState : public State
 {
 public:
-	PlayerState(PeterPepperComponent* pOwner) : m_pOwner{ pOwner } {}
+	PlayerState(PeterPepperComponent* pOwner);
 	virtual ~PlayerState() override = default;
 
 	virtual void OnStateSwitch() {};
 	virtual void HandleState() {};
 protected:
-	PeterPepperComponent* m_pOwner;
-	float m_PlayerMovementSpeed = 200.f;
+	PeterPepperComponent* m_pOwner{};
+	ControllerComponent* m_pController{};
 };
 
 class IdleState final : public PlayerState

@@ -38,11 +38,9 @@ void BurgerTime::LoadGame() const
 	child->AddComponent<FPSComponent>();
 	scene.Add(child);
 
-
 	// Players
-	auto pp = std::make_shared<PeterPepper>();
-	scene.Add(pp);
-	//auto pp2 = go->AddChild(std::make_shared<PeterPepper>());
+	scene.Add(std::make_shared<PeterPepper>());
+	//scene.Add(std::make_shared<PeterPepper>());
 
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);

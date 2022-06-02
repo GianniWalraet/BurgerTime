@@ -2,6 +2,12 @@
 #include "PlayerStates.h"
 #include "Components/PeterPepperComponent.h"
 
+PlayerState::PlayerState(PeterPepperComponent* pOwner)
+	: m_pOwner{ pOwner }
+{
+	m_pController = pOwner->GetOwner().lock()->GetComponent<ControllerComponent>();
+}
+
 void IdleState::OnStateSwitch()
 {
 	auto spriteComp = m_pOwner->GetOwner().lock()->GetComponent<SpriteComponent>();
@@ -33,10 +39,8 @@ void WalkingLeftState::OnStateSwitch()
 }
 void WalkingLeftState::HandleState()
 {
-	auto go = m_pOwner->GetOwner().lock();
-	auto pos = go->GetTransform()->GetPosition();
-
-	m_pOwner->GetOwner().lock()->GetTransform()->SetPosition({ pos.x - m_PlayerMovementSpeed * Timer::GetInstance().GetElapsed(), pos.y, pos.z });
+	float speed = m_pController->GetMovementSpeed();
+	m_pController->Move(-speed * Timer::GetInstance().GetElapsed(), 0.f);
 }
 
 void WalkingRightState::OnStateSwitch()
@@ -53,10 +57,8 @@ void WalkingRightState::OnStateSwitch()
 }
 void WalkingRightState::HandleState()
 {
-	auto go = m_pOwner->GetOwner().lock();
-	auto pos = go->GetTransform()->GetPosition();
-
-	m_pOwner->GetOwner().lock()->GetTransform()->SetPosition({pos.x + m_PlayerMovementSpeed * Timer::GetInstance().GetElapsed(), pos.y, pos.z});
+	float speed = m_pController->GetMovementSpeed();
+	m_pController->Move(speed * Timer::GetInstance().GetElapsed(), 0.f);
 }
 
 void ClimbingUpState::OnStateSwitch()
@@ -73,10 +75,8 @@ void ClimbingUpState::OnStateSwitch()
 }
 void ClimbingUpState::HandleState()
 {
-	auto go = m_pOwner->GetOwner().lock();
-	auto pos = go->GetTransform()->GetPosition();
-
-	m_pOwner->GetOwner().lock()->GetTransform()->SetPosition({ pos.x , pos.y - m_PlayerMovementSpeed * Timer::GetInstance().GetElapsed(), pos.z });
+	float speed = m_pController->GetMovementSpeed();
+	m_pController->Move(0.f, -speed * Timer::GetInstance().GetElapsed());
 }
 
 void ClimbingDownState::OnStateSwitch()
@@ -94,8 +94,6 @@ void ClimbingDownState::OnStateSwitch()
 }
 void ClimbingDownState::HandleState()
 {
-	auto go = m_pOwner->GetOwner().lock();
-	auto pos = go->GetTransform()->GetPosition();
-
-	m_pOwner->GetOwner().lock()->GetTransform()->SetPosition({ pos.x , pos.y + m_PlayerMovementSpeed * Timer::GetInstance().GetElapsed(), pos.z });
+	float speed = m_pController->GetMovementSpeed();
+	m_pController->Move(0.f, speed * Timer::GetInstance().GetElapsed());
 }
