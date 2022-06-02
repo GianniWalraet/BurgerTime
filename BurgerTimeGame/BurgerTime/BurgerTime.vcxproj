@@ -213,7 +213,6 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClCompile Include="Components\PeterPepperComponent.cpp" />
     <ClCompile Include="Components\ScoreDisplayComponent.cpp" />
     <ClCompile Include="Singletons\GridManager.cpp" />
-    <ClCompile Include="State\PlayerStates.cpp" />
     <ClCompile Include="LevelParser\LevelParser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
@@ -231,7 +230,6 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClInclude Include="Components\HealthDisplayComponent.h" />
     <ClInclude Include="Components\PeterPepperComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
-    <ClInclude Include="State\PlayerStates.h" />
     <ClInclude Include="LevelParser\LevelParser.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Prefabs\PeterPepper.h" />

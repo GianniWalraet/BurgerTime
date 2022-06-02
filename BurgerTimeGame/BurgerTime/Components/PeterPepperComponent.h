@@ -1,5 +1,20 @@
 #pragma once
-#include "State/PlayerStates.h"
+
+enum class State
+{
+	moveHorizontal,
+	moveVertical,
+	idle,
+	dead
+};
+
+enum class Direction
+{
+	left,
+	right,
+	up,
+	down
+};
 
 
 class PeterPepperComponent final : public BaseComponent, public Subject
@@ -15,36 +30,29 @@ public:
 	void OnDie();
 	void OnBurgerDropped();
 
-	template <typename T>
-	void SetState()
-	{
-		m_StateSet = true;
-		if (dynamic_cast<T*>(m_pSetState) == nullptr)
-		{
-			delete m_pSetState;
-			m_pSetState = new T(this);
-		}
-	}
-
 	const uint8_t GetLives() const { return m_Lives; }
 	const int GetScore() const { return m_Score; }
+
+	void SetState(State state, Direction dir) { m_State = state; m_Dir = dir; }
 protected:
 	void Initialize() override;
 	void Update() override;
 private:
+	State m_State{};
+	Direction m_Dir{};
+
+	State m_PrevState{};
+	Direction m_PrevDir{};
+
+	SpriteComponent* m_pSpriteComponent;
 	int8_t m_Lives{};
 	int32_t m_Score{};
 	bool m_HasWon{};
-	bool m_StateSet{};
 
 	static const uint32_t m_ScoreGain = 30;
 	static const uint32_t m_ScoreLoss = 50;
 
-	PlayerState* m_pCurrentState{};
-	PlayerState* m_pPreviousState{};
-
-	PlayerState* m_pDefaultState{};
-	PlayerState* m_pSetState{};
+	bool HandleState();
 };
 
 

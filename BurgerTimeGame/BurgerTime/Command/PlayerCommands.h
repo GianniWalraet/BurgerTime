@@ -1,18 +1,18 @@
 #pragma once
 #include "Components/PeterPepperComponent.h"
-#include "State/PlayerStates.h"
+#include "Singletons/GridManager.h"
 
 class PlayerCommand : public Command
 {
 public:
 	PlayerCommand(std::shared_ptr<GameObject> pActor) : Command(pActor) 
 	{
+		m_pGameObj = pActor;
 		m_pPeterPepperComp = pActor->GetComponent<PeterPepperComponent>();
 	}
 	~PlayerCommand() override = default;
 protected:
-	PeterPepperComponent* GetActor() const { return m_pPeterPepperComp; }
-private:
+	std::weak_ptr<GameObject> m_pGameObj{};
 	PeterPepperComponent* m_pPeterPepperComp;
 };
 
@@ -22,7 +22,7 @@ public:
 	explicit KillCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
-		GetActor()->OnDie();
+		m_pPeterPepperComp->OnDie();
 	}
 };
 
@@ -32,46 +32,42 @@ public:
 	explicit ScoreCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
-		GetActor()->OnBurgerDropped();
+		m_pPeterPepperComp->OnBurgerDropped();
 	}
 };
 
 class MoveLeftCommand final : public PlayerCommand
 {
 public:
-	explicit MoveLeftCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
-	void Execute() override
-	{
-		GetActor()->SetState<WalkingLeftState>();
-	}
+	explicit MoveLeftCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) { m_pController = pActor->GetComponent<ControllerComponent>(); }
+	void Execute() override;
+private:
+	ControllerComponent* m_pController{};
 };
 
 class MoveRightCommand final : public PlayerCommand
 {
 public:
-	explicit MoveRightCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
-	void Execute() override
-	{
-		GetActor()->SetState<WalkingRightState>();
-	}
+	explicit MoveRightCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) { m_pController = pActor->GetComponent<ControllerComponent>(); }
+	void Execute() override;
+private:
+	ControllerComponent* m_pController{};
 };
 
 class MoveUpCommand final : public PlayerCommand
 {
 public:
-	explicit MoveUpCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
-	void Execute() override
-	{
-		GetActor()->SetState<ClimbingUpState>();
-	}
+	explicit MoveUpCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) { m_pController = pActor->GetComponent<ControllerComponent>(); }
+	void Execute() override;
+private:
+	ControllerComponent* m_pController{};
 };
 
 class MoveDownCommand final : public PlayerCommand
 {
 public:
-	explicit MoveDownCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
-	void Execute() override
-	{
-		GetActor()->SetState<ClimbingDownState>();
-	}
+	explicit MoveDownCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) { m_pController = pActor->GetComponent<ControllerComponent>(); }
+	void Execute() override;
+private:
+	ControllerComponent* m_pController{};
 };

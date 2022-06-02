@@ -14,5 +14,7 @@ public:
 	void LoadGame() const override;
 private:
 	void PrintGameInfo() const;
+
+	void AddPlayer(Scene& scene, const glm::vec3& pos, float scale) const;
 };
 

@@ -18,9 +18,9 @@ public:
 	void Move(float dispX, float dispY);
 protected:
 	void Initialize() override;
-	void Update();
 private:
 	TransformComponent* m_pTransform{};
+
 	float m_MoveSpeed{};
 };
 

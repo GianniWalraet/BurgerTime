@@ -1,12 +1,18 @@
 #include "pch.h"
 #include "BurgerTime.h"
 
+// Component includes
+#include "Components/PeterPepperComponent.h"
+#include "Components/HealthDisplayComponent.h"
+#include "Components/ScoreDisplayComponent.h"
+
 // Prefab includes
 #include "Prefabs/PeterPepper.h"
 
 // Other
 #include "LevelParser/LevelParser.h"
 #include "Singletons/GridManager.h"
+#include "Command/PlayerCommands.h"
 
 void BurgerTime::LoadGame() const
 {
@@ -21,6 +27,7 @@ void BurgerTime::LoadGame() const
 	PrintGameInfo();
 
 	auto& scene = SceneManager::GetInstance().CreateScene("Level01");
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 32);
 
 	// level
 	{
@@ -59,7 +66,7 @@ void BurgerTime::LoadGame() const
 	// FPS Counter
 	{
 		auto child = std::make_shared<GameObject>();
-		child->AddComponent<TextComponent>(ResourceManager::GetInstance().LoadFont("Lingua.otf", 32));
+		child->AddComponent<TextComponent>(font);
 		child->AddComponent<RenderComponent>();
 		child->AddComponent<FPSComponent>();
 		scene.Add(child);
@@ -67,10 +74,7 @@ void BurgerTime::LoadGame() const
 
 	// Players
 	{
-		auto pp = std::make_shared<PeterPepper>();
-		pp->GetTransform()->SetPosition(0, 100, 0);
-		pp->GetTransform()->SetScale(4.f);
-		scene.Add(pp);
+		AddPlayer(scene, { 0, 100, 0 }, 4.f);
 	}
 
 	//ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
@@ -104,4 +108,50 @@ void BurgerTime::PrintGameInfo() const
 
 	std::cout << "Losing Health will add a sound to the queue\nGaining Score will play a sound over other other sounds\n";
 	std::cout << "\nADDITIONAL INFO: Once you reach 0 lives, gaining score or losing health will not be possible anymore,\nso no sounds will play either\n";
+}
+
+void BurgerTime::AddPlayer(Scene& scene, const glm::vec3& pos, float scale) const
+{
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 32);
+
+	int gridBoxSize{ 16 };
+	SDL_Rect source{};
+	source.x = gridBoxSize * 3;
+	source.y = 0;
+	source.w = gridBoxSize * 3;
+	source.h = gridBoxSize;
+
+	// Peter Pepper
+	auto pp = std::make_shared<GameObject>();
+	pp->AddComponent<PeterPepperComponent>();
+	pp->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, glm::vec2{ 0.5f, 1.f }, source);
+	pp->AddComponent<RenderComponent>();
+	pp->AddComponent<ControllerComponent>(150.f);
+	auto ppComp = pp->GetComponent<PeterPepperComponent>();
+
+	pp->GetTransform()->SetPosition(pos);
+	pp->GetTransform()->SetScale(scale);
+	scene.Add(pp);
+
+	// Health display
+	auto hd = std::make_shared<GameObject>();
+	auto hdComp = hd->AddComponent<HealthDisplayComponent>(ppComp);
+	ppComp->AddObserver(hdComp);
+
+	hd->GetTransform()->SetScale(4.f);
+	scene.Add(hd);
+
+	//auto sd = std::make_shared<GameObject>();
+	//txtComp = sd->AddComponent<TextComponent>(font);
+	//sd->AddComponent<RenderComponent>();
+	//auto sdComp = sd->AddComponent<ScoreDisplayComponent>(ppComp, txtComp);
+
+	//ppComp->AddObserver(sdComp);
+
+	InputManager::GetInstance().AddCommand<KillCommand>(ppComp->GetGameObject().lock(), SDLK_j, InputState::down);
+	InputManager::GetInstance().AddCommand<ScoreCommand>(ppComp->GetGameObject().lock(), SDLK_k, InputState::down);
+	InputManager::GetInstance().AddCommand<MoveLeftCommand>(ppComp->GetGameObject().lock(), SDLK_a);
+	InputManager::GetInstance().AddCommand<MoveRightCommand>(ppComp->GetGameObject().lock(), SDLK_d);
+	InputManager::GetInstance().AddCommand<MoveUpCommand>(ppComp->GetGameObject().lock(), SDLK_w);
+	InputManager::GetInstance().AddCommand<MoveDownCommand>(ppComp->GetGameObject().lock(), SDLK_s);
 }

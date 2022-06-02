@@ -2,6 +2,7 @@
 #include "PeterPepperComponent.h"
 #include "Observer/AchievementObserver.h"
 
+const int g_GridSize{ 16 };
 
 PeterPepperComponent::PeterPepperComponent()
 	: m_Lives{3}
@@ -10,33 +11,20 @@ PeterPepperComponent::PeterPepperComponent()
 
 PeterPepperComponent::~PeterPepperComponent()
 {
-	if (m_pSetState)
-	{
-		delete m_pSetState;
-		m_pSetState = nullptr;
-	}
 
-	delete m_pDefaultState;
-	m_pDefaultState = nullptr;
 }
 
 void PeterPepperComponent::Initialize()
 {
-	m_pDefaultState = new IdleState(this);
-	m_pCurrentState = m_pDefaultState;
+	m_pSpriteComponent = m_pGameObject.lock()->GetComponent<SpriteComponent>();
 }
 
 void PeterPepperComponent::Update()
 {
-	m_pCurrentState = m_StateSet ? m_pSetState : m_pDefaultState;
-	if (m_pCurrentState != m_pPreviousState)
+	if (!HandleState())
 	{
-		m_pCurrentState->OnStateSwitch();
+		m_State = State::idle;
 	}
-
-	m_pCurrentState->HandleState();
-	m_StateSet = false;
-	m_pPreviousState = m_pCurrentState;
 }
 
 void PeterPepperComponent::OnDie()
@@ -65,4 +53,93 @@ void PeterPepperComponent::OnBurgerDropped()
 		AchievementObserver::GetInstance().Notify(EAchievements::GameWin);
 		m_HasWon = true;
 	}
+}
+
+bool PeterPepperComponent::HandleState()
+{
+	if (m_State == m_PrevState && m_Dir == m_PrevDir) return false;
+
+	SDL_Rect source{};
+	int rows{1}, cols{1};
+	bool mirror{};
+
+	switch (m_State)
+	{
+	case State::moveHorizontal:
+		source.x = g_GridSize * 3;
+		source.y = 0;
+		source.w = g_GridSize * 3;
+		source.h = g_GridSize;
+
+		rows = 1;
+		cols = 3;
+
+		mirror = m_Dir == Direction::right;
+		break;
+
+	case State::moveVertical:
+		if (m_Dir == Direction::up)
+		{
+			source.x = g_GridSize * 6;
+			source.y = 0;
+			source.w = g_GridSize * 3;
+			source.h = g_GridSize;
+
+			rows = 1;
+			cols = 3;
+		}
+		else
+		{
+			source.x = 0;
+			source.y = 0;
+			source.w = g_GridSize * 3;
+			source.h = g_GridSize;
+
+			rows = 1;
+			cols = 3;
+		}
+		break;
+
+	case State::idle:
+	{
+		switch (m_Dir)
+		{
+		case Direction::left:
+			source.x = g_GridSize * 4;
+			source.y = 0;
+			source.w = g_GridSize;
+			source.h = g_GridSize;
+			break;
+		case Direction::right:
+			source.x = g_GridSize * 4;
+			source.y = 0;
+			source.w = g_GridSize;
+			source.h = g_GridSize;
+
+			mirror = true;
+			break;
+		case Direction::up:
+			source.x = g_GridSize * 7;
+			source.y = 0;
+			source.w = g_GridSize;
+			source.h = g_GridSize;
+			break;
+		case Direction::down:
+			source.x = g_GridSize;
+			source.y = 0;
+			source.w = g_GridSize;
+			source.h = g_GridSize;
+			break;
+		}
+	}
+		break;
+	case State::dead:
+		break;
+	}
+
+	m_pSpriteComponent->Reset(source, rows, cols, mirror);
+
+	m_PrevState = m_State;
+	m_PrevDir = m_Dir;
+	return true;
 }

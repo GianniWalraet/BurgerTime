@@ -6,7 +6,7 @@ class PeterPepperComponent;
 class HealthDisplayComponent final : public BaseComponent, public Observer
 {
 public:
-	HealthDisplayComponent(PeterPepperComponent* pPlayerC, TextComponent* pTextC);
+	HealthDisplayComponent(PeterPepperComponent* pPlayerC);
 	virtual ~HealthDisplayComponent() = default;
 	HealthDisplayComponent(const HealthDisplayComponent& other) = delete;
 	HealthDisplayComponent(HealthDisplayComponent&& other) = delete;
@@ -18,11 +18,8 @@ public:
 	void Notify(Event event) override;
 private:
 	PeterPepperComponent* m_pPlayer{};
-	TextComponent* m_pText{};
 
 	std::shared_ptr<Texture2D> m_pTexture{};
-
-	void UpdateText();
 };
 
 

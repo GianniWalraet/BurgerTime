@@ -13,8 +13,3 @@ void ControllerComponent::Initialize()
 {
 	m_pTransform = GetGameObject().lock()->GetTransform();
 }
-
-void ControllerComponent::Update()
-{
-
-}

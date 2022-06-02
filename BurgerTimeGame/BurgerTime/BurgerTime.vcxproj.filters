@@ -25,9 +25,6 @@
     <ClCompile Include="Prefabs\PeterPepper.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="State\PlayerStates.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="LevelParser\LevelParser.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -45,7 +42,6 @@
     <ClInclude Include="Components\HealthDisplayComponent.h" />
     <ClInclude Include="Components\PeterPepperComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
-    <ClInclude Include="State\PlayerStates.h" />
     <ClInclude Include="Prefabs\PeterPepper.h" />
     <ClInclude Include="LevelParser\LevelParser.h" />
     <ClInclude Include="Singletons\GridManager.h" />

@@ -19,6 +19,8 @@ SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfCols, int
 }
 void SpriteComponent::Update()
 {
+	if (m_Cols == 1 && m_Rows == 1) return;
+
 	m_AccuSec += Timer::GetInstance().GetElapsed();
 
 	if (m_AccuSec > m_FrameSec)
@@ -37,7 +39,14 @@ void SpriteComponent::Update()
 
 void SpriteComponent::Reset(const SDL_Rect& newSrc, int rows, int cols, bool mirror)
 {
-	m_pTexture->SetSource(newSrc);
+	if (cols == 1 && rows == 1)
+	{
+		m_CurrentFrame = newSrc;
+	}
+	else
+	{
+		m_pTexture->SetSource(newSrc);
+	}
 	m_Rows = rows;
 	m_Cols = cols;
 	m_IsMirrored = mirror;

@@ -8,6 +8,11 @@
 uint8_t PeterPepper::m_PlayerID = 0;
 uint8_t PeterPepper::m_MaxPlayers = 4;
 
+PeterPepper::PeterPepper()
+{
+	AddComponent<PeterPepperComponent>();
+}
+
 void PeterPepper::Initialize()
 {
 	if (m_PlayerID > (m_MaxPlayers - 1)) throw std::runtime_error("There can't be more than 4 players in the game");
@@ -23,25 +28,9 @@ void PeterPepper::Initialize()
 	source.h = gridBoxSize;
 
 	// PeterPepper object
-	AddComponent<PeterPepperComponent>();
 	AddComponent<RenderComponent>();
 	AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, glm::vec2{ 0.5f, 1.f }, source);
 	AddComponent<ControllerComponent>(150.f);
-
-	//HealthDisplay object
-	//child = AddChild(std::make_shared<GameObject>());
-	//auto txtComp = child->AddComponent<TextComponent>(font);
-	//child->AddComponent<RenderComponent>();
-	//auto hdComp	= child->AddComponent<HealthDisplayComponent>(ppComp, txtComp);
-
-	// ScoreDisplay object
-	//child =	AddChild(std::make_shared<GameObject>());
-	//txtComp = child->AddComponent<TextComponent>(font);
-	//child->AddComponent<RenderComponent>();
-	//auto sdComp	= child->AddComponent<ScoreDisplayComponent>(ppComp, txtComp);
-
-	//ppComp->AddObserver(hdComp);
-	//ppComp->AddObserver(sdComp);
 
 	// Controller input
 	InputManager::GetInstance().AddCommand<MoveLeftCommand>(m_PlayerID, shared_from_this(), ControllerButton::GAMEPAD_DPAD_LEFT);

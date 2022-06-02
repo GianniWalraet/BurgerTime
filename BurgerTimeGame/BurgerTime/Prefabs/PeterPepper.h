@@ -3,7 +3,7 @@
 class PeterPepper final : public GameObject
 {
 public:
-	PeterPepper() = default;
+	PeterPepper();
 	virtual ~PeterPepper() override { --m_PlayerID; }
 	PeterPepper(const PeterPepper& other) = delete;
 	PeterPepper(PeterPepper&& other) = delete;

@@ -22,5 +22,3 @@
 #pragma warning (pop)
 
 #include "MiniginAPI.h"
-
-#define GRID_SIZE 16

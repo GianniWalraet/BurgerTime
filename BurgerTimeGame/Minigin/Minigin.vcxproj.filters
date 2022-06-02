@@ -56,7 +56,6 @@
     <ClInclude Include="Base\Singleton.h" />
     <ClInclude Include="Base\Structs.h" />
     <ClInclude Include="Base\Timer.h" />
-    <ClInclude Include="State\State.h" />
     <ClInclude Include="Sound\SoundEffect.h" />
     <ClInclude Include="Sound\SoundStream.h" />
     <ClInclude Include="Sound\ServiceLocator.h" />
