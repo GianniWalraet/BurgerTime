@@ -212,6 +212,8 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClCompile Include="Components\PeterPepperComponent.cpp" />
     <ClCompile Include="Components\ScoreDisplayComponent.cpp" />
     <ClCompile Include="Implementations\State\PlayerStates.cpp" />
+    <ClCompile Include="Prefabs\Level.cpp" />
+    <ClCompile Include="LevelParser\LevelParser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -228,6 +230,8 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClInclude Include="Components\PeterPepperComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
     <ClInclude Include="Implementations\State\PlayerStates.h" />
+    <ClInclude Include="Prefabs\Level.h" />
+    <ClInclude Include="LevelParser\LevelParser.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Prefabs\PeterPepper.h" />
   </ItemGroup>

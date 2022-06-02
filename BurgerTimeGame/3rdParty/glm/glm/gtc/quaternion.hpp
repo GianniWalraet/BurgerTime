@@ -13,6 +13,7 @@
 /// <glm/gtc/quaternion.hpp> need to be included to use these functionalities.
 
 #pragma once
+#pragma warning( disable : 4201)
 
 // Dependency:
 #include "../mat3x3.hpp"
@@ -50,7 +51,7 @@ namespace glm
 #				pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
 #				pragma clang diagnostic ignored "-Wnested-anon-types"
 #			endif
-		
+
 			union
 			{
 				struct { T x, y, z, w;};

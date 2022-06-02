@@ -18,7 +18,7 @@ public:
 	template <typename T, typename... Args> T* AddComponent(Args... args)
 	{
 		auto co = new T(shared_from_this(), std::forward<Args>(args)...);
-		m_pComponents.push_back(co);
+		m_pComponents.emplace_back(co);
 		return co;
 	}
 	template <typename T> T* AddComponent(T* comp)
@@ -61,7 +61,6 @@ public:
 		}
 		return comps;
 	}
-
 	template <typename T> void RemoveComponent()
 	{
 		for (size_t i = 0; i < m_pComponents.size(); i++)
@@ -77,13 +76,13 @@ public:
 	std::shared_ptr<GameObject> GetParent() const;
 
 	size_t GetChildCount() const;
+	std::vector<std::shared_ptr<GameObject>> GetChildren() { return m_pChildren; }
 	const std::shared_ptr<GameObject>& GetChildAt(size_t index) const { return m_pChildren.at(index); }
 	void RemoveChildAt(size_t index);
 	std::shared_ptr<GameObject> AddChild(const std::shared_ptr<GameObject>& obj);
 	void RemoveChild(const std::shared_ptr<GameObject>& obj);
 
-	void SetPosition(const glm::vec3& pos);
-	const glm::vec3& GetPosition() const;
+	TransformComponent* GetTransform() { return m_Transform; }
 protected:
 	virtual void Initialize() {}
 	virtual void Update() {}

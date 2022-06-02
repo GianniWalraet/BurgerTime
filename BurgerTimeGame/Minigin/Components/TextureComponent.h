@@ -1,14 +1,13 @@
 #pragma once
 #include "BaseComponent.h"
 
-
 class Texture2D;
 
 class TextureComponent : public BaseComponent
 {
 public:
 	TextureComponent(const std::shared_ptr<GameObject>& pOwner) : BaseComponent::BaseComponent(pOwner) {}
-	TextureComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& filename, const SDL_Rect& srcRect = { 0,0,0,0 }, int w = 0.f, int h = 0.f);
+	TextureComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& filename, bool mirrored = false, const SDL_Rect& srcRect = { 0,0,0,0 });
 	virtual ~TextureComponent() = default;
 	TextureComponent(const TextureComponent& other) = delete;
 	TextureComponent(TextureComponent&& other) = delete;
@@ -16,21 +15,14 @@ public:
 	TextureComponent& operator=(TextureComponent&& other) = delete;
 
 	const std::shared_ptr<Texture2D>& GetTexture() const { return m_pTexture; };
-
-	const bool HasCustomSource() const { return m_HasCustomSource; }
-	const bool HasCustomSize() const { return m_HasCustomSize; }
-
-	const SDL_Rect& GetSrcRect() const { return m_SrcRect; }
-	const int GetWidth() const { return m_Width; }
-	const int GetHeight() const { return m_Height; }
+	const bool HasCustomSource() { return m_HasCustomSource; }
+	const bool IsMirrored() const { return m_IsMirrored; }
 protected:
 	std::shared_ptr<Texture2D> m_pTexture;
-	int m_Width{};
-	int m_Height{};
+	glm::vec2 m_Scale{};
+	bool m_IsMirrored{};
 private:
-	SDL_Rect m_SrcRect{};
 	bool m_HasCustomSource{};
-	bool m_HasCustomSize{};
 };
 
 

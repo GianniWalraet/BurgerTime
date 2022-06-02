@@ -8,7 +8,7 @@ class Texture2D;
 class TextComponent final : public TextureComponent
 {
 public:
-	TextComponent(const std::shared_ptr<GameObject>& pOwner) : TextureComponent::TextureComponent(pOwner) {}
+	TextComponent(const std::shared_ptr<GameObject>& pOwner, const std::shared_ptr<Font>& pFont) : TextureComponent::TextureComponent(pOwner), m_pFont{pFont} {}
 	virtual ~TextComponent() = default;
 	TextComponent(const TextComponent& other) = delete;
 	TextComponent(TextComponent&& other) = delete;

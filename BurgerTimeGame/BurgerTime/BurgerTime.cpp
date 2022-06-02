@@ -6,6 +6,7 @@
 
 // Prefab includes
 #include "Prefabs/PeterPepper.h"
+#include "Prefabs/Level.h"
 
 void BurgerTime::LoadGame() const
 {
@@ -21,31 +22,27 @@ void BurgerTime::LoadGame() const
 
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	// Background (everything is attached to this)
-	auto go =			std::make_shared<GameObject>();
-	auto texComp =		go->AddComponent<TextureComponent>("background.jpg");
-	auto renderComp =	go->AddComponent<RenderComponent>();
+	scene.Add(std::make_shared<Level>("../Data/Levels/Level01.txt"));
 
 	// DAE logo
-	auto child =		std::make_shared<GameObject>();
-	texComp =			child->AddComponent<TextureComponent>("logo.png");
-	renderComp =		child->AddComponent<RenderComponent>();
-	child->SetPosition({ 216, 50, 0 });
-	go->AddChild(child);
+	//auto child = std::make_shared<GameObject>();
+	//child->AddComponent<TextureComponent>("logo.png");
+	//child->AddComponent<RenderComponent>();
+	//child->GetTransform()->SetPosition({ Renderer::GetInstance().GetWindowWidth() / 2.f, Renderer::GetInstance().GetWindowHeight() / 2.f, 0.f });
+	//go->AddChild(child);
 
 	// FPS
-	child =				std::make_shared<GameObject>();
-	auto txtComp =		child->AddComponent<TextComponent>();
-	renderComp =		child->AddComponent<RenderComponent>();
+	auto child = std::make_shared<GameObject>();
+	child->AddComponent<TextComponent>(ResourceManager::GetInstance().LoadFont("Lingua.otf", 12));
+	child->AddComponent<RenderComponent>();
 	child->AddComponent<FPSComponent>();
-	txtComp->SetFont(ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
-	go->AddChild(child);
+	scene.Add(child);
+
 
 	// Players
-	go->AddChild(std::make_shared<PeterPepper>());
-	go->AddChild(std::make_shared<PeterPepper>());
-
-	scene.Add(go);
+	auto pp = std::make_shared<PeterPepper>();
+	scene.Add(pp);
+	//auto pp2 = go->AddChild(std::make_shared<PeterPepper>());
 
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);

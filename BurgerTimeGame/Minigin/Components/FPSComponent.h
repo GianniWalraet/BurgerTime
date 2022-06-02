@@ -19,6 +19,6 @@ public:
 	void Update() override;
 private:
 	TextComponent* m_pText{};
-	uint32_t m_PreviousFPS;
+	uint32_t m_PreviousFPS{};
 };
 

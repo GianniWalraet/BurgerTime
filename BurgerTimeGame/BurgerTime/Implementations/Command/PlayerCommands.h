@@ -62,7 +62,7 @@ public:
 	explicit MoveUpCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
-		//GetActor()->SetState(PlayerState::OnLadder, Direction::Up);
+		GetActor()->SetState<ClimbingUpState>();
 	}
 };
 
@@ -72,6 +72,6 @@ public:
 	explicit MoveDownCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
-		//GetActor()->SetState(PlayerState::OnLadder, Direction::Down);
+		GetActor()->SetState<ClimbingDownState>();
 	}
 };

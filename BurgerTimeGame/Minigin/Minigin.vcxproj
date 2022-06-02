@@ -228,6 +228,7 @@
     <ClInclude Include="Components\TextComponent.h" />
     <ClInclude Include="Components\TextureComponent.h" />
     <ClInclude Include="Components\TransformComponent.h" />
+    <ClInclude Include="Components\ControllerComponent.h" />
     <ClInclude Include="Graphics\Font.h" />
     <ClInclude Include="Graphics\Texture2D.h" />
     <ClInclude Include="Input\ControllerInput.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="Components\TextComponent.cpp" />
     <ClCompile Include="Components\TextureComponent.cpp" />
     <ClCompile Include="Components\TransformComponent.cpp" />
+    <ClCompile Include="Components\ControllerComponent.cpp" />
     <ClCompile Include="Graphics\Font.cpp" />
     <ClCompile Include="Graphics\Texture2D.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />

@@ -13,10 +13,7 @@ public:
 	void Render() const;
 	void Destroy();
 
-	void RenderTexture(const Texture2D& texture, int x, int y, bool mirror = false) const;
-	void RenderTexture(const Texture2D& texture, int x, int y, int width, int height, bool mirror = false) const;
-	void RenderTexture(const Texture2D& texture, int x, int y, const SDL_Rect& srcRect, bool mirror = false) const;
-	void RenderTexture(const Texture2D& texture, int x, int y, int width, int height, const SDL_Rect& srcRect, bool mirror = false) const;
+	void RenderTexture(const Texture2D& texture, const glm::vec2& pos, const SDL_Rect& source, const glm::vec2& scale = { 1, 1 }, bool mirror = false) const;
 
 	SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
 

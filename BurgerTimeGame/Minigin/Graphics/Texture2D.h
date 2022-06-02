@@ -18,9 +18,13 @@ struct SDL_Texture;
 
 		const int GetWidth() const { return m_Width; }
 		const int GetHeight() const { return m_Height; }
+		const SDL_Rect GetSource() const { return m_Source; }
+
+		void SetSource(const SDL_Rect& newSrc);
 	private:
 		SDL_Texture* m_Texture{};
 		int m_Width{};
 		int m_Height{};
+		SDL_Rect m_Source{};
 	};
 

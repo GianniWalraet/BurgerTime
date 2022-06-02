@@ -63,6 +63,7 @@
     <ClInclude Include="Sound\SoundManager.h" />
     <ClInclude Include="Sound\LoggedSoundManager.h" />
     <ClInclude Include="Sound\NullSoundManager.h" />
+    <ClInclude Include="Components\ControllerComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp" />
@@ -134,6 +135,9 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Sound\SoundManager.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\ControllerComponent.cpp">
       <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>

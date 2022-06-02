@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <iostream> // std::cout
 #include <sstream> // stringstream
+#include <fstream>
 #include <memory> // smart pointers
 #include <vector>
 #include <map>
@@ -23,4 +24,3 @@
 #include "MiniginAPI.h"
 
 #define GRID_SIZE 16
-#define GAME_SCALE 3

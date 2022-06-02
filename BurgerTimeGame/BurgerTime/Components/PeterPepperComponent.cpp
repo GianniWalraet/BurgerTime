@@ -1,15 +1,43 @@
 #include "pch.h"
 #include "PeterPepperComponent.h"
-#include <Observer/AchievementObserver.h>
+#include "Observer/AchievementObserver.h"
 
+
+PeterPepperComponent::PeterPepperComponent(const std::shared_ptr<GameObject>& pOwner)
+	: BaseComponent(pOwner)
+	, m_Lives{3}
+{
+}
 
 PeterPepperComponent::~PeterPepperComponent()
 {
-	if (m_pState)
+	if (m_pSetState)
 	{
-		delete m_pState;
-		m_pState = nullptr;
+		delete m_pSetState;
+		m_pSetState = nullptr;
 	}
+
+	delete m_pDefaultState;
+	m_pDefaultState = nullptr;
+}
+
+void PeterPepperComponent::Initialize()
+{
+	m_pDefaultState = new IdleState(this);
+	m_pCurrentState = m_pDefaultState;
+}
+
+void PeterPepperComponent::Update()
+{
+	m_pCurrentState = m_StateSet ? m_pSetState : m_pDefaultState;
+	if (m_pCurrentState != m_pPreviousState)
+	{
+		m_pCurrentState->OnStateSwitch();
+	}
+
+	m_pCurrentState->HandleState();
+	m_StateSet = false;
+	m_pPreviousState = m_pCurrentState;
 }
 
 void PeterPepperComponent::OnDie()

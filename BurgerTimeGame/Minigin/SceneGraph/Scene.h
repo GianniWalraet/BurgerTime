@@ -2,6 +2,8 @@
 #include "SceneGraph/SceneManager.h"
 
 class GameObject;
+class RenderComponent;
+
 class Scene
 {
 	friend Scene& SceneManager::CreateScene(const std::string& name);
@@ -23,6 +25,9 @@ private:
 
 	std::string m_Name;
 	std::vector <std::shared_ptr<GameObject>> m_Objects{};
+	std::vector <RenderComponent*> m_pRenderObjs{};
 
 	static unsigned int m_IdCounter;
+
+	void SortRenderObjects();
 };

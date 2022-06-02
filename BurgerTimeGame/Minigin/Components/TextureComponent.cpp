@@ -5,15 +5,13 @@
 #include "Singletons/Renderer.h"
 #include "TransformComponent.h"
 
-TextureComponent::TextureComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& filename, const SDL_Rect& srcRect, int w, int h)
-	: BaseComponent::BaseComponent(pOwner)
+TextureComponent::TextureComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& filename, bool mirrored, const SDL_Rect& srcRect)
+	: BaseComponent(pOwner)
+	, m_IsMirrored{ mirrored }
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
-	m_SrcRect = srcRect;
-	m_Width = w;
-	m_Height = h;
-
-	const float epsilon{ 0.001f };
-	m_HasCustomSource = (!(srcRect.w > 0 && srcRect.h > 0)) ? false : true;
-	m_HasCustomSize = (!(w > epsilon && h > epsilon)) ? false : true;
+	if (srcRect.w != 0 && srcRect.h != 0)
+	{
+		m_pTexture->SetSource(srcRect);
+	}
 }

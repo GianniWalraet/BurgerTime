@@ -14,7 +14,6 @@ protected:
 	void Initialize() override;
 private:
 	static uint8_t m_PlayerID;
-	// is a set position for each player
-	static std::vector<glm::vec3> m_PlayerHUDPositions;
+	static uint8_t m_MaxPlayers;
 };
 
