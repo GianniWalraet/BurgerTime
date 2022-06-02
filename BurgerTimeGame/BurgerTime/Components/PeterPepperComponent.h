@@ -5,7 +5,7 @@
 class PeterPepperComponent final : public BaseComponent, public Subject
 {
 public:
-	PeterPepperComponent(const std::shared_ptr<GameObject>& pOwner);
+	PeterPepperComponent();
 	virtual ~PeterPepperComponent();
 	PeterPepperComponent(const PeterPepperComponent& other) = delete;
 	PeterPepperComponent(PeterPepperComponent&& other) = delete;

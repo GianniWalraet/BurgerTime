@@ -3,16 +3,12 @@
 #include "Singletons/Renderer.h"
 #include "Graphics/Texture2D.h"
 #include "SceneGraph/GameObject.h"
-#include "TextureComponent.h"
-#include "SpriteComponent.h"
 
 void RenderComponent::Initialize()
 {
-	auto texComp = m_pOwner.lock()->GetComponent<TextureComponent>();
-	auto spriteComp = m_pOwner.lock()->GetComponent<SpriteComponent>();
-
-	if (texComp) m_pTexture = texComp;
-	if (spriteComp) m_pSprite = spriteComp;
+	m_pTexture = m_pOwner.lock()->GetComponent<TextureComponent>();
+	m_pSprite =  m_pOwner.lock()->GetComponent<SpriteComponent>();
+	m_pText = m_pOwner.lock()->GetComponent<TextComponent>();
 }
 
 void RenderComponent::Render()
@@ -33,5 +29,14 @@ void RenderComponent::Render()
 		const glm::vec2& scale = m_pOwner.lock()->GetTransform()->GetScale();
 
 		renderer.RenderTexture(*m_pSprite->GetTexture().get(), { pos.x, pos.y }, m_pSprite->GetCurrentFrame(), scale, m_pSprite->IsMirrored());
+	}
+
+	if (m_pText)
+	{
+		const Texture2D& texture = *m_pText->GetTexture().get();
+		const glm::vec3& pos = m_pOwner.lock()->GetTransform()->GetPosition();
+		const glm::vec2& scale = m_pOwner.lock()->GetTransform()->GetScale();
+
+		renderer.RenderTexture(texture, { pos.x, pos.y }, texture.GetSource(), scale);
 	}
 }

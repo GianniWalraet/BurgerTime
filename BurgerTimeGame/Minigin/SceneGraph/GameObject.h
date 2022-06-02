@@ -17,13 +17,13 @@ public:
 
 	template <typename T, typename... Args> T* AddComponent(Args... args)
 	{
-		auto co = new T(shared_from_this(), std::forward<Args>(args)...);
-		m_pComponents.emplace_back(co);
+		auto co = new T(std::forward<Args>(args)...);
+		RootAddComponent(co);
 		return co;
 	}
 	template <typename T> T* AddComponent(T* comp)
 	{
-		m_pComponents.push_back(comp);
+		RootAddComponent(comp);
 		return comp;
 	}
 	template <typename T> T* GetComponent() const
@@ -37,30 +37,6 @@ public:
 		}
 		return nullptr;
 	}
-	template <typename T> T* GetComponentFromChildren() const
-	{
-		for (const auto& child : m_pChildren)
-		{
-			auto comp = child->GetComponent<T>();
-			if (comp) return comp;
-		}
-		return nullptr;
-	}
-	template <typename T> std::vector<T*> GetComponentsFromChildren() const
-	{
-		std::vector<T*> comps{};
-
-		if (GetChildCount() == 0) return comps;
-
-		for (const auto& child : m_pChildren)
-		{
-			const auto comp = child->GetComponent<T>();
-			const auto subComps = child->GetComponentsFromChildren<T>();
-			if (comps.size() > 0)comps.insert(comps.end(), subComps.begin(), subComps.end());
-			if (comp) comps.push_back(comp);
-		}
-		return comps;
-	}
 	template <typename T> void RemoveComponent()
 	{
 		for (size_t i = 0; i < m_pComponents.size(); i++)
@@ -72,15 +48,42 @@ public:
 		}
 	}
 
-	void SetParent(const std::shared_ptr<GameObject>& parent);
-	std::shared_ptr<GameObject> GetParent() const;
+#pragma region childParentFuncs
+	//template <typename T> T* GetComponentFromChildren() const
+	//{
+	//	for (const auto& child : m_pChildren)
+	//	{
+	//		auto comp = child->GetComponent<T>();
+	//		if (comp) return comp;
+	//	}
+	//	return nullptr;
+	//}
+	//template <typename T> std::vector<T*> GetComponentsFromChildren() const
+	//{
+	//	std::vector<T*> comps{};
 
-	size_t GetChildCount() const;
-	std::vector<std::shared_ptr<GameObject>> GetChildren() { return m_pChildren; }
-	const std::shared_ptr<GameObject>& GetChildAt(size_t index) const { return m_pChildren.at(index); }
-	void RemoveChildAt(size_t index);
-	std::shared_ptr<GameObject> AddChild(const std::shared_ptr<GameObject>& obj);
-	void RemoveChild(const std::shared_ptr<GameObject>& obj);
+	//	if (GetChildCount() == 0) return comps;
+
+	//	for (const auto& child : m_pChildren)
+	//	{
+	//		const auto comp = child->GetComponent<T>();
+	//		const auto subComps = child->GetComponentsFromChildren<T>();
+	//		if (comps.size() > 0)comps.insert(comps.end(), subComps.begin(), subComps.end());
+	//		if (comp) comps.push_back(comp);
+	//	}
+	//	return comps;
+	//}
+
+	//void SetParent(const std::shared_ptr<GameObject>& parent);
+	//std::shared_ptr<GameObject> GetParent() const;
+
+	//size_t GetChildCount() const;
+	//std::vector<std::shared_ptr<GameObject>> GetChildren() { return m_pChildren; }
+	//const std::shared_ptr<GameObject>& GetChildAt(size_t index) const { return m_pChildren.at(index); }
+	//void RemoveChildAt(size_t index);
+	//std::shared_ptr<GameObject> AddChild(const std::shared_ptr<GameObject>& obj);
+	//void RemoveChild(const std::shared_ptr<GameObject>& obj);
+#pragma endregion
 
 	TransformComponent* GetTransform() { return m_Transform; }
 protected:
@@ -88,12 +91,13 @@ protected:
 	virtual void Update() {}
 private:
 	friend class Scene;
-	TransformComponent* m_Transform{};
 	std::vector<BaseComponent*> m_pComponents{};
+	TransformComponent* m_Transform{};
 
 	std::vector<std::shared_ptr<GameObject>> m_pChildren{};
-	std::weak_ptr<GameObject> m_pParent{};
+	//std::weak_ptr<GameObject> m_pParent{};
 
 	void RootInitialize();
 	void RootUpdate();
+	void RootAddComponent(BaseComponent* pComp);
 };

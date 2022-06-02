@@ -5,9 +5,8 @@
 #include "Singletons/Renderer.h"
 #include "TransformComponent.h"
 
-TextureComponent::TextureComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& filename, bool mirrored, const SDL_Rect& srcRect)
-	: BaseComponent(pOwner)
-	, m_IsMirrored{ mirrored }
+TextureComponent::TextureComponent(const std::string& filename, bool mirrored, const SDL_Rect& srcRect)
+	: m_IsMirrored{ mirrored }
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
 	if (srcRect.w != 0 && srcRect.h != 0)

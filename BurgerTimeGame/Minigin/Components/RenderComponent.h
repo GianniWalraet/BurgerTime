@@ -1,7 +1,7 @@
 #pragma once
-#include "BaseComponent.h"
-#include <vector>
-#include <memory>
+#include "TextureComponent.h"
+#include "SpriteComponent.h"
+#include "TextComponent.h"
 
 
 class TextureComponent;
@@ -11,7 +11,7 @@ class GameObject;
 class RenderComponent final : public BaseComponent
 {
 public:
-	RenderComponent(const std::shared_ptr<GameObject>& pOwner) : BaseComponent::BaseComponent(pOwner) {}
+	RenderComponent() = default;
 	virtual ~RenderComponent() = default;
 	RenderComponent(const RenderComponent& other) = delete;
 	RenderComponent(RenderComponent&& other) = delete;
@@ -24,5 +24,6 @@ private:
 	friend class Scene;
 	TextureComponent* m_pTexture{};
 	SpriteComponent* m_pSprite{};
+	TextComponent* m_pText{};
 };
 

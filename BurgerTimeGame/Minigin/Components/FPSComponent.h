@@ -8,7 +8,7 @@ class TextComponent;
 class FPSComponent final : public BaseComponent
 {
 public:
-	FPSComponent(const std::shared_ptr<GameObject>& pOwner) : BaseComponent::BaseComponent(pOwner) {}
+	FPSComponent() = default;
 	virtual ~FPSComponent() = default;
 	FPSComponent(const FPSComponent& other) = delete;
 	FPSComponent(FPSComponent&& other) = delete;

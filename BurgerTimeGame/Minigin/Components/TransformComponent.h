@@ -4,7 +4,7 @@
 	class TransformComponent final : public BaseComponent
 	{
 	public:
-		TransformComponent(const std::shared_ptr<GameObject>& pOwner) : BaseComponent::BaseComponent(pOwner) {}
+		TransformComponent() = default;
 		virtual ~TransformComponent() = default;
 
 		void SetPosition(float x, float y, float z) { SetPosition({ x, y, z }); }

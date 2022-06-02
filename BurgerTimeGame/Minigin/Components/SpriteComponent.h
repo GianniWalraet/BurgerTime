@@ -6,8 +6,7 @@ class Texture2D;
 class SpriteComponent : public BaseComponent
 {
 public:
-	SpriteComponent(const std::shared_ptr<GameObject>& pOwner) : BaseComponent::BaseComponent(pOwner) {}
-	SpriteComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& assetPath, int nrOfRows, int nrOfCols, float frameSec, const SDL_Rect& srcRect = { 0,0,0,0 });
+	SpriteComponent(const std::string& assetPath, int nrOfRows, int nrOfCols, float frameSec, const SDL_Rect& srcRect = { 0,0,0,0 });
 	virtual ~SpriteComponent() = default;
 	SpriteComponent(const SpriteComponent& other) = delete;
 	SpriteComponent(SpriteComponent&& other) = delete;

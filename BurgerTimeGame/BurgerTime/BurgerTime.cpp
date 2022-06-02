@@ -24,13 +24,6 @@ void BurgerTime::LoadGame() const
 
 	scene.Add(std::make_shared<Level>("../Data/Levels/Level01.txt"));
 
-	// DAE logo
-	//auto child = std::make_shared<GameObject>();
-	//child->AddComponent<TextureComponent>("logo.png");
-	//child->AddComponent<RenderComponent>();
-	//child->GetTransform()->SetPosition({ Renderer::GetInstance().GetWindowWidth() / 2.f, Renderer::GetInstance().GetWindowHeight() / 2.f, 0.f });
-	//go->AddChild(child);
-
 	// FPS
 	auto child = std::make_shared<GameObject>();
 	child->AddComponent<TextComponent>(ResourceManager::GetInstance().LoadFont("Lingua.otf", 12));

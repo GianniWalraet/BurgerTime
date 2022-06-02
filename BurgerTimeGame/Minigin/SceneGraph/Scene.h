@@ -25,9 +25,6 @@ private:
 
 	std::string m_Name;
 	std::vector <std::shared_ptr<GameObject>> m_Objects{};
-	std::vector <RenderComponent*> m_pRenderObjs{};
 
 	static unsigned int m_IdCounter;
-
-	void SortRenderObjects();
 };

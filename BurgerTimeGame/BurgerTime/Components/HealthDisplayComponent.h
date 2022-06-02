@@ -6,7 +6,7 @@ class PeterPepperComponent;
 class HealthDisplayComponent final : public BaseComponent, public Observer
 {
 public:
-	HealthDisplayComponent(const std::shared_ptr<GameObject>& pOwner, PeterPepperComponent* pPlayerC, TextComponent* pTextC);
+	HealthDisplayComponent(PeterPepperComponent* pPlayerC, TextComponent* pTextC);
 	virtual ~HealthDisplayComponent() = default;
 	HealthDisplayComponent(const HealthDisplayComponent& other) = delete;
 	HealthDisplayComponent(HealthDisplayComponent&& other) = delete;

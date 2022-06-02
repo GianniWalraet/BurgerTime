@@ -6,7 +6,7 @@ class TransformComponent;
 class ControllerComponent : public BaseComponent
 {
 public:
-	ControllerComponent(const std::shared_ptr<GameObject>& pOwner, float movementSpeed) : BaseComponent::BaseComponent(pOwner), m_MoveSpeed{movementSpeed} {}
+	ControllerComponent(float movementSpeed) : m_MoveSpeed{movementSpeed} {}
 	virtual ~ControllerComponent() = default;
 	ControllerComponent(const ControllerComponent& other) = delete;
 	ControllerComponent(ControllerComponent&& other) = delete;

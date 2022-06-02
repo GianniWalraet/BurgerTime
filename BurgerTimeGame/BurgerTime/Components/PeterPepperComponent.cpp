@@ -3,9 +3,8 @@
 #include "Observer/AchievementObserver.h"
 
 
-PeterPepperComponent::PeterPepperComponent(const std::shared_ptr<GameObject>& pOwner)
-	: BaseComponent(pOwner)
-	, m_Lives{3}
+PeterPepperComponent::PeterPepperComponent()
+	: m_Lives{3}
 {
 }
 

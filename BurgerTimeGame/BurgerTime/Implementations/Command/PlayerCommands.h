@@ -7,7 +7,7 @@ class PlayerCommand : public Command
 public:
 	PlayerCommand(std::shared_ptr<GameObject> pActor) : Command(pActor) 
 	{
-		m_pPeterPepperComp = pActor->GetComponentFromChildren<PeterPepperComponent>();
+		m_pPeterPepperComp = pActor->GetComponent<PeterPepperComponent>();
 	}
 	~PlayerCommand() override = default;
 protected:

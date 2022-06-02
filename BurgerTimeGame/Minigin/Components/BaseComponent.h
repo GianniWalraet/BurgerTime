@@ -6,7 +6,7 @@ class GameObject;
 class BaseComponent
 {
 public:
-	BaseComponent(const std::shared_ptr<GameObject>& pOwner) : m_pOwner{ pOwner } {}
+	BaseComponent() = default;
 	virtual ~BaseComponent() = default;
 	BaseComponent(const BaseComponent& other) = delete;
 	BaseComponent(BaseComponent&& other) = delete;

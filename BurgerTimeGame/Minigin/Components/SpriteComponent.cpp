@@ -4,8 +4,7 @@
 #include "Base/Timer.h"
 #include "Singletons/ResourceManager.h"
 
-SpriteComponent::SpriteComponent(const std::shared_ptr<GameObject>& pOwner, const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const SDL_Rect& srcRect)
-	: BaseComponent(pOwner)
+SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const SDL_Rect& srcRect)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPath);
 	m_Cols = nrOfCols;

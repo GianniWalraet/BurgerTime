@@ -2,8 +2,7 @@
 #include "HealthDisplayComponent.h"
 #include "PeterPepperComponent.h"
 
-HealthDisplayComponent::HealthDisplayComponent(const std::shared_ptr<GameObject>& pOwner, PeterPepperComponent* pPlayerC, TextComponent* pTextC)
-	: BaseComponent::BaseComponent(pOwner)
+HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayerC, TextComponent* pTextC)
 {
 	m_pPlayer = pPlayerC;
 	m_pText = pTextC;

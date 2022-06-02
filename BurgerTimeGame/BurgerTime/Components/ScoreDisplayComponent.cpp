@@ -3,8 +3,7 @@
 #include "PeterPepperComponent.h"
 
 
-ScoreDisplayComponent::ScoreDisplayComponent(const std::shared_ptr<GameObject>& pOwner, PeterPepperComponent* pPlayerC, TextComponent* pTextC)
-	: BaseComponent::BaseComponent(pOwner)
+ScoreDisplayComponent::ScoreDisplayComponent(PeterPepperComponent* pPlayerC, TextComponent* pTextC)
 {
 	m_pPlayer = pPlayerC;
 	m_pText = pTextC;
