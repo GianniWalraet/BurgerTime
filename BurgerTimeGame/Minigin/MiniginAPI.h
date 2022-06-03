@@ -9,6 +9,7 @@
 #include "SceneGraph/SceneManager.h"
 #include "SceneGraph/Scene.h"
 #include "SceneGraph/GameObject.h"
+#include "SceneGraph/Transform.h"
 
 #include "Observer/Subject.h"
 #include "Observer/Observer.h"
@@ -25,7 +26,6 @@
 #include "Components/SpriteComponent.h"
 #include "Components/TextComponent.h"
 #include "Components/TextComponent.h"
-#include "Components/TransformComponent.h"
 #include "Components/ControllerComponent.h"
 
 #include "Sound/ServiceLocator.h"

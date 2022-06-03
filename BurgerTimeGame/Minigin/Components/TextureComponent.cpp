@@ -2,8 +2,6 @@
 #include "TextureComponent.h"
 #include "Graphics/Texture2D.h"
 #include "Singletons/ResourceManager.h"
-#include "Singletons/Renderer.h"
-#include "TransformComponent.h"
 
 TextureComponent::TextureComponent(const std::string& filename, const glm::vec2& pivot, bool mirrored, const SDL_Rect& srcRect)
 	: m_IsMirrored{ mirrored }

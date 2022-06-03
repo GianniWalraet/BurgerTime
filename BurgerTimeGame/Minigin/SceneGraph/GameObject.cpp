@@ -4,12 +4,6 @@
 #include "Singletons/ResourceManager.h"
 #include "Singletons/Renderer.h"
 
-GameObject::GameObject()
-{
-	// Each gameobject has a transform
-	m_Transform = new TransformComponent();
-}
-
 GameObject::~GameObject()
 {
 	for (size_t i = 0; i < m_pComponents.size(); i++)
@@ -21,11 +15,7 @@ GameObject::~GameObject()
 
 void GameObject::RootInitialize()
 {
-	RootAddComponent(m_Transform);
-
 	Initialize();
-	// set owner here since we can't pass shared_from_this in the constructor
-	m_Transform->m_pGameObject = shared_from_this();
 
 	for (auto& c : m_pComponents)
 	{

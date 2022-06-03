@@ -51,7 +51,7 @@
     <ClInclude Include="Components\SpriteComponent.h" />
     <ClInclude Include="Components\TextComponent.h" />
     <ClInclude Include="Components\TextureComponent.h" />
-    <ClInclude Include="Components\TransformComponent.h" />
+    <ClInclude Include="SceneGraph\Transform.h" />
     <ClInclude Include="Command\Command.h" />
     <ClInclude Include="Base\Singleton.h" />
     <ClInclude Include="Base\Structs.h" />
@@ -118,7 +118,7 @@
     <ClCompile Include="Components\TextureComponent.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="Components\TransformComponent.cpp">
+    <ClCompile Include="SceneGraph\Transform.cpp">
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Base\Timer.cpp">

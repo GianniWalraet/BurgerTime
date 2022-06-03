@@ -1,11 +1,10 @@
 #pragma once
-#include "BaseComponent.h"
 
-	class TransformComponent final : public BaseComponent
+	class Transform final
 	{
 	public:
-		TransformComponent() = default;
-		virtual ~TransformComponent() = default;
+		Transform() = default;
+		virtual ~Transform() = default;
 
 		void SetPosition(float x, float y, float z) { SetPosition({ x, y, z }); }
 		void SetPosition(const glm::vec3& position) { m_Position = position; }

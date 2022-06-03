@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Components/TransformComponent.h"
+#include "SceneGraph/Transform.h"
 
 class Texture2D;
 class BaseComponent;
@@ -8,7 +8,7 @@ class BaseComponent;
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
-	GameObject();
+	GameObject() = default;
 	virtual ~GameObject();
 	GameObject(const GameObject& other) = delete;
 	GameObject(GameObject&& other) = delete;
@@ -85,16 +85,17 @@ public:
 	//void RemoveChild(const std::shared_ptr<GameObject>& obj);
 #pragma endregion
 
-	TransformComponent* GetTransform() { return m_Transform; }
+	Transform& GetTransform() { return m_Transform; }
 protected:
 	virtual void Initialize() {}
 	virtual void Update() {}
 private:
 	friend class Scene;
-	std::vector<BaseComponent*> m_pComponents{};
-	TransformComponent* m_Transform{};
 
-	std::vector<std::shared_ptr<GameObject>> m_pChildren{};
+	Transform m_Transform{};
+	std::vector<BaseComponent*> m_pComponents{};
+
+	//std::vector<std::shared_ptr<GameObject>> m_pChildren{};
 	//std::weak_ptr<GameObject> m_pParent{};
 
 	void RootInitialize();

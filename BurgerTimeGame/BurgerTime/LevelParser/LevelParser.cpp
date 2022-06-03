@@ -1,45 +1,45 @@
 #include "pch.h"
 #include "LevelParser.h"
 
-std::unordered_map<char, glm::vec2> LevelParser::m_LevelPieceIDs
-{
-	{'/'  ,{0, 0}},
-	{'\\' ,{m_GridBoxSize, 0}},
-	{'-'  ,{m_GridBoxSize * 2, 0}},
-	{'<'  ,{m_GridBoxSize * 3, 0}},
-	{'>'  ,{m_GridBoxSize * 4, 0}},
-	{'p'  ,{m_GridBoxSize * 5, 0}},
-	{'u'  ,{m_GridBoxSize * 6, 0}},
-	{'q'  ,{m_GridBoxSize * 7, 0}},
-	{'{'  ,{0, m_GridBoxSize}},
-	{'}'  ,{m_GridBoxSize, m_GridBoxSize}},
-	{'#'  ,{m_GridBoxSize * 2, m_GridBoxSize}},
-	{'('  ,{m_GridBoxSize * 3, m_GridBoxSize}},
-	{')'  ,{m_GridBoxSize * 4, m_GridBoxSize}},
-	{'['  ,{0, m_GridBoxSize * 2}},
-	{']'  ,{m_GridBoxSize, m_GridBoxSize * 2}},
-};
-
-std::vector<std::vector<std::pair<SDL_Rect, bool>>> LevelParser::ParseFile(const std::string& fileName)
+std::vector<Cell> LevelParser::ParseLevel(const std::string& fileName, float scale, std::string& textureFile, int& nrRows, int& nrCols)
 {
 	std::ifstream file(fileName);
-
 	if (!file) throw std::runtime_error("Invalid Level file!\n");
 
-	size_t i{};
-	std::vector<std::vector<std::pair<SDL_Rect, bool>>> out{};
-
 	std::string line{};
+	std::vector<Cell> out{};
+
+	// Get the texture of the lvl
+	{
+		std::getline(file, line);
+		textureFile = line;
+	}
+
+	// Get the rows and cols of the lvl
+	{
+		std::getline(file, line);
+		std::istringstream str{ line};
+		str >> nrRows >> nrCols;
+	}
+
+	// Get the dimensions of 1 cell
+	int cellW, cellH;
+	{
+		std::getline(file, line);
+		std::istringstream str{ line };
+		str >> cellW >> cellH;
+	}
+
+	size_t i{};
 	while (std::getline(file, line))
 	{
-		out.emplace_back(std::vector<std::pair<SDL_Rect, bool>>());
 		for (size_t j = 0; j < line.size(); j++)
 		{
-			glm::vec2 pos = m_LevelPieceIDs[line[j]];
-			out[i].emplace_back(std::pair<SDL_Rect, bool>{ SDL_Rect{ static_cast<int>(pos.x), static_cast<int>(pos.y), m_GridBoxSize, m_GridBoxSize }, line[j] == '#' });
+			out.emplace_back(Cell{ SDL_Rect{ int(j * cellW * scale), int(i * cellH * scale),int(cellW * scale), int(cellH * scale) }, line[j] == '#' });
 		}
 		++i;
 	}
 
 	return out;
 }
+

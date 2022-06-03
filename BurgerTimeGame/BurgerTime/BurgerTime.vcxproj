@@ -207,6 +207,7 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\BurgerComponent.cpp" />
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="Command\PlayerCommands.cpp" />
     <ClCompile Include="Components\HealthDisplayComponent.cpp" />
@@ -224,6 +225,7 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClCompile Include="Prefabs\PeterPepper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\BurgerComponent.h" />
     <ClInclude Include="BurgerTime.h" />
     <ClInclude Include="Singletons\GridManager.h" />
     <ClInclude Include="Command\PlayerCommands.h" />

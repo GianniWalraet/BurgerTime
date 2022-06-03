@@ -227,7 +227,7 @@
     <ClInclude Include="Components\SpriteComponent.h" />
     <ClInclude Include="Components\TextComponent.h" />
     <ClInclude Include="Components\TextureComponent.h" />
-    <ClInclude Include="Components\TransformComponent.h" />
+    <ClInclude Include="SceneGraph\Transform.h" />
     <ClInclude Include="Components\ControllerComponent.h" />
     <ClInclude Include="Graphics\Font.h" />
     <ClInclude Include="Graphics\Texture2D.h" />
@@ -260,7 +260,7 @@
     <ClCompile Include="Components\SpriteComponent.cpp" />
     <ClCompile Include="Components\TextComponent.cpp" />
     <ClCompile Include="Components\TextureComponent.cpp" />
-    <ClCompile Include="Components\TransformComponent.cpp" />
+    <ClCompile Include="SceneGraph\Transform.cpp" />
     <ClCompile Include="Components\ControllerComponent.cpp" />
     <ClCompile Include="Graphics\Font.cpp" />
     <ClCompile Include="Graphics\Texture2D.cpp" />

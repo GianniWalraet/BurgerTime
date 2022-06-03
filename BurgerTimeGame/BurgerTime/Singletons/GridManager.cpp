@@ -16,3 +16,20 @@ int GridManager::PositionToIndex(const glm::vec2& pos) const
     }
     return idx;
 }
+
+glm::vec2 GridManager::IndexToPosition(int index) const
+{
+    glm::vec2 pos{};
+    int ww = Renderer::GetInstance().GetWindowWidth();
+    int wh = Renderer::GetInstance().GetWindowHeight();
+
+    if (index < m_Grid.size() && index >= 0)
+    {
+        int xIdx = index % m_NrOfCols;
+        int yIdx = index / m_NrOfRows;
+
+        pos.x = static_cast<float>(xIdx * ww / m_NrOfCols);
+        pos.y = static_cast<float>(yIdx * wh / m_NrOfRows);
+    }
+    return pos;
+}

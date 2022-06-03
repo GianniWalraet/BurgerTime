@@ -5,6 +5,7 @@
 #include "Components/PeterPepperComponent.h"
 #include "Components/HealthDisplayComponent.h"
 #include "Components/ScoreDisplayComponent.h"
+#include "Components/BurgerComponent.h"
 
 // Prefab includes
 #include "Prefabs/PeterPepper.h"
@@ -32,35 +33,20 @@ void BurgerTime::LoadGame() const
 	// level
 	{
 		auto& gridManager = GridManager::GetInstance();
-		auto lvlSprite = ResourceManager::GetInstance().LoadTexture("LevelSprite.png");
-		auto grid = LevelParser::ParseFile("../Data/Levels/Level01.txt");
 
-		for (int i = 0; i < grid.size(); i++)
-		{
-			for (int j = 0; j < grid[i].size(); j++)
-			{
-				auto c = std::make_shared<GameObject>();
-				c->GetTransform()->SetScale(4.f);
-				auto scale = c->GetTransform()->GetScale();
-				const auto& data = grid[i][j];
+		// Read in level data
+		std::string lvlTexFile{};
+		int nrRows, nrCols;
+		auto grid = LevelParser::ParseLevel("../Data/Levels/Level01.txt", 4.f, lvlTexFile, nrRows, nrCols);
+		
+		auto LvlTextureGO = std::make_shared<GameObject>();
+		LvlTextureGO->GetTransform().SetScale(4.f);
+		LvlTextureGO->GetTransform().SetPosition(0.f, 32.f, 0.f);
+		LvlTextureGO->AddComponent<TextureComponent>(lvlTexFile);
+		LvlTextureGO->AddComponent<RenderComponent>();
+		scene.Add(LvlTextureGO);
 
-				int w = static_cast<int>(data.first.w * scale.x);
-				int h = static_cast<int>(data.first.h * scale.y);
-				int xPos = w * j;
-				int yPos = h * i;
-
-				c->GetTransform()->SetPosition(static_cast<float>(xPos), static_cast<float>(yPos), 0.f);
-				c->AddComponent<TextureComponent>("LevelSprite.png", glm::vec2{ 0, 0 }, false, data.first);
-				c->AddComponent<RenderComponent>();
-
-				GridBox newBox{};
-				newBox.boundingbox = { xPos, yPos, w, h };
-				newBox.isSolid = data.second;
-				gridManager.AddBox(newBox);
-
-				scene.Add(c);
-			}
-		}
+		gridManager.SetGrid(grid, nrRows, nrCols);
 	}
 
 	// FPS Counter
@@ -129,8 +115,8 @@ void BurgerTime::AddPlayer(Scene& scene, const glm::vec3& pos, float scale) cons
 	pp->AddComponent<ControllerComponent>(150.f);
 	auto ppComp = pp->GetComponent<PeterPepperComponent>();
 
-	pp->GetTransform()->SetPosition(pos);
-	pp->GetTransform()->SetScale(scale);
+	pp->GetTransform().SetPosition(pos);
+	pp->GetTransform().SetScale(scale);
 	scene.Add(pp);
 
 	// Health display
@@ -138,7 +124,7 @@ void BurgerTime::AddPlayer(Scene& scene, const glm::vec3& pos, float scale) cons
 	auto hdComp = hd->AddComponent<HealthDisplayComponent>(ppComp);
 	ppComp->AddObserver(hdComp);
 
-	hd->GetTransform()->SetScale(4.f);
+	hd->GetTransform().SetScale(4.f);
 	scene.Add(hd);
 
 	//auto sd = std::make_shared<GameObject>();
