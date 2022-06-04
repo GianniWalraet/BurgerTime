@@ -1,4 +1,4 @@
-#include "pch.h"
+ #include "pch.h"
 #include "PeterPepperComponent.h"
 #include "Observer/AchievementObserver.h"
 #include "Components/PeterPepperComponent.h"
@@ -30,8 +30,6 @@ void PeterPepperComponent::Update()
 	auto& gridManager = GridManager::GetInstance();
 	auto& pos = m_pGameObject.lock()->GetTransform().GetPosition();
 	m_CellIdx = gridManager.PositionToIndex({ pos.x, pos.y });
-
-	std::cout << gridManager.PositionToIndex({ pos.x, pos.y }) << '\n';
 
 	if (m_CellIdx != m_PrevCellIdx)
 	{

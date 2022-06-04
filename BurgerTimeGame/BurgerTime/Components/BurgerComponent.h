@@ -37,5 +37,8 @@ private:
 	bool m_OnPlate{};
 
 	const int m_BurgerPieces{};
+
+	void CheckCanDrop();
+	void HandleBurgerDropping();
 };
 

@@ -21,9 +21,7 @@ void BurgerTime::LoadGame() const
 	ServiceLocator::RegisterSoundManager(std::make_shared<LoggedSoundManager>(ServiceLocator::GetSoundManager()));
 #else
 	ServiceLocator::RegisterSoundManager(std::make_shared<SoundManager>());
-
 #endif
-
 	PrintGameInfo();
 
 	auto& scene = SceneManager::GetInstance().CreateScene("Level01");
@@ -63,6 +61,7 @@ void BurgerTime::LoadGame() const
 	// Players
 	{
 		AddPlayer(scene, { 50, 100, 0 }, 4.f);
+		//AddPlayer(scene, { 200, 100, 0 }, 4.f);
 	}
 
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", GameData::SoundtrackVolume, false);
@@ -114,6 +113,7 @@ void BurgerTime::AddPlayer(Scene& scene, const glm::vec3& pos, float scale) cons
 	pp->AddComponent<PeterPepperComponent>();
 	pp->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 15.f, glm::vec2{ 0.5f, 1.f }, source);
 	pp->AddComponent<RenderComponent>();
+	pp->AddComponent<Box2DComponent>(float(gridBoxSize), float(gridBoxSize));
 	pp->AddComponent<ControllerComponent>(glm::vec2{ 150.f, 100.f });
 	auto ppComp = pp->GetComponent<PeterPepperComponent>();
 

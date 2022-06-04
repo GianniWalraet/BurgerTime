@@ -5,6 +5,8 @@
 class Texture2D;
 class BaseComponent;
 
+using Tag = std::string;
+
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
@@ -47,6 +49,9 @@ public:
 			}
 		}
 	}
+
+	const Tag& GetTag() const { return m_Tag; };
+	void SetTag(const Tag& newTag) { m_Tag = newTag; }
 
 #pragma region childParentFuncs
 	//template <typename T> T* GetComponentFromChildren() const
@@ -91,6 +96,7 @@ protected:
 	virtual void Update() {}
 private:
 	friend class Scene;
+	Tag m_Tag{};
 
 	Transform m_Transform{};
 	std::vector<BaseComponent*> m_pComponents{};

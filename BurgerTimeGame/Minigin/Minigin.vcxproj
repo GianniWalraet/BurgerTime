@@ -220,6 +220,10 @@
     <ClInclude Include="Base\Singleton.h" />
     <ClInclude Include="Base\Structs.h" />
     <ClInclude Include="Base\Timer.h" />
+    <ClInclude Include="Base\Utils.h" />
+    <ClInclude Include="Singletons\CollisionManager.h" />
+    <ClInclude Include="Components\Button2DComponent.h" />
+    <ClInclude Include="Components\Box2DComponent.h" />
     <ClInclude Include="Command\Command.h" />
     <ClInclude Include="Components\BaseComponent.h" />
     <ClInclude Include="Components\FPSComponent.h" />
@@ -255,6 +259,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Timer.cpp" />
+    <ClCompile Include="Singletons\CollisionManager.cpp" />
+    <ClCompile Include="Components\Button2DComponent.cpp" />
+    <ClCompile Include="Components\Box2DComponent.cpp" />
     <ClCompile Include="Components\FPSComponent.cpp" />
     <ClCompile Include="Components\RenderComponent.cpp" />
     <ClCompile Include="Components\SpriteComponent.cpp" />

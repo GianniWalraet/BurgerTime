@@ -37,6 +37,9 @@
     <ClCompile Include="Components\BurgerComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="State\PeterPepperStates.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -50,5 +53,6 @@
     <ClInclude Include="Singletons\GridManager.h" />
     <ClInclude Include="Components\BurgerComponent.h" />
     <ClInclude Include="Base\GameData.h" />
+    <ClInclude Include="State\PeterPepperStates.h" />
   </ItemGroup>
 </Project>

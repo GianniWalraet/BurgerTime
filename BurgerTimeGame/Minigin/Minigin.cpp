@@ -10,6 +10,7 @@
 #include "Singletons/ResourceManager.h"
 #include "Sound/ServiceLocator.h"
 #include "Sound/SoundManager.h"
+#include "Singletons/CollisionManager.h"
 
 using namespace std;
 
@@ -76,6 +77,7 @@ void Minigin::Run()
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
+		auto& collisionManager = CollisionManager::GetInstance();
 
 		// Init input
 		input.Initialize();
@@ -94,6 +96,7 @@ void Minigin::Run()
 
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
+			collisionManager.HandleCollision();
 			renderer.Render();
 			renderer.Clear();
 
