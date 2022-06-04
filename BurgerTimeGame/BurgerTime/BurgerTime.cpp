@@ -12,7 +12,6 @@
 
 // Other
 #include "LevelParser/LevelParser.h"
-#include "Singletons/GridManager.h"
 #include "Command/PlayerCommands.h"
 
 void BurgerTime::LoadGame() const
@@ -35,18 +34,21 @@ void BurgerTime::LoadGame() const
 		auto& gridManager = GridManager::GetInstance();
 
 		// Read in level data
-		std::string lvlTexFile{};
+		std::string lvlTexFile;
 		int nrRows, nrCols;
-		auto grid = LevelParser::ParseLevel("../Data/Levels/Level01.txt", 4.f, lvlTexFile, nrRows, nrCols);
+		std::vector<Cell> cells;
+		std::vector<std::shared_ptr<GameObject>> burgers;
+		LevelParser::ParseLevel(GameData::StringPathLvl01, GameData::GameScale, lvlTexFile, nrRows, nrCols, cells, burgers);
 		
 		auto LvlTextureGO = std::make_shared<GameObject>();
-		LvlTextureGO->GetTransform().SetScale(4.f);
+		LvlTextureGO->GetTransform().SetScale(GameData::GameScale);
 		LvlTextureGO->GetTransform().SetPosition(0.f, 32.f, 0.f);
 		LvlTextureGO->AddComponent<TextureComponent>(lvlTexFile);
 		LvlTextureGO->AddComponent<RenderComponent>();
 		scene.Add(LvlTextureGO);
 
-		gridManager.SetGrid(grid, nrRows, nrCols);
+		gridManager.SetGrid(cells, nrRows, nrCols);
+		std::for_each(burgers.begin(), burgers.end(), [&](const std::shared_ptr<GameObject>& burger) { scene.Add(burger); });
 	}
 
 	// FPS Counter
@@ -63,8 +65,8 @@ void BurgerTime::LoadGame() const
 		AddPlayer(scene, { 0, 100, 0 }, 4.f);
 	}
 
-	//ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
-	//ServiceLocator::GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);
+	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
+	ServiceLocator::GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);
 }
 
 void BurgerTime::PrintGameInfo() const

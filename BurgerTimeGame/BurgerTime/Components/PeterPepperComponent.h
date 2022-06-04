@@ -44,7 +44,10 @@ private:
 	State m_PrevState{};
 	Direction m_PrevDir{};
 
-	SpriteComponent* m_pSpriteComponent;
+	int m_CellIdx{};
+	int m_PrevCellIdx{};
+
+	SpriteComponent* m_pSpriteComponent{};
 	int8_t m_Lives{};
 	int32_t m_Score{};
 	bool m_HasWon{};

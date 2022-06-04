@@ -25,6 +25,17 @@ void PeterPepperComponent::Update()
 	{
 		m_State = State::idle;
 	}
+
+	auto& gridManager = GridManager::GetInstance();
+	auto& pos = m_pGameObject.lock()->GetTransform().GetPosition();
+	m_CellIdx = gridManager.PositionToIndex({ pos.x, pos.y });
+
+	if (m_CellIdx != m_PrevCellIdx)
+	{
+		gridManager.GetCell(m_CellIdx).isTriggered = true;
+		gridManager.GetCell(m_PrevCellIdx).isTriggered = false;
+	}
+	m_PrevCellIdx = m_CellIdx;
 }
 
 void PeterPepperComponent::OnDie()

@@ -13,7 +13,7 @@ enum class BurgerType
 class BurgerComponent final : public BaseComponent
 {
 public:
-	BurgerComponent(BurgerType type);
+	BurgerComponent(const std::vector<int>& cellIndices);
 	virtual ~BurgerComponent() = default;
 	BurgerComponent(const BurgerComponent& other) = delete;
 	BurgerComponent(BurgerComponent&& other) = delete;
@@ -22,6 +22,7 @@ public:
 
 	void Update() override;
 private:
-	std::shared_ptr<Texture2D> m_pTexture{};
+	std::vector<int> m_CellIndices;
+	std::vector<bool> m_IsSteppedOn{ false, false, false, false };
 };
 

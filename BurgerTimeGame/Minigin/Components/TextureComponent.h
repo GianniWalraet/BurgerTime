@@ -16,13 +16,11 @@ public:
 	const std::shared_ptr<Texture2D>& GetTexture() const { return m_pTexture; };
 	const glm::vec2& GetPivot() const { return m_Pivot; }
 
-	const bool HasCustomSource() { return m_HasCustomSource; }
 	const bool IsMirrored() const { return m_IsMirrored; }
 protected:
 	std::shared_ptr<Texture2D> m_pTexture;
 	glm::vec2 m_Pivot{};
 	bool m_IsMirrored{};
-	bool m_HasCustomSource{};
 };
 
 

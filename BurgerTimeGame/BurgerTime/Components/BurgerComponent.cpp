@@ -1,15 +1,28 @@
 #include "pch.h"
 #include "BurgerComponent.h"
 
-BurgerComponent::BurgerComponent(BurgerType type)
+BurgerComponent::BurgerComponent(const std::vector<int>& cellIndices)
+	:m_CellIndices(cellIndices)
 {
-	m_pTexture = ResourceManager::GetInstance().LoadTexture("LevelSprite.png");
-	m_pTexture->SetSource({ 8 * 8, 8 * static_cast<int>(type), 8 * 4, 8 });
+	
 }
 
 void BurgerComponent::Update()
 {
-	auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
-	auto scale = m_pGameObject.lock()->GetTransform().GetScale();
-	Renderer::GetInstance().AppendTexture(m_pTexture.get(), { pos.x, pos.y }, m_pTexture->GetSource(), { 0,0 }, { scale.x, scale.y });
+	auto& gridManager = GridManager::GetInstance();
+
+	for (size_t i = 0; i < m_CellIndices.size(); i++)
+	{
+		if (gridManager.GetCell(m_CellIndices[i]).isTriggered)
+		{
+			m_IsSteppedOn[i] = true;
+		}
+	}
+
+	if (std::all_of(m_IsSteppedOn.begin(), m_IsSteppedOn.end(), [](bool v) { return v; }))
+	{
+		auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
+		pos.y -= 10 * Timer::GetInstance().GetElapsed();
+		m_pGameObject.lock()->GetTransform().SetPosition(pos.x, pos.y, 0.f);
+	}
 }

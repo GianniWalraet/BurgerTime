@@ -1,13 +1,14 @@
 #include "pch.h"
 #include "LevelParser.h"
+#include "Components/BurgerComponent.h"
 
-std::vector<Cell> LevelParser::ParseLevel(const std::string& fileName, float scale, std::string& textureFile, int& nrRows, int& nrCols)
+void LevelParser::ParseLevel(const std::string& fileName, float scale, std::string& textureFile, int& nrRows, int& nrCols,
+	std::vector<Cell>& cells, std::vector<std::shared_ptr<GameObject>>& burgers)
 {
 	std::ifstream file(fileName);
 	if (!file) throw std::runtime_error("Invalid Level file!\n");
 
 	std::string line{};
-	std::vector<Cell> out{};
 
 	// Get the texture of the lvl
 	{
@@ -18,7 +19,7 @@ std::vector<Cell> LevelParser::ParseLevel(const std::string& fileName, float sca
 	// Get the rows and cols of the lvl
 	{
 		std::getline(file, line);
-		std::istringstream str{ line};
+		std::istringstream str{ line };
 		str >> nrRows >> nrCols;
 	}
 
@@ -30,16 +31,50 @@ std::vector<Cell> LevelParser::ParseLevel(const std::string& fileName, float sca
 		str >> cellW >> cellH;
 	}
 
-	size_t i{};
+	int i{};
 	while (std::getline(file, line))
 	{
-		for (size_t j = 0; j < line.size(); j++)
+		for (int j = 0; j < line.size(); j++)
 		{
-			out.emplace_back(Cell{ SDL_Rect{ int(j * cellW * scale), int(i * cellH * scale),int(cellW * scale), int(cellH * scale) }, line[j] == '#' });
+			cells.emplace_back(Cell{ SDL_Rect{ int(j * cellW * scale), int(i * cellH * scale),int(cellW * scale), int(cellH * scale) }, line[j] == '#' });
+
+			if (line[j] == '#' || line[j] == 'o') continue;
+			if (line[j - 1] != '#' && line[j - 1] != 'o') continue;
+
+			BurgerType type{};
+			switch (line[j])
+			{
+			case 'n':
+				type = BurgerType::bunTop;
+				break;
+			case 's':
+				type = BurgerType::salad;
+				break;
+			case 'c':
+				type = BurgerType::cheese;
+				break;
+			case 't':
+				type = BurgerType::tomato;
+				break;
+			case 'b':
+				type = BurgerType::burger;
+				break;
+			case 'v':
+				type = BurgerType::bunBottom;
+				break;
+			}
+
+			auto burgerObj = std::make_shared<GameObject>();
+			burgerObj->AddComponent<BurgerComponent>(std::vector<int>{(j + i * nrRows), (j + i * nrRows + 1), (j + i * nrRows + 2), (j + i * nrRows + 3)});
+			burgerObj->AddComponent<TextureComponent>("LevelSprite.png", glm::vec2{ 0,0 }, false, SDL_Rect{ cellW * 8, cellH * static_cast<int>(type), cellW * 4, cellH });
+			burgerObj->AddComponent<RenderComponent>();
+
+			burgerObj->GetTransform().SetPosition(float(j * cellW * scale), float(i * cellH * scale) - 32.f, 0.f);
+			burgerObj->GetTransform().SetScale(scale);
+
+			burgers.emplace_back(burgerObj);
 		}
 		++i;
 	}
-
-	return out;
 }
 

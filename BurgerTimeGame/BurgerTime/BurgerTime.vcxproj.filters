@@ -49,5 +49,6 @@
     <ClInclude Include="LevelParser\LevelParser.h" />
     <ClInclude Include="Singletons\GridManager.h" />
     <ClInclude Include="Components\BurgerComponent.h" />
+    <ClInclude Include="Base\GameData.h" />
   </ItemGroup>
 </Project>
