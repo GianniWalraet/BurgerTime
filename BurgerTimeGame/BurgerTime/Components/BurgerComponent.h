@@ -24,5 +24,8 @@ public:
 private:
 	std::vector<int> m_CellIndices;
 	std::vector<bool> m_IsSteppedOn{ false, false, false, false };
+
+	float m_FallVelocity{};
+	float m_FallAcceleration{ -98.1f };
 };
 

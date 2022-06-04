@@ -30,6 +30,8 @@ void PeterPepperComponent::Update()
 	auto& pos = m_pGameObject.lock()->GetTransform().GetPosition();
 	m_CellIdx = gridManager.PositionToIndex({ pos.x, pos.y });
 
+	std::cout << gridManager.PositionToIndex({ pos.x, pos.y }) << '\n';
+
 	if (m_CellIdx != m_PrevCellIdx)
 	{
 		gridManager.GetCell(m_CellIdx).isTriggered = true;

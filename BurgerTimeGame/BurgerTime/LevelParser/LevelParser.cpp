@@ -65,7 +65,8 @@ void LevelParser::ParseLevel(const std::string& fileName, float scale, std::stri
 			}
 
 			auto burgerObj = std::make_shared<GameObject>();
-			burgerObj->AddComponent<BurgerComponent>(std::vector<int>{(j + i * nrRows), (j + i * nrRows + 1), (j + i * nrRows + 2), (j + i * nrRows + 3)});
+			int currentIdx = (j + i * nrCols) - nrCols;
+			burgerObj->AddComponent<BurgerComponent>(std::vector<int>{currentIdx, (currentIdx + 1), (currentIdx + 2), (currentIdx + 3)});
 			burgerObj->AddComponent<TextureComponent>("LevelSprite.png", glm::vec2{ 0,0 }, false, SDL_Rect{ cellW * 8, cellH * static_cast<int>(type), cellW * 4, cellH });
 			burgerObj->AddComponent<RenderComponent>();
 

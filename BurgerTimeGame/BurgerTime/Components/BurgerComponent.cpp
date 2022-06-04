@@ -22,7 +22,8 @@ void BurgerComponent::Update()
 	if (std::all_of(m_IsSteppedOn.begin(), m_IsSteppedOn.end(), [](bool v) { return v; }))
 	{
 		auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
-		pos.y -= 10 * Timer::GetInstance().GetElapsed();
+		m_FallVelocity += m_FallAcceleration * Timer::GetInstance().GetElapsed();
+		pos.y -= m_FallVelocity * Timer::GetInstance().GetElapsed();
 		m_pGameObject.lock()->GetTransform().SetPosition(pos.x, pos.y, 0.f);
 	}
 }
