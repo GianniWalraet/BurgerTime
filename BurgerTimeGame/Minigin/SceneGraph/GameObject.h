@@ -7,7 +7,7 @@ class BaseComponent;
 
 using Tag = std::string;
 
-class GameObject : public std::enable_shared_from_this<GameObject>
+class GameObject final : public std::enable_shared_from_this<GameObject>
 {
 public:
 	GameObject() = default;

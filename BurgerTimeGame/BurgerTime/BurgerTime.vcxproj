@@ -217,6 +217,8 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClCompile Include="Components\HealthDisplayComponent.cpp" />
     <ClCompile Include="Components\PeterPepperComponent.cpp" />
     <ClCompile Include="Components\ScoreDisplayComponent.cpp" />
+    <ClCompile Include="Singletons\GameState.cpp" />
+    <ClCompile Include="Scenes\Level01Scene.cpp" />
     <ClCompile Include="State\PeterPepperStates.cpp" />
     <ClCompile Include="Singletons\GridManager.cpp" />
     <ClCompile Include="LevelParser\LevelParser.cpp" />
@@ -227,12 +229,13 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Prefabs\PeterPepper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\GameData.h" />
     <ClInclude Include="Components\BurgerComponent.h" />
     <ClInclude Include="BurgerTime.h" />
+    <ClInclude Include="Singletons\GameState.h" />
+    <ClInclude Include="Scenes\Level01Scene.h" />
     <ClInclude Include="State\PeterPepperStates.h" />
     <ClInclude Include="Singletons\GridManager.h" />
     <ClInclude Include="Command\PlayerCommands.h" />
@@ -241,7 +244,6 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
     <ClInclude Include="LevelParser\LevelParser.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Prefabs\PeterPepper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

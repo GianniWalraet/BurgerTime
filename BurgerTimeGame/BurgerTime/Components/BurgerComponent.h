@@ -22,6 +22,8 @@ public:
 	BurgerComponent& operator=(const BurgerComponent& other) = delete;
 	BurgerComponent& operator=(BurgerComponent&& other) = delete;
 
+	void OnDrop();
+
 	void Update() override;
 private:
 	std::vector<int> m_CellIndices;

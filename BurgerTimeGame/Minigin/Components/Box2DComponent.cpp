@@ -3,15 +3,22 @@
 #include "SceneGraph/GameObject.h"
 #include "Singletons/CollisionManager.h"
 
-Box2DComponent::Box2DComponent(float w, float h)
+Box2DComponent::Box2DComponent(float w, float h, bool isTrigger)
 	: m_Width{w}
 	, m_Height{h}
+	, m_IsTrigger{ isTrigger }
 {
-	CollisionManager::GetInstance().AddCollider(this);
+	if (isTrigger)
+	{
+		CollisionManager::GetInstance().AddCollider(this);
+	}
 }
 Box2DComponent::~Box2DComponent()
 {
-	CollisionManager::GetInstance().RemoveCollider(this);
+	if (m_IsTrigger)
+	{
+		CollisionManager::GetInstance().RemoveCollider(this);
+	}
 }
 
 void Box2DComponent::SetOnOverlapCallback(CollisionCallback callback)

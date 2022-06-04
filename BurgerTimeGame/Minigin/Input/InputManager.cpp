@@ -9,6 +9,8 @@ void InputManager::Initialize()
 
 bool InputManager::ProcessInput()
 {
+	if (m_InputDisabled) return true;
+
 	m_pControllerInput->HandleInput();
 	bool doContinue = m_pKeyboardInput->HandleInput();
 

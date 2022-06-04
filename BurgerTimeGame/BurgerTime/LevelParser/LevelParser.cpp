@@ -38,7 +38,7 @@ void LevelParser::ParseLevel(const std::string& fileName, float scale, std::stri
 		{
 			bool isBurgerPlatform = (line[j] == '=' || line[j] == 'n' || line[j] == 's' || line[j] == 'c' || line[j] == 't' || line[j] == 'b' || line[j] == 'v');
 			cells.emplace_back(Cell{ SDL_Rect{ int(j * cellW * scale), int(i * cellH * scale),int(cellW * scale), int(cellH * scale) }, line[j] == '#', isBurgerPlatform });
-			
+
 			if (line[j] == '#' || line[j] == 'o' || line[j] == '=') continue;
 			if (line[j - 1] != '#' && line[j - 1] != 'o') continue;
 
@@ -65,11 +65,23 @@ void LevelParser::ParseLevel(const std::string& fileName, float scale, std::stri
 				break;
 			}
 
+			int burgerPieces{ 4 };
+			std::vector<Box2DComponent*> colliders{};
+			for (size_t i = 0; i < burgerPieces; i++)
+			{
+				auto triggerBoxGO = std::make_shared<GameObject>();
+				auto box2DComp = triggerBoxGO->AddComponent<Box2DComponent>(float(cellW * scale), float(cellH * scale), true);
+				colliders.emplace_back(box2DComp);
+			}
+
 			auto burgerObj = std::make_shared<GameObject>();
 			int currentIdx = (j + i * nrCols) - nrCols;
-			burgerObj->AddComponent<BurgerComponent>(std::vector<int>{currentIdx, (currentIdx + 1), (currentIdx + 2), (currentIdx + 3)});
+			burgerObj->AddComponent<BurgerComponent>(colliders);
 			burgerObj->AddComponent<TextureComponent>("LevelSprite.png", glm::vec2{ 0,0 }, false, SDL_Rect{ cellW * 8, cellH * static_cast<int>(type), cellW * 4, cellH });
 			burgerObj->AddComponent<RenderComponent>();
+
+
+
 
 			burgerObj->GetTransform().SetPosition(float(j * cellW * scale), float(i * cellH * scale) - 32.f, 0.f);
 			burgerObj->GetTransform().SetScale(scale);

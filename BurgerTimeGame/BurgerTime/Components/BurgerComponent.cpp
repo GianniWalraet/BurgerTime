@@ -9,6 +9,10 @@ BurgerComponent::BurgerComponent(const std::vector<int>& cellIndices)
 
 }
 
+void BurgerComponent::OnDrop()
+{
+}
+
 void BurgerComponent::Update()
 {
 	if (m_OnPlate) return;

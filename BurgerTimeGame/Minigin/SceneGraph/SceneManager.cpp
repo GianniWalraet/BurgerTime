@@ -6,29 +6,37 @@ void SceneManager::Initialize()
 {
 	for (auto& scene : m_Scenes)
 	{
-		scene->Initialize();
+		scene->RootInitialize();
 	}
+
+	m_ActiveScene = m_Scenes.front();
 }
 
 void SceneManager::Update()
 {
-	for(auto& scene : m_Scenes)
-	{
-		scene->Update();
-	}
+	m_ActiveScene->RootUpdate();
 }
 
 void SceneManager::Render() const
 {
-	for (const auto& scene : m_Scenes)
+	m_ActiveScene->Render();
+}
+
+void SceneManager::SetActiveScene(const std::string& name)
+{
+	for (size_t i = 0; i < m_Scenes.size(); i++)
 	{
-		scene->Render();
+		if (m_Scenes[i]->m_Name == name)
+		{
+			m_ActiveScene->OnSceneDeactivated();
+			m_ActiveScene = m_Scenes[i];
+			m_ActiveScene->OnSceneActivated();
+			break;
+		}
 	}
 }
 
-Scene& SceneManager::CreateScene(const std::string& name)
+void SceneManager::AddScene(const std::shared_ptr<Scene>& scene)
 {
-	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
 	m_Scenes.push_back(scene);
-	return *scene;
 }

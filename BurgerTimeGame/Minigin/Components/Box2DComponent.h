@@ -14,7 +14,7 @@ using CollisionCallback = std::function<void(std::shared_ptr<GameObject> pTrigge
 class Box2DComponent : public BaseComponent
 {
 public:
-	Box2DComponent(float w, float h);
+	Box2DComponent(float w, float h, bool isTrigger);
 	virtual ~Box2DComponent() override;
 	Box2DComponent(const Box2DComponent& other) = delete;
 	Box2DComponent(Box2DComponent&& other) = delete;
@@ -27,6 +27,7 @@ public:
 	Rectf GetCollider() const;
 private:
 	float m_Width{}, m_Height{};
+	bool m_IsTrigger{};
 	CollisionCallback m_Callback{};
 };
 

@@ -22,6 +22,9 @@ public:
 	void Initialize();
 	bool ProcessInput();
 
+	void DisableInput() { m_InputDisabled = true; }
+	void EnableInput() { m_InputDisabled = false; }
+
 	// Controller
 	bool IsPressed(UINT id, ControllerButton button) const;
 	bool WentDownThisFrame(UINT id, ControllerButton button) const;
@@ -59,6 +62,8 @@ public:
 private:
 	friend class Singleton<InputManager>;
 	InputManager() = default;
+
+	bool m_InputDisabled{};
 
 	std::unique_ptr<ControllerInput> m_pControllerInput;
 	std::unique_ptr<SDLKeyboardInput> m_pKeyboardInput;

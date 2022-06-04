@@ -7,7 +7,6 @@ enum class State
 	idle,
 	dead
 };
-
 enum class Direction
 {
 	left,

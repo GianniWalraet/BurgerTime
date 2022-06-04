@@ -3,13 +3,10 @@
 #include "Observer/AchievementObserver.h"
 #include "Components/PeterPepperComponent.h"
 
-const int g_GridSize{ 16 };
-
 PeterPepperComponent::PeterPepperComponent()
 	: m_Lives{3}
 {
 }
-
 PeterPepperComponent::~PeterPepperComponent()
 {
 
@@ -19,7 +16,6 @@ void PeterPepperComponent::Initialize()
 {
 	m_pSpriteComponent = m_pGameObject.lock()->GetComponent<SpriteComponent>();
 }
-
 void PeterPepperComponent::Update()
 {
 	if (!HandleState())
@@ -77,10 +73,10 @@ bool PeterPepperComponent::HandleState()
 	switch (m_State)
 	{
 	case State::moveHorizontal:
-		source.x = g_GridSize * 3;
+		source.x = GameData::SpriteCellSize * 3;
 		source.y = 0;
-		source.w = g_GridSize * 3;
-		source.h = g_GridSize;
+		source.w = GameData::SpriteCellSize * 3;
+		source.h = GameData::SpriteCellSize;
 
 		rows = 1;
 		cols = 3;
@@ -91,10 +87,10 @@ bool PeterPepperComponent::HandleState()
 	case State::moveVertical:
 		if (m_Dir == Direction::up)
 		{
-			source.x = g_GridSize * 6;
+			source.x = GameData::SpriteCellSize * 6;
 			source.y = 0;
-			source.w = g_GridSize * 3;
-			source.h = g_GridSize;
+			source.w = GameData::SpriteCellSize * 3;
+			source.h = GameData::SpriteCellSize;
 
 			rows = 1;
 			cols = 3;
@@ -103,8 +99,8 @@ bool PeterPepperComponent::HandleState()
 		{
 			source.x = 0;
 			source.y = 0;
-			source.w = g_GridSize * 3;
-			source.h = g_GridSize;
+			source.w = GameData::SpriteCellSize * 3;
+			source.h = GameData::SpriteCellSize;
 
 			rows = 1;
 			cols = 3;
@@ -116,30 +112,30 @@ bool PeterPepperComponent::HandleState()
 		switch (m_Dir)
 		{
 		case Direction::left:
-			source.x = g_GridSize * 4;
+			source.x = GameData::SpriteCellSize * 4;
 			source.y = 0;
-			source.w = g_GridSize;
-			source.h = g_GridSize;
+			source.w = GameData::SpriteCellSize;
+			source.h = GameData::SpriteCellSize;
 			break;
 		case Direction::right:
-			source.x = g_GridSize * 4;
+			source.x = GameData::SpriteCellSize * 4;
 			source.y = 0;
-			source.w = g_GridSize;
-			source.h = g_GridSize;
+			source.w = GameData::SpriteCellSize;
+			source.h = GameData::SpriteCellSize;
 
 			mirror = true;
 			break;
 		case Direction::up:
-			source.x = g_GridSize * 7;
+			source.x = GameData::SpriteCellSize * 7;
 			source.y = 0;
-			source.w = g_GridSize;
-			source.h = g_GridSize;
+			source.w = GameData::SpriteCellSize;
+			source.h = GameData::SpriteCellSize;
 			break;
 		case Direction::down:
-			source.x = g_GridSize;
+			source.x = GameData::SpriteCellSize;
 			source.y = 0;
-			source.w = g_GridSize;
-			source.h = g_GridSize;
+			source.w = GameData::SpriteCellSize;
+			source.h = GameData::SpriteCellSize;
 			break;
 		}
 	}

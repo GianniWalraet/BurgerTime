@@ -3,6 +3,7 @@
 
 namespace GameData
 {
+	static int SpriteCellSize = 16;
 	static float GameScale = 4.f;
 
 	static int SoundtrackVolume = 5;
