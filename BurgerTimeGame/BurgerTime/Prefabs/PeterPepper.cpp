@@ -6,7 +6,7 @@
 #include "Command/PlayerCommands.h"
 
 uint8_t PeterPepper::m_PlayerID = 0;
-uint8_t PeterPepper::m_MaxPlayers = 4;
+uint8_t PeterPepper::m_MaxPlayers = 2;
 
 PeterPepper::PeterPepper()
 {
@@ -30,7 +30,7 @@ void PeterPepper::Initialize()
 	// PeterPepper object
 	AddComponent<RenderComponent>();
 	AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, glm::vec2{ 0.5f, 1.f }, source);
-	AddComponent<ControllerComponent>(150.f);
+	AddComponent<ControllerComponent>(glm::vec2{ 150.f, 100.f });
 
 	// Controller input
 	InputManager::GetInstance().AddCommand<MoveLeftCommand>(m_PlayerID, shared_from_this(), ControllerButton::GAMEPAD_DPAD_LEFT);

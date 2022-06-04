@@ -6,17 +6,17 @@ class Transform;
 class ControllerComponent : public BaseComponent
 {
 public:
-	ControllerComponent(float movementSpeed);
+	ControllerComponent(const glm::vec2& movementSpeed);
 	virtual ~ControllerComponent() = default;
 	ControllerComponent(const ControllerComponent& other) = delete;
 	ControllerComponent(ControllerComponent&& other) = delete;
 	ControllerComponent& operator=(const ControllerComponent& other) = delete;
 	ControllerComponent& operator=(ControllerComponent&& other) = delete;
 
-	const float GetMovementSpeed() const { return m_MoveSpeed; }
+	const glm::vec2& GetMovementSpeed() const { return m_MoveSpeed; }
 
 	void Move(float dispX, float dispY);
 private:
-	float m_MoveSpeed{};
+	glm::vec2 m_MoveSpeed{};
 };
 

@@ -36,9 +36,10 @@ void LevelParser::ParseLevel(const std::string& fileName, float scale, std::stri
 	{
 		for (int j = 0; j < line.size(); j++)
 		{
-			cells.emplace_back(Cell{ SDL_Rect{ int(j * cellW * scale), int(i * cellH * scale),int(cellW * scale), int(cellH * scale) }, line[j] == '#' });
-
-			if (line[j] == '#' || line[j] == 'o') continue;
+			bool isBurgerPlatform = (line[j] == '=' || line[j] == 'n' || line[j] == 's' || line[j] == 'c' || line[j] == 't' || line[j] == 'b' || line[j] == 'v');
+			cells.emplace_back(Cell{ SDL_Rect{ int(j * cellW * scale), int(i * cellH * scale),int(cellW * scale), int(cellH * scale) }, line[j] == '#', isBurgerPlatform });
+			
+			if (line[j] == '#' || line[j] == 'o' || line[j] == '=') continue;
 			if (line[j - 1] != '#' && line[j - 1] != 'o') continue;
 
 			BurgerType type{};

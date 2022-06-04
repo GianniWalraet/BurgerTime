@@ -39,9 +39,8 @@ protected:
 	void Update() override;
 private:
 	State m_State{};
-	Direction m_Dir{};
-
 	State m_PrevState{};
+	Direction m_Dir{};
 	Direction m_PrevDir{};
 
 	int m_CellIdx{};
@@ -52,7 +51,7 @@ private:
 	int32_t m_Score{};
 	bool m_HasWon{};
 
-	static const uint32_t m_ScoreGain = 30;
+	static const uint32_t m_ScoreGain = 50;
 	static const uint32_t m_ScoreLoss = 50;
 
 	bool HandleState();

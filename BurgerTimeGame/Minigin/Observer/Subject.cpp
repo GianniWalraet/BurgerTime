@@ -26,6 +26,6 @@ void Subject::NotifyAll(Event event)
 {
 	for (size_t i = 0; i < m_NrOfObservers; i++)
 	{
-		m_Observers[i]->Notify(event);
+		m_Observers[i]->OnNotify(event);
 	}
 }

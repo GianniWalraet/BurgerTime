@@ -13,7 +13,7 @@ public:
 	ScoreDisplayComponent& operator=(const ScoreDisplayComponent& other) = delete;
 	ScoreDisplayComponent& operator=(ScoreDisplayComponent&& other) = delete;
 
-	void Notify(Event event) override;
+	void OnNotify(Event event) override;
 private:
 	PeterPepperComponent* m_pPlayer{};
 	TextComponent* m_pText{};

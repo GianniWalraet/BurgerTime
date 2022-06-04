@@ -3,8 +3,12 @@
 struct Cell
 {
 	SDL_Rect boundingbox;
+
 	bool isVoid;
+	bool isBurgerPlatform;
+
 	bool isTriggered;
+	std::weak_ptr<GameObject> pActor;
 };
 
 class GridManager : public Singleton<GridManager>

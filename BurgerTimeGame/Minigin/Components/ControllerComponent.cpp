@@ -2,7 +2,7 @@
 #include "ControllerComponent.h"
 #include "SceneGraph/GameObject.h"
 
-ControllerComponent::ControllerComponent(float movementSpeed)
+ControllerComponent::ControllerComponent(const glm::vec2& movementSpeed)
 	: m_MoveSpeed{ movementSpeed }
 {
 }

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PeterPepperComponent.h"
 #include "Observer/AchievementObserver.h"
+#include "Components/PeterPepperComponent.h"
 
 const int g_GridSize{ 16 };
 
@@ -35,6 +36,7 @@ void PeterPepperComponent::Update()
 	if (m_CellIdx != m_PrevCellIdx)
 	{
 		gridManager.GetCell(m_CellIdx).isTriggered = true;
+		gridManager.GetCell(m_CellIdx).pActor = m_pGameObject.lock();
 		gridManager.GetCell(m_PrevCellIdx).isTriggered = false;
 	}
 	m_PrevCellIdx = m_CellIdx;
@@ -43,24 +45,22 @@ void PeterPepperComponent::Update()
 void PeterPepperComponent::OnDie()
 {
 	if (m_Lives == 0) return;
+	ServiceLocator::GetSoundManager()->PlayEffect("Sounds/LoseLife.mp3", GameData::SoundeffectVolume);
 
 	--m_Lives;
 	m_Score -= m_ScoreLoss;
-	ServiceLocator::GetSoundManager()->PlayEffect("Sounds/LoseLife.mp3", 50);
-
-	if (m_Score < 0) m_Score = 0;
 
 	NotifyAll(Event::PlayerDied);
+	if (m_Score < 0) m_Score = 0;
 }
 void PeterPepperComponent::OnBurgerDropped()
 {
 	if (m_Lives == 0) return;
+	ServiceLocator::GetSoundManager()->PlayEffect("Sounds/ScoreGain.mp3", GameData::SoundeffectVolume, 0, false);
 
 	m_Score += m_ScoreGain;
 
-	ServiceLocator::GetSoundManager()->PlayEffect("Sounds/ScoreGain.mp3", 50, 0, false);
 	NotifyAll(Event::BurgerDropped);
-
 	if (m_Score >= 500 && !m_HasWon)
 	{
 		AchievementObserver::GetInstance().Notify(EAchievements::GameWin);

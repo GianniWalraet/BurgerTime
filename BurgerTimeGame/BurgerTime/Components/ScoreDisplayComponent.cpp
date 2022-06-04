@@ -14,11 +14,12 @@ ScoreDisplayComponent::ScoreDisplayComponent(PeterPepperComponent* pPlayerC, Tex
 	m_pText->SetText("Score: " + std::to_string(m_pPlayer->GetScore()));
 }
 
-void ScoreDisplayComponent::Notify(Event event)
+void ScoreDisplayComponent::OnNotify(Event event)
 {
 	switch (event)
 	{
 	case Event::BurgerDropped:
+	case Event::PlayerDied:
 		UpdateText();
 		break;
 	}

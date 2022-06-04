@@ -11,7 +11,7 @@ class Observer abstract
 {
 public:
 	virtual ~Observer() = default;
-	virtual void Notify(Event event) = 0;
+	virtual void OnNotify(Event event) = 0;
 };
 
 

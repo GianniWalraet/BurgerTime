@@ -14,15 +14,15 @@ HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayerC)
 void HealthDisplayComponent::Update()
 {
 	auto& renderer = Renderer::GetInstance();
-	glm::vec2 pos{ renderer.GetWindowWidth(), 0.f }, pivot{ 1.1f, -0.1f }, scale{ m_pGameObject.lock()->GetTransform().GetScale() };
+	glm::vec2 pos{ 0.f, renderer.GetWindowHeight() }, pivot{ -0.1f, 1.1f }, scale{ m_pGameObject.lock()->GetTransform().GetScale() };
 	for (size_t i = 0; i < m_pPlayer->GetLives(); ++i)
 	{
 		renderer.AppendTexture(m_pTexture.get(), pos, m_pTexture->GetSource(), pivot, scale);
-		pos.x -= m_pTexture->GetSource().w * scale.x;
+		pos.y -= m_pTexture->GetSource().h * scale.y;
 	}
 }
 
-void HealthDisplayComponent::Notify(Event event)
+void HealthDisplayComponent::OnNotify(Event event)
 {
 	switch (event)
 	{

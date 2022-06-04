@@ -62,11 +62,11 @@ void BurgerTime::LoadGame() const
 
 	// Players
 	{
-		AddPlayer(scene, { 0, 100, 0 }, 4.f);
+		AddPlayer(scene, { 50, 100, 0 }, 4.f);
 	}
 
-	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", 20, false);
-	ServiceLocator::GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", 20, true);
+	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", GameData::SoundtrackVolume, false);
+	ServiceLocator::GetSoundManager()->PlayStream("Sounds/MainTheme.mp3", GameData::SoundtrackVolume, true);
 }
 
 void BurgerTime::PrintGameInfo() const
@@ -112,9 +112,9 @@ void BurgerTime::AddPlayer(Scene& scene, const glm::vec3& pos, float scale) cons
 	// Peter Pepper
 	auto pp = std::make_shared<GameObject>();
 	pp->AddComponent<PeterPepperComponent>();
-	pp->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 10.f, glm::vec2{ 0.5f, 1.f }, source);
+	pp->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 15.f, glm::vec2{ 0.5f, 1.f }, source);
 	pp->AddComponent<RenderComponent>();
-	pp->AddComponent<ControllerComponent>(150.f);
+	pp->AddComponent<ControllerComponent>(glm::vec2{ 150.f, 100.f });
 	auto ppComp = pp->GetComponent<PeterPepperComponent>();
 
 	pp->GetTransform().SetPosition(pos);
@@ -129,12 +129,13 @@ void BurgerTime::AddPlayer(Scene& scene, const glm::vec3& pos, float scale) cons
 	hd->GetTransform().SetScale(4.f);
 	scene.Add(hd);
 
-	//auto sd = std::make_shared<GameObject>();
-	//txtComp = sd->AddComponent<TextComponent>(font);
-	//sd->AddComponent<RenderComponent>();
-	//auto sdComp = sd->AddComponent<ScoreDisplayComponent>(ppComp, txtComp);
+	auto sd = std::make_shared<GameObject>();
+	auto txtComp = sd->AddComponent<TextComponent>(ResourceManager::GetInstance().LoadFont("origa___.ttf", 30));
+	sd->AddComponent<RenderComponent>();
+	auto sdComp = sd->AddComponent<ScoreDisplayComponent>(ppComp, txtComp);
+	ppComp->AddObserver(sdComp);
 
-	//ppComp->AddObserver(sdComp);
+	scene.Add(sd);
 
 	InputManager::GetInstance().AddCommand<KillCommand>(ppComp->GetGameObject().lock(), SDLK_j, InputState::down);
 	InputManager::GetInstance().AddCommand<ScoreCommand>(ppComp->GetGameObject().lock(), SDLK_k, InputState::down);

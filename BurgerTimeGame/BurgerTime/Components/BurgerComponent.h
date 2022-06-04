@@ -1,5 +1,7 @@
 #pragma once
 
+class PeterPepperComponent;
+
 enum class BurgerType
 {
 	bunTop = 0,
@@ -25,7 +27,15 @@ private:
 	std::vector<int> m_CellIndices;
 	std::vector<bool> m_IsSteppedOn{ false, false, false, false };
 
+	PeterPepperComponent* m_pTriggerActor{};
+	
 	float m_FallVelocity{};
-	float m_FallAcceleration{ -98.1f };
+	float m_FallAcceleration{ -300.f };
+
+	bool m_IsDropping{};
+	bool m_NextPlatformTriggered{};
+	bool m_OnPlate{};
+
+	const int m_BurgerPieces{};
 };
 
