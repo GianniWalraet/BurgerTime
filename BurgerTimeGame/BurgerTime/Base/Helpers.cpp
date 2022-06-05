@@ -8,19 +8,18 @@ std::shared_ptr<GameObject> Helpers::CreatePlayer(const std::shared_ptr<Scene>& 
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 32);
 
-	int gridBoxSize{ 16 };
 	SDL_Rect source{};
-	source.x = gridBoxSize * 3;
+	source.x = GameData::SpriteCellSize * 3;
 	source.y = 0;
-	source.w = gridBoxSize * 3;
-	source.h = gridBoxSize;
+	source.w = GameData::SpriteCellSize * 3;
+	source.h = GameData::SpriteCellSize;
 
 	// Peter Pepper
 	auto pp = std::make_shared<GameObject>();
 	pp->AddComponent<PeterPepperComponent>();
 	pp->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 3, 1, 1.f / 15.f, glm::vec2{ 0.5f, 1.f }, source);
 	pp->AddComponent<RenderComponent>();
-	pp->AddComponent<Box2DComponent>(float(gridBoxSize), float(gridBoxSize), true);
+	pp->AddComponent<Box2DComponent>(float(GameData::SpriteCellSize), float(GameData::SpriteCellSize), true);
 	pp->AddComponent<ControllerComponent>(glm::vec2{ 150.f, 100.f });
 	auto ppComp = pp->GetComponent<PeterPepperComponent>();
 

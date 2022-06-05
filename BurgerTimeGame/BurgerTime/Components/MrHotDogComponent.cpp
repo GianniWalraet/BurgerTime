@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "MrHotDogComponent.h"
-#include "PeterPepperComponent.h"
 
 void MrHotDogComponent::Initialize()
 {
@@ -34,64 +33,154 @@ void MrHotDogComponent::Initialize()
 void MrHotDogComponent::Update()
 {
 	FindTarget();
+	HandlePathChoice();
 	MoveToTarget();
 }
 
 void MrHotDogComponent::FindTarget()
 {
-	if (m_pPlayers.front().lock()->IsEnabled() && m_pPlayers.front().lock()->IsEnabled())
+	auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
+	float nearDistance{ FLT_MAX };
+	for (size_t i = 0; i < m_pPlayers.size(); i++)
 	{
-		auto p1Pos = m_pPlayers.front().lock()->GetTransform().GetPosition();
-		auto p2Pos = m_pPlayers.front().lock()->GetTransform().GetPosition();
+		if (m_pPlayers[i].expired() || !m_pPlayers[i].lock()->IsEnabled()) continue;
+		auto playerPos = m_pPlayers[i].lock()->GetTransform().GetPosition();
+		auto distance = utils::DistanceSquared(pos, playerPos);
+		if (distance < nearDistance)
+		{
+			m_pTarget = m_pPlayers[i].lock();
+			nearDistance = distance;
+		}
 	}
 }
 void MrHotDogComponent::MoveToTarget()
 {
-	if (m_pTarget.expired()) return;
 	auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
-	auto playerPos = m_pTarget.lock()->GetTransform().GetPosition();
 
-	int cellIdxEnemy = m_pGrid->PositionToIndex({ pos.x, pos.y });
-	int cellIdxPlayer = m_pGrid->PositionToIndex({ playerPos.x, playerPos.y });
-	auto currentCell = m_pGrid->GetCell(cellIdxEnemy);
-
-	//auto cellLeft = m_pGrid->GetCell(cellIdxEnemy - 1);
-	//auto cellRight = m_pGrid->GetCell(cellIdxEnemy + 1);
-	//auto cellTop = m_pGrid->GetCell(cellIdxEnemy - m_pGrid->GetNrCols() - 1);
-	//auto cellBottom = m_pGrid->GetCell(cellIdxEnemy + m_pGrid->GetNrCols() - 1);
-
-	auto cellLeft = m_pGrid->GetCell(cellIdxEnemy - 1);
-	auto cellRight = m_pGrid->GetCell(cellIdxEnemy + 1);
-	auto cellTop = m_pGrid->GetCell(cellIdxEnemy - m_pGrid->GetNrCols());
-	auto cellBottom = m_pGrid->GetCell(cellIdxEnemy + m_pGrid->GetNrCols());
-
-	if (m_pGrid->IndexToCol(cellIdxEnemy) != m_pGrid->IndexToCol(cellIdxPlayer))
+	switch (m_Dir)
 	{
-		if (playerPos.x < pos.x && !cellLeft.isVoid)
-		{
-			pos.x -= m_MovementSpeed.x * Timer::GetInstance().GetElapsed();
-		}
-		else if (playerPos.x > pos.x && !cellRight.isVoid)
-		{
-			pos.x += m_MovementSpeed.x * Timer::GetInstance().GetElapsed();
-		}
-	}
-
-	if (m_pGrid->IndexToRow(cellIdxEnemy) != m_pGrid->IndexToRow(cellIdxPlayer))
-	{
-		if (playerPos.y < pos.y && !cellTop.isVoid)
-		{
-			pos.y -= m_MovementSpeed.y * Timer::GetInstance().GetElapsed();
-		}
-		else if (playerPos.y > pos.y && !cellBottom.isVoid)
-		{
-			pos.y += m_MovementSpeed.y * Timer::GetInstance().GetElapsed();
-		}
+	case Direction::left:
+		pos.x -= m_MovementSpeed.x * Timer::GetInstance().GetElapsed();
+		break;
+	case Direction::right:
+		pos.x += m_MovementSpeed.x * Timer::GetInstance().GetElapsed();
+		break;
+	case Direction::down:
+		pos.y += m_MovementSpeed.y * Timer::GetInstance().GetElapsed();
+		break;
+	case Direction::up:
+		pos.y -= m_MovementSpeed.y * Timer::GetInstance().GetElapsed();
+		break;
 	}
 
 	m_pGameObject.lock()->GetTransform().SetPosition(pos.x, pos.y, pos.z);
 }
-
-void MrHotDogComponent::CheckPlayerHit()
+void MrHotDogComponent::HandlePathChoice()
 {
+	if (m_pTarget.expired()) return;
+	if (m_PathChanged)
+	{
+		m_ElapsedTime += Timer::GetInstance().GetElapsed();
+		if (m_ElapsedTime > m_CheckPathWaitTime)
+		{
+			m_ElapsedTime = 0.f;
+			m_PathChanged = false;
+		}
+		return;
+	}
+
+	auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
+	auto playerPos = m_pTarget.lock()->GetTransform().GetPosition();
+	auto ww = Renderer::GetInstance().GetWindowWidth();
+	auto wh = Renderer::GetInstance().GetWindowHeight();
+
+	if (pos.x < 0.f) m_Dir = Direction::right;
+	if (pos.x > ww) m_Dir = Direction::left;
+	if (pos.y < 0.f) m_Dir = Direction::down;
+	if (pos.y > wh) m_Dir = Direction::up;
+	
+
+	int cellIdxEnemy = m_pGrid->PositionToIndex({ pos.x, pos.y });
+	auto currentCell = m_pGrid->GetCell(cellIdxEnemy);
+
+	auto cellLeftOut = m_pGrid->GetCell({pos.x - (currentCell.boundingbox.w + 1.f), pos.y});
+	auto cellRightOut = m_pGrid->GetCell({ pos.x + (currentCell.boundingbox.w + 1.f), pos.y });
+	auto cellLeftIn= m_pGrid->GetCell({ pos.x - (currentCell.boundingbox.w - 1.f), pos.y });
+	auto cellRightIn = m_pGrid->GetCell({ pos.x + (currentCell.boundingbox.w - 1.f), pos.y });
+	auto cellTop = m_pGrid->GetCell(cellIdxEnemy - m_pGrid->GetNrCols());
+	auto cellBottom = m_pGrid->GetCell(cellIdxEnemy + m_pGrid->GetNrCols());
+
+	switch(m_Dir)
+	{
+	case Direction::left:
+		if (!cellRightIn.isBurgerPlatform && !cellLeftIn.isBurgerPlatform)
+		{
+			std::cout << "walked left\n";
+			if (playerPos.y > pos.y && !cellBottom.isVoid)
+			{
+				m_Dir = Direction::down;
+				m_PathChanged = true;
+			}
+			else if (playerPos.y < pos.y && !cellTop.isVoid)
+			{
+				m_Dir = Direction::up;
+				m_PathChanged = true;
+			}
+		}
+		break;
+	case Direction::right:
+		if (!cellLeftIn.isBurgerPlatform && !cellRightIn.isBurgerPlatform)
+		{
+			std::cout << "walked right\n";
+			if (playerPos.y > pos.y && !cellBottom.isVoid)
+			{
+				m_Dir = Direction::down;
+				m_PathChanged = true;
+			}
+			else if (playerPos.y < pos.y && !cellTop.isVoid)
+			{
+				m_Dir = Direction::up;
+				m_PathChanged = true;
+			}
+		}
+		break;
+	case Direction::up:
+		if (cellLeftOut.isBurgerPlatform || cellRightOut.isBurgerPlatform)
+		{
+			std::cout << "ladder climbed\n";
+			if (playerPos.x < pos.x && !cellLeftOut.isVoid)
+			{
+				m_Dir = Direction::left;
+				m_PathChanged = true;
+			}
+			else if (playerPos.x > pos.x && !cellRightOut.isVoid)
+			{
+				m_Dir = Direction::right;
+				m_PathChanged = true;
+			}
+		}
+		break;
+	case Direction::down:
+			if (cellLeftOut.isBurgerPlatform || cellRightOut.isBurgerPlatform)
+			{
+				std::cout << "ladder descended\n";
+				if (playerPos.x < pos.x && !cellLeftOut.isVoid)
+				{
+					if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h / 4.f * 3.f)
+					{
+						m_Dir = Direction::left;
+						m_PathChanged = true;
+					}
+				}
+				if (playerPos.x > pos.x && !cellRightOut.isVoid)
+				{
+					if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h / 4.f * 3.f)
+					{
+						m_Dir = Direction::right;
+						m_PathChanged = true;
+					}
+				}
+			}
+		break;
+	}
 }

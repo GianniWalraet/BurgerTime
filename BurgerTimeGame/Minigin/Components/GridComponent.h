@@ -4,7 +4,6 @@
 struct Cell
 {
 	SDL_Rect boundingbox;
-
 	bool isVoid;
 	bool isBurgerPlatform;
 	bool isPlate;
@@ -25,7 +24,7 @@ public:
 	GridComponent& operator=(GridComponent&& other) = delete;
 
 	Cell& GetCell(const glm::vec2& pos) { return m_Grid[PositionToIndex(pos)]; }
-	Cell& GetCell(int idx) { return m_Grid[idx]; }
+	Cell& GetCell(int idx) { return m_Grid[idx % m_Grid.size()]; }
 
 	int PositionToIndex(const glm::vec2& pos) const;
 	glm::vec2 IndexToPosition(int index) const;

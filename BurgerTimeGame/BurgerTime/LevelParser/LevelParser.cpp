@@ -36,9 +36,9 @@ void LevelParser::ParseLevel(const std::string& fileName, float scale, std::stri
 	int i{};
 	while (std::getline(file, line))
 	{
+		if (line.empty()) continue;
 		for (int j = 0; j < line.size(); j++)
 		{
-			
 			bool isBurgerPlatform = burgerPlatformChars.find(line[j]) != std::string::npos;
 			cells.emplace_back(Cell{ SDL_Rect{ int(j * cellW * scale), int(i * cellH * scale),int(cellW * scale), int(cellH * scale) }, line[j] == '#', isBurgerPlatform, line[j] == 'p'});
 
@@ -70,16 +70,18 @@ void LevelParser::ParseLevel(const std::string& fileName, float scale, std::stri
 
 			auto burgerObj = std::make_shared<GameObject>();
 			burgerObj->SetTag("BurgerSlice");
-			int currentIdx = (j + i * nrCols) - nrCols;
+			int currentIdx = (j + i * nrCols);
 			burgerObj->AddComponent<BurgerComponent>(std::vector<int>{currentIdx, currentIdx + 1, currentIdx + 2, currentIdx + 3});
 			burgerObj->AddComponent<TextureComponent>("LevelSprite.png", glm::vec2{ 0,0 }, false, SDL_Rect{ cellW * 8, cellH * static_cast<int>(type), cellW * 4, cellH });
 			burgerObj->AddComponent<RenderComponent>();
+			//burgerObj->AddComponent<Box2DComponent>(float(cellW * 4.f), float(cellH), true);
 
-			burgerObj->GetTransform().SetPosition(float(j * cellW * scale), float(i * cellH * scale) - 32.f, 0.f);
+			burgerObj->GetTransform().SetPosition(float(j * cellW * scale), float(i * cellH * scale), 0.f);
 			burgerObj->GetTransform().SetScale(scale);
 			burgers.emplace_back(burgerObj);
 		}
 		++i;
 	}
+
 }
 

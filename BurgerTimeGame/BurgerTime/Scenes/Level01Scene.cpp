@@ -74,27 +74,29 @@ void Level01Scene::LoadLevel()
 void Level01Scene::LoadPlayers()
 {
 	m_pP1 = Helpers::CreatePlayer(shared_from_this(), PlayerID::PLAYERONE);
-	m_pP1.lock()->GetTransform().SetScale(4.f);
+	m_pP1.lock()->GetTransform().SetScale(GameData::GameScale);
 
 	m_pP2 = Helpers::CreatePlayer(shared_from_this(), PlayerID::PLAYERTWO);
-	m_pP2.lock()->GetTransform().SetScale(4.f);
+	m_pP2.lock()->GetTransform().SetScale(GameData::GameScale);
 	m_pP2.lock()->Disable();
 
 	auto mrHotDog = Add(std::make_shared<GameObject>());
-	mrHotDog->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 1, 2, 1 / 10.f, glm::vec2{ 0.5f,0.5f }, SDL_Rect{ 0, GameData::SpriteCellSize * 2, GameData::SpriteCellSize * 2, GameData::SpriteCellSize });
+	mrHotDog->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 1, 2, 1 / 10.f, glm::vec2{ 0.5f,1.f }, SDL_Rect{ 0, GameData::SpriteCellSize * 2, GameData::SpriteCellSize * 2, GameData::SpriteCellSize });
 	mrHotDog->AddComponent<RenderComponent>();
 	mrHotDog->AddComponent<MrHotDogComponent>();
 	mrHotDog->AddComponent<Box2DComponent>(float(GameData::SpriteCellSize), float(GameData::SpriteCellSize), true);
 	mrHotDog->GetTransform().SetScale(GameData::GameScale);
-	mrHotDog->GetTransform().SetPosition(150.f, 230.f, 0.f);
+	mrHotDog->GetTransform().SetPosition(150.f, 220.f, 0.f);
+	m_pMrHotDog = mrHotDog;
 }
 void Level01Scene::LoadHUD()
 {
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 32);
 
 	auto child = std::make_shared<GameObject>();
-	child->AddComponent<TextComponent>(font);
+	child->AddComponent<TextComponent>(font, "60", glm::vec2{0.5f, 0.f});
 	child->AddComponent<RenderComponent>();
 	child->AddComponent<FPSComponent>();
+	child->GetTransform().SetPosition(Renderer::GetInstance().GetWindowWidth() / 2.f, 0.f, 0.f);
 	Add(child);
 }

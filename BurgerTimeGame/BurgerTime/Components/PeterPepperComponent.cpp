@@ -31,6 +31,9 @@ void PeterPepperComponent::Update()
 	auto& pos = m_pGameObject.lock()->GetTransform().GetPosition();
 	m_CellIdx = m_pGrid->PositionToIndex({ pos.x, pos.y });
 
+	//std::cout << "pp cellIdx " << m_CellIdx << '\n';
+	//std::cout << m_pGrid->GetCell(m_CellIdx).isBurgerPlatform << '\n';
+
 	if (m_CellIdx != m_PrevCellIdx)
 	{
 		m_pGrid->GetCell(m_CellIdx).isTriggered = true;

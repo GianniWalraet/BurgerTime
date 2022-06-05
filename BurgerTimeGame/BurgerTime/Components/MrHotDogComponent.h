@@ -1,4 +1,5 @@
 #pragma once
+#include "PeterPepperComponent.h"
 
 class MrHotDogComponent final : public BaseComponent
 {
@@ -19,8 +20,17 @@ private:
 	GridComponent* m_pGrid{};
 	glm::vec2 m_MovementSpeed{ 100.f, 100.f };
 
+	Direction m_Dir{Direction::left};
+
+	bool m_Climbing{true}, m_Walking{true};
+
+	float m_PathChanged{};
+	float m_ElapsedTime{};
+	float m_CheckPathWaitTime{1.f};
+
 	void FindTarget();
 	void MoveToTarget();
-	void CheckPlayerHit();
+
+	void HandlePathChoice();
 };
 

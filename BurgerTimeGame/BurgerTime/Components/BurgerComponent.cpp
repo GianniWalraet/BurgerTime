@@ -23,15 +23,16 @@ void BurgerComponent::Update()
 	if (m_NextPlatformTriggered)
 	{
 		for (int i = 0; i < m_CellIndices.size(); i++)
+		{
 			m_pGrid->GetCell(m_CellIndices[i]).isTriggered = false;
+			m_pGrid->GetCell(m_CellIndices[i]).pActor = std::weak_ptr<GameObject>();
+		}
 
 		m_NextPlatformTriggered = false;
 	}
 
-	if (!m_IsDropping)
-		CheckCanDrop();
-	else
-		HandleBurgerDropping();
+	if (!m_IsDropping) CheckCanDrop();
+	else HandleBurgerDropping();
 }
 
 void BurgerComponent::CheckCanDrop()
@@ -60,7 +61,6 @@ void BurgerComponent::CheckCanDrop()
 		if (m_pTriggerActor)
 		{
 			m_pTriggerActor->OnBurgerDropped();
-			m_pTriggerActor = nullptr;
 		}
 	}
 }
@@ -77,22 +77,27 @@ void BurgerComponent::HandleBurgerDropping()
 
 	if (CheckOnPlate(idx)) return;
 
-	auto& cell = m_pGrid->GetCell(idx);
-	if (!cell.isBurgerPlatform) return;
-
-	if (pos.y < cell.boundingbox.y)
+	auto cell = m_pGrid->GetCell(idx);
+	if (cell.isBurgerPlatform)
 	{
-		for (int i = 0; i < m_IsSteppedOn.size(); ++i) m_IsSteppedOn[i] = false;
-		m_CellIndices.clear();
-		m_CellIndices = { idx, idx + 1, idx + 2, idx + 3 };
-		m_FallVelocity = m_DefaultFallVelocity;
-		m_IsDropping = false;
+		if (pos.y > cell.boundingbox.y)
+		{
+			transform.SetPosition(pos.x, float(cell.boundingbox.y), pos.z);
+			for (int i = 0; i < m_IsSteppedOn.size(); ++i) m_IsSteppedOn[i] = false;
+			m_CellIndices.clear();
+			m_CellIndices = { idx, idx + 1, idx + 2, idx + 3 };
+			m_FallVelocity = m_DefaultFallVelocity;
+			m_IsDropping = false;
 
-		for (int i = 0; i < m_CellIndices.size(); i++)
-			m_pGrid->GetCell(m_CellIndices[i]).isTriggered = true;
-		m_NextPlatformTriggered = true;
+			for (int i = 0; i < m_CellIndices.size(); i++)
+			{
+				m_pGrid->GetCell(m_CellIndices[i]).isTriggered = true;
+				m_pGrid->GetCell(m_CellIndices[i]).pActor = m_pTriggerActor->GetGameObject().lock();
+			}
+			m_NextPlatformTriggered = true;
 
-		ServiceLocator::GetSoundManager()->PlayEffect("Sounds/BurgerCollide.mp3", GameData::SoundeffectVolume, false);
+			ServiceLocator::GetSoundManager()->PlayEffect("Sounds/BurgerCollide.mp3", GameData::SoundeffectVolume, 0, false);
+		}
 	}
 }
 
@@ -108,11 +113,15 @@ void BurgerComponent::ApplyFallAcceleration()
 }
 bool BurgerComponent::CheckOnPlate(int cellIdx)
 {
+	auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
+
 	auto& cell = m_pGrid->GetCell(cellIdx);
-	if (cell.isPlate || m_pGrid->GetCell(cellIdx + m_pGrid->GetNrCols()).hasBurger)
+	auto& cellBelow = m_pGrid->GetCell(cellIdx + m_pGrid->GetNrCols());
+	if (cell.isPlate || cellBelow.hasBurger)
 	{
 		m_OnPlate = true;
 		cell.hasBurger = true;
+		m_pGameObject.lock()->GetTransform().SetPosition(pos.x, float(cell.boundingbox.y), pos.z);
 		GameState::GetInstance().OnSliceCompleted();
 		return true;
 	}

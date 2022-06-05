@@ -18,6 +18,7 @@ protected:
 private:
 	std::weak_ptr<GameObject> m_pP1{};
 	std::weak_ptr<GameObject> m_pP2{};
+	std::weak_ptr<GameObject> m_pMrHotDog{};
 
 	void LoadLevel();
 	void LoadPlayers();

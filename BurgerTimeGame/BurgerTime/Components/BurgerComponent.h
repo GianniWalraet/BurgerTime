@@ -22,6 +22,9 @@ public:
 	BurgerComponent& operator=(const BurgerComponent& other) = delete;
 	BurgerComponent& operator=(BurgerComponent&& other) = delete;
 
+	void OnDrop() { m_IsDropping = true; }
+	bool IsDropping() { return m_IsDropping; }
+
 	PeterPepperComponent* GetTriggerActor() { return m_pTriggerActor; }
 	PeterPepperComponent* SetTriggerActor() { return m_pTriggerActor; }
 protected:
