@@ -80,5 +80,6 @@ std::shared_ptr<GameObject> Helpers::CreatePlayer(const std::shared_ptr<Scene>& 
 	InputManager::GetInstance().AddCommand<MoveDownCommand>(sceneName, pp, SDLK_s);
 #endif
 
+	pp->SetTag("Player");
 	return pp;
 }

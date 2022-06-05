@@ -2,6 +2,8 @@
 #include "Box2DComponent.h"
 #include "SceneGraph/GameObject.h"
 #include "Singletons/CollisionManager.h"
+#include "Components/TextureComponent.h"
+#include "Components/SpriteComponent.h"
 
 Box2DComponent::Box2DComponent(float w, float h, bool isTrigger)
 	: m_Width{w}
@@ -36,5 +38,12 @@ Rectf Box2DComponent::GetCollider() const
 {
 	auto& pos = m_pGameObject.lock()->GetTransform().GetPosition();
 	auto& scale = m_pGameObject.lock()->GetTransform().GetScale();
-	return Rectf{ pos.x, pos.y, m_Width * scale.x, m_Height * scale.y };
+	glm::vec2 pivot{};
+	auto texComp = m_pGameObject.lock()->GetComponent<TextureComponent>();
+	auto spriteComp = m_pGameObject.lock()->GetComponent<SpriteComponent>();
+
+	if (texComp) pivot = texComp->GetPivot();
+	if (spriteComp) pivot = spriteComp->GetPivot();
+
+	return Rectf{ pos.x - m_Width * scale.x * pivot.x, pos.y - m_Height * scale.y * pivot.y, m_Width * scale.x, m_Height * scale.y };
 }

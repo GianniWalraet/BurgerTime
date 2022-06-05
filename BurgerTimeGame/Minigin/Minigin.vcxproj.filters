@@ -67,6 +67,7 @@
     <ClInclude Include="Components\Button2DComponent.h" />
     <ClInclude Include="Base\Utils.h" />
     <ClInclude Include="Singletons\CollisionManager.h" />
+    <ClInclude Include="Components\GridComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp" />
@@ -150,6 +151,9 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Singletons\CollisionManager.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\GridComponent.cpp">
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Base\Utils.cpp">

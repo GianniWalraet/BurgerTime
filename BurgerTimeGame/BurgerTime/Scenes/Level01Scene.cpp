@@ -5,6 +5,7 @@
 #pragma region Component Includes
 #include "Components/BurgerComponent.h"
 #include "Components/GridComponent.h"
+#include "Components/MrHotDogComponent.h"
 #pragma endregion
 
 #include "LevelParser/LevelParser.h"
@@ -72,14 +73,20 @@ void Level01Scene::LoadLevel()
 }
 void Level01Scene::LoadPlayers()
 {
-	if (m_pP1.expired()) return;
 	m_pP1 = Helpers::CreatePlayer(shared_from_this(), PlayerID::PLAYERONE);
 	m_pP1.lock()->GetTransform().SetScale(4.f);
 
-	if (m_pP2.expired()) return;
 	m_pP2 = Helpers::CreatePlayer(shared_from_this(), PlayerID::PLAYERTWO);
 	m_pP2.lock()->GetTransform().SetScale(4.f);
 	m_pP2.lock()->Disable();
+
+	auto mrHotDog = Add(std::make_shared<GameObject>());
+	mrHotDog->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 1, 2, 1 / 10.f, glm::vec2{ 0.5f,0.5f }, SDL_Rect{ 0, GameData::SpriteCellSize * 2, GameData::SpriteCellSize * 2, GameData::SpriteCellSize });
+	mrHotDog->AddComponent<RenderComponent>();
+	mrHotDog->AddComponent<MrHotDogComponent>();
+	mrHotDog->AddComponent<Box2DComponent>(float(GameData::SpriteCellSize), float(GameData::SpriteCellSize), true);
+	mrHotDog->GetTransform().SetScale(GameData::GameScale);
+	mrHotDog->GetTransform().SetPosition(150.f, 230.f, 0.f);
 }
 void Level01Scene::LoadHUD()
 {

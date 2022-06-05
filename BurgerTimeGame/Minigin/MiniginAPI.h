@@ -36,3 +36,4 @@
 
 #include "Base/Timer.h"
 #include "Base/Singleton.h"
+#include "Base/Utils.h"

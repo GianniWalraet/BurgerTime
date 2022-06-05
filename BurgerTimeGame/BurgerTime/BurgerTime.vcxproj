@@ -218,7 +218,7 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClCompile Include="Components\PeterPepperComponent.cpp" />
     <ClCompile Include="Components\ScoreDisplayComponent.cpp" />
     <ClCompile Include="Base\Helpers.cpp" />
-    <ClCompile Include="Components\GridComponent.cpp" />
+    <ClCompile Include="Components\MrHotDogComponent.cpp" />
     <ClCompile Include="Scenes\MainMenuScene.cpp" />
     <ClCompile Include="Scenes\Level02Scene.cpp" />
     <ClCompile Include="Singletons\GameState.cpp" />
@@ -238,7 +238,7 @@ xcopy $(SolutionDir)Data $(OutputPath)\Data\ /R /Y</Command>
     <ClInclude Include="Components\BurgerComponent.h" />
     <ClInclude Include="BurgerTime.h" />
     <ClInclude Include="Base\Helpers.h" />
-    <ClInclude Include="Components\GridComponent.h" />
+    <ClInclude Include="Components\MrHotDogComponent.h" />
     <ClInclude Include="Scenes\MainMenuScene.h" />
     <ClInclude Include="Scenes\Level02Scene.h" />
     <ClInclude Include="Singletons\GameState.h" />

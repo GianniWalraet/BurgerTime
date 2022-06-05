@@ -16,11 +16,11 @@ private:
 	std::vector<std::weak_ptr<GameObject>> m_pPlayers{};
 	std::weak_ptr<GameObject> m_pTarget{};
 
-	GridComponent* m_pGrid;
-
-	glm::vec2 m_MovementSpeed{};
+	GridComponent* m_pGrid{};
+	glm::vec2 m_MovementSpeed{ 100.f, 100.f };
 
 	void FindTarget();
 	void MoveToTarget();
+	void CheckPlayerHit();
 };
 

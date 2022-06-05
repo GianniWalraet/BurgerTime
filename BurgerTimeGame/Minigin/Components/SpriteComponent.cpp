@@ -4,7 +4,7 @@
 #include "Base/Timer.h"
 #include "Singletons/ResourceManager.h"
 
-SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfCols, int nrOfRows, float frameSec, const glm::vec2& pivot, const SDL_Rect& srcRect)
+SpriteComponent::SpriteComponent(const std::string& assetPath, int nrOfRows, int nrOfCols, float frameSec, const glm::vec2& pivot, const SDL_Rect& srcRect)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPath);
 	m_Cols = nrOfCols;

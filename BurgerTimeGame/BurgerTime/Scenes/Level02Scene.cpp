@@ -30,16 +30,22 @@ void Level02Scene::Update()
 void Level02Scene::OnSceneActivated()
 {
 	auto& gameState = GameState::GetInstance();
-	m_pP1.lock()->GetTransform().SetPosition({ 30, 80, 0 });
+	if(!m_pP1.expired()) m_pP1.lock()->GetTransform().SetPosition({ 30, 80, 0 });
 
 	if (gameState.GetGameMode() == GameMode::MULTIPLAYER)
 	{
-		m_pP2.lock()->Enable();
-		m_pP2.lock()->GetTransform().SetPosition(30, 160, 0);
+		if (!m_pP2.expired())
+		{
+			m_pP2.lock()->Enable();
+			m_pP2.lock()->GetTransform().SetPosition(30, 160, 0);
+		}
 	}
 	else
 	{
-		m_pP2.lock()->Disable();
+		if (!m_pP2.expired())
+		{
+			m_pP2.lock()->Disable();
+		}
 	}
 
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", GameData::SoundtrackVolume, false);

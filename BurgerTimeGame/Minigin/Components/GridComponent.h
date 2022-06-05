@@ -1,4 +1,5 @@
 #pragma once
+#include "BaseComponent.h"
 
 struct Cell
 {
@@ -31,6 +32,9 @@ public:
 
 	int GetNrRows() const { return m_NrOfRows; }
 	int GetNrCols() const { return m_NrOfCols; }
+
+	int IndexToRow(int idx);
+	int IndexToCol(int idx);
 protected:
 	void Update() override;
 private:

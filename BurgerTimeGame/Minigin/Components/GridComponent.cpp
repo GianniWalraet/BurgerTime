@@ -1,5 +1,6 @@
-#include "pch.h"
+#include "MiniginPCH.h"
 #include "GridComponent.h"
+#include "Singletons/Renderer.h"
 
 GridComponent::GridComponent(const std::vector<Cell>& cells, int nrRows, int nrCols)
 	: m_Grid{cells}
@@ -40,6 +41,15 @@ glm::vec2 GridComponent::IndexToPosition(int index) const
         pos.y = static_cast<float>(yIdx * wh / m_NrOfRows);
     }
     return pos;
+}
+
+int GridComponent::IndexToRow(int idx)
+{
+    return idx / m_NrOfRows;
+}
+int GridComponent::IndexToCol(int idx)
+{
+    return idx % m_NrOfCols;
 }
 
 void GridComponent::Update()

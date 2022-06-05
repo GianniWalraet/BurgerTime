@@ -221,6 +221,7 @@
     <ClInclude Include="Base\Structs.h" />
     <ClInclude Include="Base\Timer.h" />
     <ClInclude Include="Base\Utils.h" />
+    <ClInclude Include="Components\GridComponent.h" />
     <ClInclude Include="Singletons\CollisionManager.h" />
     <ClInclude Include="Components\Button2DComponent.h" />
     <ClInclude Include="Components\Box2DComponent.h" />
@@ -260,6 +261,7 @@
   <ItemGroup>
     <ClCompile Include="Base\Timer.cpp" />
     <ClCompile Include="Base\Utils.cpp" />
+    <ClCompile Include="Components\GridComponent.cpp" />
     <ClCompile Include="Singletons\CollisionManager.cpp" />
     <ClCompile Include="Components\Button2DComponent.cpp" />
     <ClCompile Include="Components\Box2DComponent.cpp" />

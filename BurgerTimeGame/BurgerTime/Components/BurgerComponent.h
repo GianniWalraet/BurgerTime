@@ -21,6 +21,9 @@ public:
 	BurgerComponent(BurgerComponent&& other) = delete;
 	BurgerComponent& operator=(const BurgerComponent& other) = delete;
 	BurgerComponent& operator=(BurgerComponent&& other) = delete;
+
+	PeterPepperComponent* GetTriggerActor() { return m_pTriggerActor; }
+	PeterPepperComponent* SetTriggerActor() { return m_pTriggerActor; }
 protected:
 	void Initialize() override;
 	void Update() override;
