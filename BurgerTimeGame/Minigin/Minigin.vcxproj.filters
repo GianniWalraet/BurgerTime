@@ -152,5 +152,8 @@
     <ClCompile Include="Singletons\CollisionManager.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="Base\Utils.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

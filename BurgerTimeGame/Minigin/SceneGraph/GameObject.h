@@ -1,9 +1,9 @@
 #pragma once
-#include <vector>
 #include "SceneGraph/Transform.h"
 
 class Texture2D;
 class BaseComponent;
+class Scene;
 
 using Tag = std::string;
 
@@ -50,8 +50,15 @@ public:
 		}
 	}
 
-	const Tag& GetTag() const { return m_Tag; };
+	bool IsEnabled() const { return m_Enabled; }
+
+	void Enable() { m_Enabled = true; }
+	void Disable() { m_Enabled = false; }
+
+	bool CompareTag(const Tag& other) const { return m_Tag == other; };
 	void SetTag(const Tag& newTag) { m_Tag = newTag; }
+
+	std::shared_ptr<Scene> GetScene() { return m_pParentScene.lock(); }
 
 #pragma region childParentFuncs
 	//template <typename T> T* GetComponentFromChildren() const
@@ -96,6 +103,10 @@ protected:
 	virtual void Update() {}
 private:
 	friend class Scene;
+
+	bool m_Enabled{ true };
+
+	std::weak_ptr<Scene> m_pParentScene{};
 	Tag m_Tag{};
 
 	Transform m_Transform{};

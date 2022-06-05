@@ -25,9 +25,6 @@
     <ClCompile Include="LevelParser\LevelParser.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Singletons\GridManager.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Command\PlayerCommands.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -43,6 +40,18 @@
     <ClCompile Include="Scenes\Level01Scene.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\Level02Scene.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\Helpers.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\MainMenuScene.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\GridComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -52,11 +61,14 @@
     <ClInclude Include="Components\PeterPepperComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
     <ClInclude Include="LevelParser\LevelParser.h" />
-    <ClInclude Include="Singletons\GridManager.h" />
     <ClInclude Include="Components\BurgerComponent.h" />
     <ClInclude Include="Base\GameData.h" />
     <ClInclude Include="State\PeterPepperStates.h" />
     <ClInclude Include="Singletons\GameState.h" />
     <ClInclude Include="Scenes\Level01Scene.h" />
+    <ClInclude Include="Scenes\Level02Scene.h" />
+    <ClInclude Include="Base\Helpers.h" />
+    <ClInclude Include="Scenes\MainMenuScene.h" />
+    <ClInclude Include="Components\GridComponent.h" />
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ bool InputManager::ProcessInput()
 	m_pControllerInput->HandleInput();
 	bool doContinue = m_pKeyboardInput->HandleInput();
 
-	for (const auto& command : m_pConsoleCommands)
+	for (const auto& command : m_pConsoleCommands[m_ActiveSceneID])
 	{
 		const auto& id = command.first.first.first;
 		const auto& button = command.first.first.second;
@@ -33,12 +33,10 @@ bool InputManager::ProcessInput()
 			if (WentUpThisFrame(id, button)) 
 				command.second->Execute();
 			break;
-		}
-		
+		}	
 	}
 
-
-	for (const auto& command : m_pKeyboardCommands)
+	for (const auto& command : m_pKeyboardCommands[m_ActiveSceneID])
 	{
 		const auto& key = command.first.first;
 		switch (command.first.second)

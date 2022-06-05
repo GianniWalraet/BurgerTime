@@ -1,5 +1,4 @@
 #pragma once
-#include "Singletons/GridManager.h"
 
 class LevelParser final
 {

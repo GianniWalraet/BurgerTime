@@ -10,6 +10,7 @@ void SceneManager::Initialize()
 	}
 
 	m_ActiveScene = m_Scenes.front();
+	m_ActiveScene->RootOnSceneActivated();
 }
 
 void SceneManager::Update()
@@ -28,9 +29,9 @@ void SceneManager::SetActiveScene(const std::string& name)
 	{
 		if (m_Scenes[i]->m_Name == name)
 		{
-			m_ActiveScene->OnSceneDeactivated();
+			m_ActiveScene->RootOnSceneDeactivated();
 			m_ActiveScene = m_Scenes[i];
-			m_ActiveScene->OnSceneActivated();
+			m_ActiveScene->RootOnSceneActivated();
 			break;
 		}
 	}

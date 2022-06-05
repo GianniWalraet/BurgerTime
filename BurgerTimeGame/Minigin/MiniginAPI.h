@@ -28,6 +28,7 @@
 #include "Components/TextComponent.h"
 #include "Components/ControllerComponent.h"
 #include "Components/Box2DComponent.h"
+#include "Components/GridComponent.h"
 
 #include "Sound/ServiceLocator.h"
 

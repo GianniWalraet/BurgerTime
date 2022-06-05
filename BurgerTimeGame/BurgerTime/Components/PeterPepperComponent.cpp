@@ -2,6 +2,7 @@
 #include "PeterPepperComponent.h"
 #include "Observer/AchievementObserver.h"
 #include "Components/PeterPepperComponent.h"
+#include "Components/GridComponent.h"
 
 PeterPepperComponent::PeterPepperComponent()
 	: m_Lives{3}
@@ -15,6 +16,10 @@ PeterPepperComponent::~PeterPepperComponent()
 void PeterPepperComponent::Initialize()
 {
 	m_pSpriteComponent = m_pGameObject.lock()->GetComponent<SpriteComponent>();
+	if (auto lvl = m_pGameObject.lock()->GetScene()->FindObjectWithTag("Level"))
+	{
+		m_pGrid = lvl->GetComponent<GridComponent>();
+	}
 }
 void PeterPepperComponent::Update()
 {
@@ -23,15 +28,14 @@ void PeterPepperComponent::Update()
 		m_State = State::idle;
 	}
 
-	auto& gridManager = GridManager::GetInstance();
 	auto& pos = m_pGameObject.lock()->GetTransform().GetPosition();
-	m_CellIdx = gridManager.PositionToIndex({ pos.x, pos.y });
+	m_CellIdx = m_pGrid->PositionToIndex({ pos.x, pos.y });
 
 	if (m_CellIdx != m_PrevCellIdx)
 	{
-		gridManager.GetCell(m_CellIdx).isTriggered = true;
-		gridManager.GetCell(m_CellIdx).pActor = m_pGameObject.lock();
-		gridManager.GetCell(m_PrevCellIdx).isTriggered = false;
+		m_pGrid->GetCell(m_CellIdx).isTriggered = true;
+		m_pGrid->GetCell(m_CellIdx).pActor = m_pGameObject.lock();
+		m_pGrid->GetCell(m_PrevCellIdx).isTriggered = false;
 	}
 	m_PrevCellIdx = m_CellIdx;
 }

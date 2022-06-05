@@ -16,7 +16,8 @@ protected:
 	void OnSceneActivated() override;
 	void OnSceneDeactivated() override;
 private:
-	void AddPlayer(int playerID, const glm::vec3& pos, float scale);
+	std::weak_ptr<GameObject> m_pP1{};
+	std::weak_ptr<GameObject> m_pP2{};
 
 	void LoadLevel();
 	void LoadPlayers();

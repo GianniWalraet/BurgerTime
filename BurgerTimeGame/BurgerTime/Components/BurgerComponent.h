@@ -21,26 +21,28 @@ public:
 	BurgerComponent(BurgerComponent&& other) = delete;
 	BurgerComponent& operator=(const BurgerComponent& other) = delete;
 	BurgerComponent& operator=(BurgerComponent&& other) = delete;
-
-	void OnDrop();
-
+protected:
+	void Initialize() override;
 	void Update() override;
 private:
-	std::vector<int> m_CellIndices;
+	std::vector<int> m_CellIndices{};
 	std::vector<bool> m_IsSteppedOn{ false, false, false, false };
 
 	PeterPepperComponent* m_pTriggerActor{};
+	GridComponent* m_pGrid{};
 	
-	float m_FallVelocity{};
+	float m_DefaultFallVelocity{ -200.f };
+	float m_FallVelocity{ -200.f };
 	float m_FallAcceleration{ -300.f };
 
 	bool m_IsDropping{};
-	bool m_NextPlatformTriggered{};
 	bool m_OnPlate{};
-
-	const int m_BurgerPieces{};
+	bool m_NextPlatformTriggered{};
 
 	void CheckCanDrop();
+	bool CheckOnPlate(int cellIdx);
+
 	void HandleBurgerDropping();
+	void ApplyFallAcceleration();
 };
 

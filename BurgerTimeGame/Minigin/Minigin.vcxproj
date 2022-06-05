@@ -259,6 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Timer.cpp" />
+    <ClCompile Include="Base\Utils.cpp" />
     <ClCompile Include="Singletons\CollisionManager.cpp" />
     <ClCompile Include="Components\Button2DComponent.cpp" />
     <ClCompile Include="Components\Box2DComponent.cpp" />

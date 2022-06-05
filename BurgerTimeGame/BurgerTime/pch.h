@@ -24,4 +24,3 @@
 #include "MiniginAPI.h"
 
 #include "Base/GameData.h"
-#include "Singletons/GridManager.h"

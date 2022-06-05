@@ -1,6 +1,6 @@
 #pragma once
 #include "Components/PeterPepperComponent.h"
-#include "Singletons/GridManager.h"
+#include "Components/GridComponent.h"
 
 class PlayerCommand : public Command
 {
@@ -9,11 +9,13 @@ public:
 	{
 		m_pGameObj = pActor;
 		m_pPeterPepperComp = pActor->GetComponent<PeterPepperComponent>();
+		m_pGrid = m_pGameObj.lock()->GetScene()->FindObjectWithTag("Level")->GetComponent<GridComponent>();
 	}
 	~PlayerCommand() override = default;
 protected:
 	std::weak_ptr<GameObject> m_pGameObj{};
 	PeterPepperComponent* m_pPeterPepperComp;
+	GridComponent* m_pGrid{};
 };
 
 class KillCommand final : public PlayerCommand
@@ -22,6 +24,7 @@ public:
 	explicit KillCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
+		if (!m_pGameObj.lock()->IsEnabled()) return;
 		m_pPeterPepperComp->OnDie();
 	}
 };
@@ -32,6 +35,7 @@ public:
 	explicit ScoreCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
+		if (!m_pGameObj.lock()->IsEnabled()) return;
 		m_pPeterPepperComp->OnBurgerDropped();
 	}
 };

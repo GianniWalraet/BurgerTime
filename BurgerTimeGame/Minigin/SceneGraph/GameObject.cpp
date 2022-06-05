@@ -30,6 +30,8 @@ void GameObject::RootInitialize()
 
 void GameObject::RootUpdate()
 {
+	if (!m_Enabled) return;
+
 	Update();
 
 	for (auto& c : m_pComponents)

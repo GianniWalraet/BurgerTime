@@ -22,6 +22,7 @@ public:
 	void Initialize();
 	bool ProcessInput();
 
+	void SetActiveScene(const std::string& sceneName) { m_ActiveSceneID = sceneName; }
 	void DisableInput() { m_InputDisabled = true; }
 	void EnableInput() { m_InputDisabled = false; }
 
@@ -32,14 +33,15 @@ public:
 
 	// Templated for command and actor who uses the command
 	template <typename T>
-	void AddCommand(UINT id, std::shared_ptr<GameObject> actor, ControllerButton button, InputState state = InputState::pressed)
+	void AddCommand(const std::string& sceneID, UINT id, std::shared_ptr<GameObject> actor, ControllerButton button, InputState state = InputState::pressed)
 	{
-		m_pConsoleCommands[ControllerKey{ { id, button}, state }] = std::make_unique<T>(actor);
+		//m_pConsoleCommands.emplace(std::pair<ControllerKey, std::unique_ptr<Command>>(ControllerKey{ { id, button}, state }, std::make_unique<T>(actor)));
+		m_pConsoleCommands[sceneID].emplace(std::pair<ControllerKey, std::unique_ptr<T>>(ControllerKey{ { id, button}, state }, std::make_unique<T>(actor)));
 	}
-	void RemovedCommand(UINT id, ControllerButton button, InputState state = InputState::pressed)
+	void RemovedCommand(const std::string& sceneID, UINT id, ControllerButton button, InputState state = InputState::pressed)
 	{
-		auto it = m_pConsoleCommands.find(ControllerKey{ {id, button}, state });
-		m_pConsoleCommands.erase(it);
+		auto it = m_pConsoleCommands[sceneID].find(ControllerKey{{id, button}, state});
+		m_pConsoleCommands[sceneID].erase(it);
 	}
 
 	// Keyboard
@@ -49,25 +51,27 @@ public:
 
 	// Templated for command and actor who uses the command
 	template <typename T>
-	void AddCommand(std::shared_ptr<GameObject> actor, SDL_Keycode key, InputState state = InputState::pressed)
+	void AddCommand(const std::string& sceneID, std::shared_ptr<GameObject> actor, SDL_Keycode key, InputState state = InputState::pressed)
 	{
-		m_pKeyboardCommands[KeyboardKey{ key, state }] = std::make_unique<T>(actor);
+		//m_pKeyboardCommands.emplace(std::pair<KeyboardKey, std::unique_ptr<Command>>(KeyboardKey{ key, state }, std::make_unique<T>(actor)));
+		m_pKeyboardCommands[sceneID].emplace(std::pair<KeyboardKey, std::unique_ptr<T>>(KeyboardKey{ key, state }, std::make_unique<T>(actor)));
 	}
-	void RemovedCommand(SDL_Keycode key, InputState state = InputState::pressed)
+	void RemovedCommand(const std::string& sceneID, SDL_Keycode key, InputState state = InputState::pressed)
 	{
-		auto it = m_pKeyboardCommands.find(KeyboardKey{ key,state });
-		m_pKeyboardCommands.erase(it);
+		auto it = m_pKeyboardCommands[sceneID].find(KeyboardKey{key,state});
+		m_pKeyboardCommands[sceneID].erase(it);
 	}
 
 private:
 	friend class Singleton<InputManager>;
 	InputManager() = default;
 
+	std::string m_ActiveSceneID{};
 	bool m_InputDisabled{};
 
 	std::unique_ptr<ControllerInput> m_pControllerInput;
 	std::unique_ptr<SDLKeyboardInput> m_pKeyboardInput;
 
-	std::map<ControllerKey, std::unique_ptr<Command>> m_pConsoleCommands{};
-	std::map<KeyboardKey, std::unique_ptr<Command>> m_pKeyboardCommands{};
+	std::unordered_map<std::string, std::map<ControllerKey, std::unique_ptr<Command>>> m_pConsoleCommands{};
+	std::unordered_map<std::string, std::map<KeyboardKey, std::unique_ptr<Command>>> m_pKeyboardCommands{};
 };

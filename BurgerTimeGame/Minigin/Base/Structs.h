@@ -1,5 +1,13 @@
 #pragma once
 
+struct Point2f
+{
+	Point2f() = default;
+	explicit Point2f(float x, float y) : x{ x }, y{ y } {}
+
+	float x, y;
+};
+
 struct Point3f
 {
 	Point3f() = default;

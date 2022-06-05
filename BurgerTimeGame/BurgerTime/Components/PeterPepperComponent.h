@@ -1,5 +1,7 @@
 #pragma once
 
+class GridComponent;
+
 enum class State
 {
 	moveHorizontal,
@@ -14,7 +16,6 @@ enum class Direction
 	up,
 	down
 };
-
 
 class PeterPepperComponent final : public BaseComponent, public Subject
 {
@@ -46,6 +47,7 @@ private:
 	int m_PrevCellIdx{};
 
 	SpriteComponent* m_pSpriteComponent{};
+	GridComponent* m_pGrid{};
 	int8_t m_Lives{};
 	int32_t m_Score{};
 	bool m_HasWon{};

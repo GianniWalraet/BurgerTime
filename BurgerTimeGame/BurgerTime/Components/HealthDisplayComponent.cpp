@@ -2,9 +2,10 @@
 #include "HealthDisplayComponent.h"
 #include "PeterPepperComponent.h"
 
-HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayerC)
+HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayerC, const glm::vec2& pivot)
+	: m_pPlayer{pPlayerC}
+	, m_Pivot{pivot}
 {
-	m_pPlayer = pPlayerC;
 	m_pTexture = ResourceManager::GetInstance().LoadTexture("BurgerTimeSprite.png");
 	m_pTexture->SetSource({ 8 * 25,0,8,8 });
 
@@ -14,10 +15,11 @@ HealthDisplayComponent::HealthDisplayComponent(PeterPepperComponent* pPlayerC)
 void HealthDisplayComponent::Update()
 {
 	auto& renderer = Renderer::GetInstance();
-	glm::vec2 pos{ 0.f, renderer.GetWindowHeight() }, pivot{ -0.1f, 1.1f }, scale{ m_pGameObject.lock()->GetTransform().GetScale() };
+	auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
+	const auto& scale = m_pGameObject.lock()->GetTransform().GetScale();
 	for (size_t i = 0; i < m_pPlayer->GetLives(); ++i)
 	{
-		renderer.AppendTexture(m_pTexture.get(), pos, m_pTexture->GetSource(), pivot, scale);
+		renderer.AppendTexture(m_pTexture.get(), pos, m_pTexture->GetSource(), m_Pivot, scale);
 		pos.y -= m_pTexture->GetSource().h * scale.y;
 	}
 }

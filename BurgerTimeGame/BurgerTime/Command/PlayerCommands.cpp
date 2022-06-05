@@ -3,14 +3,16 @@
 
 void MoveLeftCommand::Execute()
 {
+	if (m_pGameObj.expired()) return;
+	if (!m_pGameObj.lock()->IsEnabled()) return;
+
 	m_pPeterPepperComp->SetState(State::moveHorizontal, Direction::left);
 
-	auto& gridManager = GridManager::GetInstance();
 	const auto& pos = m_pGameObj.lock()->GetTransform().GetPosition();
 
-	auto box = gridManager.GetCell({ pos.x, pos.y });
-	auto boxUpLeft = gridManager.GetCell({ pos.x - box.boundingbox.w , pos.y - box.boundingbox.h / 2.f });
-	auto boxLeft = gridManager.GetCell({ pos.x - box.boundingbox.w, pos.y });
+	auto box = m_pGrid->GetCell({ pos.x, pos.y });
+	auto boxUpLeft = m_pGrid->GetCell({ pos.x - box.boundingbox.w , pos.y - box.boundingbox.h / 2.f });
+	auto boxLeft = m_pGrid->GetCell({ pos.x - box.boundingbox.w, pos.y });
 
 	if (!boxLeft.isVoid)
 	{
@@ -20,14 +22,16 @@ void MoveLeftCommand::Execute()
 }
 void MoveRightCommand::Execute()
 {
+	if (m_pGameObj.expired()) return;
+	if (!m_pGameObj.lock()->IsEnabled()) return;
+
 	m_pPeterPepperComp->SetState(State::moveHorizontal, Direction::right);
 
-	auto& gridManager = GridManager::GetInstance();
 	const auto& pos = m_pGameObj.lock()->GetTransform().GetPosition();
 
-	auto box = gridManager.GetCell({ pos.x, pos.y });
-	auto boxUpRight = gridManager.GetCell({ pos.x + box.boundingbox.w , pos.y - box.boundingbox.h / 2.f });
-	auto boxRight = gridManager.GetCell({ pos.x + box.boundingbox.w , pos.y });
+	auto box = m_pGrid->GetCell({ pos.x, pos.y });
+	auto boxUpRight = m_pGrid->GetCell({ pos.x + box.boundingbox.w , pos.y - box.boundingbox.h / 2.f });
+	auto boxRight = m_pGrid->GetCell({ pos.x + box.boundingbox.w , pos.y });
 
 	if (!boxRight.isVoid && !boxUpRight.isVoid)
 	{
@@ -37,13 +41,15 @@ void MoveRightCommand::Execute()
 }
 void MoveUpCommand::Execute()
 {
+	if (m_pGameObj.expired()) return;
+	if (!m_pGameObj.lock()->IsEnabled()) return;
+
 	m_pPeterPepperComp->SetState(State::moveVertical, Direction::up);
 
-	auto& gridManager = GridManager::GetInstance();
 	const auto& pos = m_pGameObj.lock()->GetTransform().GetPosition();
 
-	auto box = gridManager.GetCell({ pos.x, pos.y });
-	auto boxUp = gridManager.GetCell({ pos.x, pos.y - box.boundingbox.h / 4.f * 3.f });
+	auto box = m_pGrid->GetCell({ pos.x, pos.y });
+	auto boxUp = m_pGrid->GetCell({ pos.x, pos.y - box.boundingbox.h / 4.f * 3.f });
 
 	if (!boxUp.isVoid)
 	{
@@ -53,13 +59,15 @@ void MoveUpCommand::Execute()
 }
 void MoveDownCommand::Execute()
 {
+	if (m_pGameObj.expired()) return;
+	if (!m_pGameObj.lock()->IsEnabled()) return;
+
 	m_pPeterPepperComp->SetState(State::moveVertical, Direction::down);
 
-	auto& gridManager = GridManager::GetInstance();
 	const auto& pos = m_pGameObj.lock()->GetTransform().GetPosition();
 
-	auto box = gridManager.GetCell({ pos.x, pos.y });
-	auto boxUp = gridManager.GetCell({ pos.x, pos.y + box.boundingbox.h / 4.f });
+	auto box = m_pGrid->GetCell({ pos.x, pos.y });
+	auto boxUp = m_pGrid->GetCell({ pos.x, pos.y + box.boundingbox.h / 4.f });
 
 	if (!boxUp.isVoid)
 	{

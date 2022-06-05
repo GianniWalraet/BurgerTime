@@ -33,10 +33,12 @@ void RenderComponent::Render()
 
 	if (m_pText)
 	{
-		const Texture2D& texture = *m_pText->GetTexture().get();
-		const glm::vec3& pos = m_pGameObject.lock()->GetTransform().GetPosition();
-		const glm::vec2& scale = m_pGameObject.lock()->GetTransform().GetScale();
+		if (auto tex = m_pText->GetTexture().get(); tex != nullptr)
+		{
+			const glm::vec3& pos = m_pGameObject.lock()->GetTransform().GetPosition();
+			const glm::vec2& scale = m_pGameObject.lock()->GetTransform().GetScale();
 
-		renderer.RenderTexture(texture, { pos.x, pos.y }, texture.GetSource(), m_pText->GetPivot(), scale);
+			renderer.RenderTexture(*tex, { pos.x, pos.y }, tex->GetSource(), m_pText->GetPivot(), scale);
+		}	
 	}
 }
