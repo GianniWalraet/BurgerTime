@@ -20,8 +20,8 @@ private:
 	std::weak_ptr<GameObject> m_pP1{};
 	std::weak_ptr<GameObject> m_pP2{};
 
-	std::vector<Cell> m_LvlGrid{};
-	int m_Rows{}, m_Cols{};
+	glm::vec2 m_P1SpawnPos{};
+	glm::vec2 m_P2SpawnPos{};
 
 	void LoadLevel();
 	void LoadPlayers();

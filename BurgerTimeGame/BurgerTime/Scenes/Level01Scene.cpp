@@ -6,11 +6,13 @@
 #include "Components/BurgerComponent.h"
 #include "Components/GridComponent.h"
 #include "Components/MrHotDogComponent.h"
+#include "Components/EnemySpawnerComponent.h"
 #pragma endregion
 
 #include "LevelParser/LevelParser.h"
 #include "Command/PlayerCommands.h"
 #include "Singletons/GameState.h"
+
 
 void Level01Scene::Initialize()
 {
@@ -29,7 +31,7 @@ void Level01Scene::Update()
 void Level01Scene::OnSceneActivated()
 {
 	auto& gameState = GameState::GetInstance();
-	m_pP1.lock()->GetTransform().SetPosition({ 30, 80, 0 });
+	m_pP1.lock()->GetTransform().SetPosition({ m_P1SpawnPos.x, m_P1SpawnPos.y, 0 });
 
 	gameState.Reset(gameState.GetGameMode());
 	gameState.SetNrOfSlices(GetNumObjectsWithTag("BurgerSlice"));
@@ -37,7 +39,7 @@ void Level01Scene::OnSceneActivated()
 	if (gameState.GetGameMode() == GameMode::MULTIPLAYER)
 	{
 		m_pP2.lock()->Enable();
-		m_pP2.lock()->GetTransform().SetPosition(30, 160, 0);
+		m_pP2.lock()->GetTransform().SetPosition(m_P2SpawnPos.x, m_P2SpawnPos.y, 0);
 	}
 	else
 	{
@@ -55,21 +57,22 @@ void Level01Scene::OnSceneDeactivated()
 void Level01Scene::LoadLevel()
 {
 	// Read in level data
-	std::string lvlTexFile{};
-	std::vector<std::shared_ptr<GameObject>> burgers{};
-	std::vector<Cell> cells{};
-	int nrRows{}, nrCols{};
-	LevelParser::ParseLevel(GameData::StringPathLvl01, GameData::GameScale, lvlTexFile, nrRows, nrCols, cells, burgers);
+	LevelData data{};
+	LevelParser::ParseLevel(GameData::StringPathLvl01, GameData::GameScale, data);
 
 	auto levelGO = Add(std::make_shared<GameObject>());
 	levelGO->GetTransform().SetScale(GameData::GameScale);
 	levelGO->GetTransform().SetPosition(0.f, 32.f, 0.f);
-	levelGO->AddComponent<TextureComponent>(lvlTexFile);
+	levelGO->AddComponent<TextureComponent>(data.backgroundFileName);
 	levelGO->AddComponent<RenderComponent>();
-	levelGO->AddComponent<GridComponent>(cells, nrRows, nrCols);
+	levelGO->AddComponent<EnemySpawnerComponent>();
+	auto grid = levelGO->AddComponent<GridComponent>(data.gridCells, data.nrOfRows, data.nrOfCols);
 	levelGO->SetTag("Level");
 
-	std::for_each(burgers.begin(), burgers.end(), [&](const std::shared_ptr<GameObject>& burger) { Add(burger); });
+	std::for_each(data.burgers.begin(), data.burgers.end(), [&](const std::shared_ptr<GameObject>& burger) { Add(burger); });
+
+	m_P1SpawnPos = grid->IndexToPosition(data.playerSpawnCellIndices[0]);
+	m_P2SpawnPos = grid->IndexToPosition(data.playerSpawnCellIndices[1]);
 }
 void Level01Scene::LoadPlayers()
 {

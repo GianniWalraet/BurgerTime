@@ -59,21 +59,21 @@ void Level02Scene::OnSceneDeactivated()
 void Level02Scene::LoadLevel()
 {
 	// Read in level data
-	std::string lvlTexFile;
-	std::vector<std::shared_ptr<GameObject>> burgers;
-	std::vector<Cell> cells{};
-	int nrRows{}, nrCols{};
-	LevelParser::ParseLevel(GameData::StringPathLvl02, GameData::GameScale, lvlTexFile, nrRows, nrCols, cells, burgers);
+	LevelData data{};
+	LevelParser::ParseLevel(GameData::StringPathLvl02, GameData::GameScale, data);
 
 	auto levelGO = Add(std::make_shared<GameObject>());
 	levelGO->GetTransform().SetScale(GameData::GameScale);
 	levelGO->GetTransform().SetPosition(0.f, 32.f, 0.f);
-	levelGO->AddComponent<TextureComponent>(lvlTexFile);
+	levelGO->AddComponent<TextureComponent>(data.backgroundFileName);
 	levelGO->AddComponent<RenderComponent>();
-	levelGO->AddComponent<GridComponent>(cells, nrRows, nrCols);
+	auto grid = levelGO->AddComponent<GridComponent>(data.gridCells, data.nrOfRows, data.nrOfCols);
 	levelGO->SetTag("Level");
 
-	std::for_each(burgers.begin(), burgers.end(), [&](const std::shared_ptr<GameObject>& burger) { Add(burger); });
+	std::for_each(data.burgers.begin(), data.burgers.end(), [&](const std::shared_ptr<GameObject>& burger) { Add(burger); });
+
+	m_P1SpawnPos = grid->IndexToPosition(data.playerSpawnCellIndices[0]);
+	m_P2SpawnPos = grid->IndexToPosition(data.playerSpawnCellIndices[1]);
 }
 void Level02Scene::LoadPlayers()
 {

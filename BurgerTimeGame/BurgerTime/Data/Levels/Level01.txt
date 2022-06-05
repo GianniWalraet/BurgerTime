@@ -1,0 +1,30 @@
+Level01.png
+26 26 // rows x cols
+8 8 // cellw x cellh
+
+##########################
+##########################
+oo====oonnnnoonnnnoonnnnoo
+oo####oo#oo#oo####oo####oo
+oo####oo#oo#oo####oo####oo
+oo####oo#oo#oo####oo####oo
+oonnnnoo#oo#oossssoossssoo
+###oo#oo#oo#oo#oo#oo####oo
+###oo#oo====oo#oo#oo####oo
+###oo#oo####oo#oo#oo####oo
+oossssoo####oo#oo#oobbbboo
+oo#oo#oo####oo#oo#oo#oo###
+oo#oo#oossssoobbbboo#oo###
+oo#oo#oo####oo####oo#oo###
+oo#oo#oo####oo####oovvvvoo
+oo#oo#oo####oo####oo#oo#oo
+oobbbboobbbboo====oo#oo#oo
+oo####oo####oo####oo#oo#oo
+oo####oo####oo####oo#oo#oo
+oo####oo####oo####oo#oo#oo
+oovvvvoovvvvoovvvvoo====oo
+##########################
+##########################
+##########################
+##########################
+##pppp##pppp##pppp##pppp##

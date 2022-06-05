@@ -26,11 +26,17 @@ void GameObject::RootInitialize()
 	//{
 	//	c->RootInitialize();
 	//}
+	m_Initialized = true;
 }
 
 void GameObject::RootUpdate()
 {
 	if (!m_Enabled) return;
+
+	if (!m_Initialized)
+	{
+		RootInitialize();
+	}
 
 	Update();
 

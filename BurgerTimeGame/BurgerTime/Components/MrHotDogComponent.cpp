@@ -20,12 +20,7 @@ void MrHotDogComponent::Initialize()
 			{
 				if (pActor == m_pTarget.lock() && type == CollisionType::ENTER)
 				{
-					std::cout << "Attacking Player!\n";
 					m_pTarget.lock()->GetComponent<PeterPepperComponent>()->OnDie();
-				}
-				else if (pActor == m_pTarget.lock() && type == CollisionType::EXIT)
-				{
-					std::cout << "Player running!\n";
 				}
 			});
 	}

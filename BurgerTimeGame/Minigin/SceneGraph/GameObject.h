@@ -105,6 +105,7 @@ private:
 	friend class Scene;
 
 	bool m_Enabled{ true };
+	bool m_Initialized{};
 
 	std::weak_ptr<Scene> m_pParentScene{};
 	Tag m_Tag{};
