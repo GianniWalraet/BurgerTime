@@ -219,6 +219,8 @@ xcopy $(ProjectDir)Data\* $(OutputPath)\Data\* /R /Y /s</Command>
     <ClCompile Include="Components\ScoreDisplayComponent.cpp" />
     <ClCompile Include="Base\Helpers.cpp" />
     <ClCompile Include="Components\MrHotDogComponent.cpp" />
+    <ClCompile Include="Components\EnemySpawnerComponent.cpp" />
+    <ClCompile Include="Singletons\EnemyManager.cpp" />
     <ClCompile Include="Scenes\MainMenuScene.cpp" />
     <ClCompile Include="Scenes\Level02Scene.cpp" />
     <ClCompile Include="Singletons\GameState.cpp" />
@@ -239,6 +241,8 @@ xcopy $(ProjectDir)Data\* $(OutputPath)\Data\* /R /Y /s</Command>
     <ClInclude Include="BurgerTime.h" />
     <ClInclude Include="Base\Helpers.h" />
     <ClInclude Include="Components\MrHotDogComponent.h" />
+    <ClInclude Include="Components\EnemySpawnerComponent.h" />
+    <ClInclude Include="Singletons\EnemyManager.h" />
     <ClInclude Include="Scenes\MainMenuScene.h" />
     <ClInclude Include="Scenes\Level02Scene.h" />
     <ClInclude Include="Singletons\GameState.h" />

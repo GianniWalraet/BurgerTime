@@ -27,4 +27,12 @@ oovvvvoo====oo====oovvvvoo
 ############oo############
 ##########################
 ##########################
-#######pppp###pppp#######
+#######pppp###pppp########
+-
+p 21 13 // player spawncells x y
+p 17 13
+
+e 3 1 // enemy spawncells x y
+e 21 1
+e 3 26
+e 21 26

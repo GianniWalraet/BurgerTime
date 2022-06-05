@@ -9,6 +9,7 @@ struct LevelData
 	std::vector<std::shared_ptr<GameObject>> burgers{};
 	std::vector<int> playerSpawnCellIndices{};
 	std::vector<int> enemySpawnCellIndices{};
+	uint32_t maxEnemies;
 };
 
 class LevelParser final

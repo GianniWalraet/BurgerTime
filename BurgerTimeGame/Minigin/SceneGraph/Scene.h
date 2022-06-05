@@ -20,8 +20,8 @@ public:
 
 	std::shared_ptr<GameObject> FindObjectWithTag(const Tag& tag);
 	std::vector<std::shared_ptr<GameObject>> FindObjectsWithTag(const Tag& tag);
+	uint32_t FindNumObjectsWithTag(const Tag& tag);
 
-	uint32_t GetNumObjectsWithTag(const Tag& tag);
 	const std::string GetName() const { return m_Name; }
 protected:
 	virtual void Initialize() {}

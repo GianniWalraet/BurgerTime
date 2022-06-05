@@ -34,7 +34,7 @@ void Level01Scene::OnSceneActivated()
 	m_pP1.lock()->GetTransform().SetPosition({ m_P1SpawnPos.x, m_P1SpawnPos.y, 0 });
 
 	gameState.Reset(gameState.GetGameMode());
-	gameState.SetNrOfSlices(GetNumObjectsWithTag("BurgerSlice"));
+	gameState.SetNrOfSlices(FindNumObjectsWithTag("BurgerSlice"));
 
 	if (gameState.GetGameMode() == GameMode::MULTIPLAYER)
 	{
@@ -65,9 +65,22 @@ void Level01Scene::LoadLevel()
 	levelGO->GetTransform().SetPosition(0.f, 32.f, 0.f);
 	levelGO->AddComponent<TextureComponent>(data.backgroundFileName);
 	levelGO->AddComponent<RenderComponent>();
-	levelGO->AddComponent<EnemySpawnerComponent>();
 	auto grid = levelGO->AddComponent<GridComponent>(data.gridCells, data.nrOfRows, data.nrOfCols);
+
+	std::vector<glm::vec3> enemySpawnPositions{};
+	for (size_t i = 0; i < data.enemySpawnCellIndices.size(); ++i)
+	{
+		auto pos = grid->IndexToPosition(data.enemySpawnCellIndices[i]);
+		if (pos.x > Renderer::GetInstance().GetWindowWidth())
+			pos.x += GameData::EnemySpawnOffset * 3.f;
+		else
+			pos.x -= GameData::EnemySpawnOffset * 3.f;
+		enemySpawnPositions.emplace_back(glm::vec3{ pos.x, pos.y, 0.f });
+	}
+
+	levelGO->AddComponent<EnemySpawnerComponent>(enemySpawnPositions, data.maxEnemies);
 	levelGO->SetTag("Level");
+
 
 	std::for_each(data.burgers.begin(), data.burgers.end(), [&](const std::shared_ptr<GameObject>& burger) { Add(burger); });
 
@@ -76,21 +89,12 @@ void Level01Scene::LoadLevel()
 }
 void Level01Scene::LoadPlayers()
 {
-	m_pP1 = Helpers::CreatePlayer(shared_from_this(), PlayerID::PLAYERONE);
+	m_pP1 = Helpers::AddPlayer(shared_from_this(), PlayerID::PLAYERONE);
 	m_pP1.lock()->GetTransform().SetScale(GameData::GameScale);
 
-	m_pP2 = Helpers::CreatePlayer(shared_from_this(), PlayerID::PLAYERTWO);
+	m_pP2 = Helpers::AddPlayer(shared_from_this(), PlayerID::PLAYERTWO);
 	m_pP2.lock()->GetTransform().SetScale(GameData::GameScale);
 	m_pP2.lock()->Disable();
-
-	auto mrHotDog = Add(std::make_shared<GameObject>());
-	mrHotDog->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 1, 2, 1 / 10.f, glm::vec2{ 0.5f,1.f }, SDL_Rect{ 0, GameData::SpriteCellSize * 2, GameData::SpriteCellSize * 2, GameData::SpriteCellSize });
-	mrHotDog->AddComponent<RenderComponent>();
-	mrHotDog->AddComponent<MrHotDogComponent>();
-	mrHotDog->AddComponent<Box2DComponent>(float(GameData::SpriteCellSize), float(GameData::SpriteCellSize), true);
-	mrHotDog->GetTransform().SetScale(GameData::GameScale);
-	mrHotDog->GetTransform().SetPosition(150.f, 220.f, 0.f);
-	m_pMrHotDog = mrHotDog;
 }
 void Level01Scene::LoadHUD()
 {

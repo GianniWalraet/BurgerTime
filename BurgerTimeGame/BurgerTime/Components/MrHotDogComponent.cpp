@@ -89,8 +89,8 @@ void MrHotDogComponent::HandlePathChoice()
 	auto ww = Renderer::GetInstance().GetWindowWidth();
 	auto wh = Renderer::GetInstance().GetWindowHeight();
 
-	if (pos.x < 0.f) m_Dir = Direction::right;
-	if (pos.x > ww) m_Dir = Direction::left;
+	if (pos.x - GameData::SpriteCellSize < 0.f) m_Dir = Direction::right;
+	if (pos.x + GameData::SpriteCellSize > ww) m_Dir = Direction::left;
 	if (pos.y < 0.f) m_Dir = Direction::down;
 	if (pos.y > wh) m_Dir = Direction::up;
 	
@@ -110,7 +110,6 @@ void MrHotDogComponent::HandlePathChoice()
 	case Direction::left:
 		if (!cellRightIn.isBurgerPlatform && !cellLeftIn.isBurgerPlatform)
 		{
-			std::cout << "walked left\n";
 			if (playerPos.y > pos.y && !cellBottom.isVoid)
 			{
 				m_Dir = Direction::down;
@@ -126,7 +125,6 @@ void MrHotDogComponent::HandlePathChoice()
 	case Direction::right:
 		if (!cellLeftIn.isBurgerPlatform && !cellRightIn.isBurgerPlatform)
 		{
-			std::cout << "walked right\n";
 			if (playerPos.y > pos.y && !cellBottom.isVoid)
 			{
 				m_Dir = Direction::down;
@@ -142,7 +140,6 @@ void MrHotDogComponent::HandlePathChoice()
 	case Direction::up:
 		if (cellLeftOut.isBurgerPlatform || cellRightOut.isBurgerPlatform)
 		{
-			std::cout << "ladder climbed\n";
 			if (playerPos.x < pos.x && !cellLeftOut.isVoid)
 			{
 				m_Dir = Direction::left;
@@ -158,10 +155,9 @@ void MrHotDogComponent::HandlePathChoice()
 	case Direction::down:
 			if (cellLeftOut.isBurgerPlatform || cellRightOut.isBurgerPlatform)
 			{
-				std::cout << "ladder descended\n";
 				if (playerPos.x < pos.x && !cellLeftOut.isVoid)
 				{
-					if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h / 4.f * 3.f)
+					if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h / 2.f)
 					{
 						m_Dir = Direction::left;
 						m_PathChanged = true;
@@ -169,7 +165,7 @@ void MrHotDogComponent::HandlePathChoice()
 				}
 				if (playerPos.x > pos.x && !cellRightOut.isVoid)
 				{
-					if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h / 4.f * 3.f)
+					if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h / 2.f)
 					{
 						m_Dir = Direction::right;
 						m_PathChanged = true;

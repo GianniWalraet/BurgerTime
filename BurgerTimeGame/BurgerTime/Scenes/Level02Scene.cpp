@@ -77,10 +77,10 @@ void Level02Scene::LoadLevel()
 }
 void Level02Scene::LoadPlayers()
 {
-	m_pP1 = Helpers::CreatePlayer(shared_from_this(), PlayerID::PLAYERONE);
+	m_pP1 = Helpers::AddPlayer(shared_from_this(), PlayerID::PLAYERONE);
 	m_pP1.lock()->GetTransform().SetScale(4.f);
 
-	m_pP2 = Helpers::CreatePlayer(shared_from_this(), PlayerID::PLAYERTWO);
+	m_pP2 = Helpers::AddPlayer(shared_from_this(), PlayerID::PLAYERTWO);
 	m_pP2.lock()->GetTransform().SetScale(4.f);
 	m_pP2.lock()->Disable();
 }

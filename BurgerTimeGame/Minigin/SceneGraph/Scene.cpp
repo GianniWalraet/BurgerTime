@@ -34,7 +34,7 @@ std::vector<std::shared_ptr<GameObject>> Scene::FindObjectsWithTag(const Tag& ta
 	}
 	return pObjects;
 }
-uint32_t Scene::GetNumObjectsWithTag(const Tag& tag)
+uint32_t Scene::FindNumObjectsWithTag(const Tag& tag)
 {
 	uint32_t amount{};
 	for (const auto& obj : m_Objects)

@@ -37,8 +37,10 @@ void LevelParser::ParseLevel(const std::string& fileName, float scale, LevelData
 		int i{};
 		while (std::getline(file, line))
 		{
-			if (line == "-") break;
 			if (line.empty()) continue;
+			if (line.front() == '-') 
+				break;
+
 			for (int j = 0; j < line.size(); j++)
 			{
 				bool isBurgerPlatform = burgerPlatformChars.find(line[j]) != std::string::npos;
@@ -102,7 +104,12 @@ void LevelParser::ParseLevel(const std::string& fileName, float scale, LevelData
 		{
 			std::istringstream str{ line.substr(2) };
 			str >> yIdx >> xIdx;
-			data.playerSpawnCellIndices.emplace_back(xIdx + yIdx * data.nrOfCols);
+			data.enemySpawnCellIndices.emplace_back(xIdx + yIdx * data.nrOfCols);
+		}
+		else if (line.front() == 'm')
+		{
+			std::istringstream str{ line.substr(2) };
+			str >> data.maxEnemies;
 		}
 	}
 }

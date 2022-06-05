@@ -18,7 +18,6 @@ protected:
 private:
 	std::weak_ptr<GameObject> m_pP1{};
 	std::weak_ptr<GameObject> m_pP2{};
-	std::weak_ptr<GameObject> m_pMrHotDog{};
 
 	glm::vec2 m_P1SpawnPos{};
 	glm::vec2 m_P2SpawnPos{};

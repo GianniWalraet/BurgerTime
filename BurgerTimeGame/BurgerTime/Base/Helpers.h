@@ -11,6 +11,7 @@ enum class PlayerID
 
 namespace Helpers
 {
-	std::shared_ptr<GameObject> CreatePlayer(const std::shared_ptr<Scene>& scene, PlayerID id);
+	std::shared_ptr<GameObject> AddPlayer(const std::shared_ptr<Scene>& scene, PlayerID id);
+	std::shared_ptr<GameObject> AddMrHotDog(const std::shared_ptr<Scene>& scene);
 };
 
