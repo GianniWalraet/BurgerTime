@@ -6,7 +6,7 @@ class PeterPepperComponent;
 class ScoreDisplayComponent final : public BaseComponent, public Observer
 {
 public:
-	ScoreDisplayComponent(PeterPepperComponent* pPlayerC, TextComponent* pTextC);
+	ScoreDisplayComponent(const std::shared_ptr<PeterPepperComponent>& pPlayerC, const std::shared_ptr<TextComponent>& pTextC);
 	virtual ~ScoreDisplayComponent() = default;
 	ScoreDisplayComponent(const ScoreDisplayComponent& other) = delete;
 	ScoreDisplayComponent(ScoreDisplayComponent&& other) = delete;
@@ -15,8 +15,8 @@ public:
 
 	void OnNotify(Event event) override;
 private:
-	PeterPepperComponent* m_pPlayer{};
-	TextComponent* m_pText{};
+	std::weak_ptr<PeterPepperComponent> m_pPlayer{};
+	std::weak_ptr<TextComponent> m_pText{};
 
 	void UpdateText();
 };

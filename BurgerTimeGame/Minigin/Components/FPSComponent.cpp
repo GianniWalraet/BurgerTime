@@ -9,8 +9,8 @@
 void FPSComponent::Initialize()
 {
 	m_pText = m_pGameObject.lock()->GetComponent<TextComponent>();
-	assert(m_pText != nullptr);
-	m_pText->SetText(std::to_string(Timer::GetInstance().GetFPS()));
+	assert(!m_pText.expired());
+	m_pText.lock()->SetText(std::to_string(Timer::GetInstance().GetFPS()));
 }
 
 void FPSComponent::Update()
@@ -18,8 +18,8 @@ void FPSComponent::Update()
 	auto fps = Timer::GetInstance().GetFPS();
 	if (fps != m_PreviousFPS)
 	{
-		m_pText->SetText(std::to_string(fps));
-		m_pText->Update();
+		m_pText.lock()->SetText(std::to_string(fps));
+		m_pText.lock()->Update();
 		m_PreviousFPS = fps;
 	}
 }

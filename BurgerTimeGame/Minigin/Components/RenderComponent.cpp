@@ -14,31 +14,31 @@ void RenderComponent::Initialize()
 void RenderComponent::Render()
 {
 	auto& renderer = Renderer::GetInstance();
-	if(m_pTexture)
+	if(!m_pTexture.expired())
 	{
-		const Texture2D& texture = *m_pTexture->GetTexture().get();
+		const Texture2D& texture = *m_pTexture.lock()->GetTexture().get();
 		const glm::vec3& pos = m_pGameObject.lock()->GetTransform().GetPosition();
 		const glm::vec2& scale = m_pGameObject.lock()->GetTransform().GetScale();
 
-		renderer.RenderTexture(texture, { pos.x, pos.y }, texture.GetSource(), m_pTexture->GetPivot(), scale, m_pTexture->IsMirrored());
+		renderer.RenderTexture(texture, { pos.x, pos.y }, texture.GetSource(), m_pTexture.lock()->GetPivot(), scale, m_pTexture.lock()->IsMirrored());
 	}
 
-	if(m_pSprite)
+	if(!m_pSprite.expired())
 	{
 		const glm::vec3& pos = m_pGameObject.lock()->GetTransform().GetPosition();
 		const glm::vec2& scale = m_pGameObject.lock()->GetTransform().GetScale();
 
-		renderer.RenderTexture(*m_pSprite->GetTexture().get(), { pos.x, pos.y }, m_pSprite->GetCurrentFrame(), m_pSprite->GetPivot(), scale, m_pSprite->IsMirrored());
+		renderer.RenderTexture(*m_pSprite.lock()->GetTexture().get(), {pos.x, pos.y}, m_pSprite.lock()->GetCurrentFrame(), m_pSprite.lock()->GetPivot(), scale, m_pSprite.lock()->IsMirrored());
 	}
 
-	if (m_pText)
+	if (!m_pText.expired())
 	{
-		if (auto tex = m_pText->GetTexture().get(); tex != nullptr)
+		if (auto tex = m_pText.lock()->GetTexture().get(); tex != nullptr)
 		{
 			const glm::vec3& pos = m_pGameObject.lock()->GetTransform().GetPosition();
 			const glm::vec2& scale = m_pGameObject.lock()->GetTransform().GetScale();
 
-			renderer.RenderTexture(*tex, { pos.x, pos.y }, tex->GetSource(), m_pText->GetPivot(), scale);
+			renderer.RenderTexture(*tex, { pos.x, pos.y }, tex->GetSource(), m_pText.lock()->GetPivot(), scale);
 		}	
 	}
 }

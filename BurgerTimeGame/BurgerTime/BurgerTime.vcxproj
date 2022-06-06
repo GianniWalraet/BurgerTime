@@ -228,7 +228,6 @@ xcopy $(ProjectDir)Data\* $(OutputPath)\Data\* /R /Y /s</Command>
     <ClCompile Include="Scenes\Level02Scene.cpp" />
     <ClCompile Include="Singletons\GameState.cpp" />
     <ClCompile Include="Scenes\Level01Scene.cpp" />
-    <ClCompile Include="State\PeterPepperStates.cpp" />
     <ClCompile Include="LevelParser\LevelParser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
@@ -253,7 +252,6 @@ xcopy $(ProjectDir)Data\* $(OutputPath)\Data\* /R /Y /s</Command>
     <ClInclude Include="Scenes\Level02Scene.h" />
     <ClInclude Include="Singletons\GameState.h" />
     <ClInclude Include="Scenes\Level01Scene.h" />
-    <ClInclude Include="State\PeterPepperStates.h" />
     <ClInclude Include="Command\PlayerCommands.h" />
     <ClInclude Include="Components\HealthDisplayComponent.h" />
     <ClInclude Include="Components\PeterPepperComponent.h" />

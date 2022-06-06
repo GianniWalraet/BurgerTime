@@ -1,4 +1,4 @@
- #include "pch.h"
+#include "pch.h"
 #include "PeterPepperComponent.h"
 #include "Observer/AchievementObserver.h"
 #include "Components/PeterPepperComponent.h"
@@ -11,13 +11,17 @@ PeterPepperComponent::PeterPepperComponent(int8_t lives)
 {
 }
 
-void PeterPepperComponent::AddCloseEnemy(EnemyComponent* pComp)
+void PeterPepperComponent::AddCloseEnemy(const std::shared_ptr<EnemyComponent>& pComp)
 {
 	m_pCloseEnemies.emplace_back(pComp);
 }
-void PeterPepperComponent::RemoveCloseEnemy(EnemyComponent* pComp)
+void PeterPepperComponent::RemoveCloseEnemy(const std::shared_ptr<EnemyComponent>& pComp)
 {
-	m_pCloseEnemies.erase(std::remove(m_pCloseEnemies.begin(), m_pCloseEnemies.end(), pComp), m_pCloseEnemies.end());
+	m_pCloseEnemies.erase(std::remove_if(m_pCloseEnemies.begin(), m_pCloseEnemies.end(), [pComp](const std::weak_ptr<EnemyComponent>& wp) 
+		{
+			return pComp == wp.lock();
+		}), 
+		m_pCloseEnemies.end());
 }
 
 void PeterPepperComponent::Initialize()
@@ -87,7 +91,7 @@ bool PeterPepperComponent::HandleState()
 	if (m_State == m_PrevState && m_Dir == m_PrevDir) return false;
 
 	SDL_Rect source{};
-	int rows{1}, cols{1};
+	int rows{ 1 }, cols{ 1 };
 	bool mirror{};
 	float frameSec = 1 / 15.f;
 	switch (m_State)
@@ -159,7 +163,7 @@ bool PeterPepperComponent::HandleState()
 			break;
 		}
 	}
-		break;
+	break;
 	case State::dead:
 		rows = 1;
 		cols = 6;
@@ -180,7 +184,7 @@ bool PeterPepperComponent::HandleState()
 		break;
 	}
 
-	m_pSpriteComponent->Reset(source, rows, cols, mirror, frameSec);
+	m_pSpriteComponent.lock()->Reset(source, rows, cols, mirror, frameSec);
 
 	m_PrevState = m_State;
 	m_PrevDir = m_Dir;
@@ -188,14 +192,16 @@ bool PeterPepperComponent::HandleState()
 }
 void PeterPepperComponent::HandleCellCollision()
 {
+	if (m_pGrid.expired()) return;
+	const auto& pGrid = m_pGrid.lock();
 	auto& pos = m_pGameObject.lock()->GetTransform().GetPosition();
-	m_CellIdx = m_pGrid->PositionToIndex({ pos.x, pos.y });
+	m_CellIdx = pGrid->PositionToIndex({pos.x, pos.y});
 
 	if (m_CellIdx != m_PrevCellIdx)
 	{
-		m_pGrid->GetCell(m_CellIdx).isTriggered = true;
-		m_pGrid->GetCell(m_CellIdx).pActor = m_pGameObject.lock();
-		m_pGrid->GetCell(m_PrevCellIdx).isTriggered = false;
+		pGrid->GetCell(m_CellIdx).isTriggered = true;
+		pGrid->GetCell(m_CellIdx).pActor = m_pGameObject.lock();
+		pGrid->GetCell(m_PrevCellIdx).isTriggered = false;
 	}
 	m_PrevCellIdx = m_CellIdx;
 }
@@ -204,15 +210,15 @@ void PeterPepperComponent::HandleEnemyCollisions()
 {
 	for (const auto& enemy : m_pCloseEnemies)
 	{
-		if (enemy)
-		{
-			auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
-			auto otherPos = enemy->GetGameObject().lock()->GetTransform().GetPosition();
+		if (enemy.expired()) continue;
 
-			if (utils::Distance(pos, otherPos) < m_KillRadius)
-			{
-				OnDie();
-			}
+		auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
+		auto otherPos = enemy.lock()->GetGameObject().lock()->GetTransform().GetPosition();
+
+		if (utils::Distance(pos, otherPos) < m_KillRadius)
+		{
+			OnDie();
 		}
+
 	}
 }

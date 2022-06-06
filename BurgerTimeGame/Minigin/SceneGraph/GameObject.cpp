@@ -6,11 +6,11 @@
 
 GameObject::~GameObject()
 {
-	for (size_t i = 0; i < m_pComponents.size(); i++)
-	{
-		delete m_pComponents[i];
-		m_pComponents[i] = nullptr;
-	}
+	//for (size_t i = 0; i < m_pComponents.size(); i++)
+	//{
+	//	delete m_pComponents[i];
+	//	m_pComponents[i] = nullptr;
+	//}
 }
 
 void GameObject::RootInitialize()
@@ -51,7 +51,7 @@ void GameObject::RootUpdate()
 	//}
 }
 
-void GameObject::RootAddComponent(BaseComponent* pComp)
+void GameObject::RootAddComponent(const std::shared_ptr<BaseComponent>& pComp)
 {
 	pComp->m_pGameObject = shared_from_this();
 	m_pComponents.emplace_back(pComp);

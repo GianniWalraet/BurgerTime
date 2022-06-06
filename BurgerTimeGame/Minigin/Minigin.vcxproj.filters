@@ -64,7 +64,6 @@
     <ClInclude Include="Sound\NullSoundManager.h" />
     <ClInclude Include="Components\ControllerComponent.h" />
     <ClInclude Include="Components\Box2DComponent.h" />
-    <ClInclude Include="Components\Button2DComponent.h" />
     <ClInclude Include="Base\Utils.h" />
     <ClInclude Include="Singletons\CollisionManager.h" />
     <ClInclude Include="Components\GridComponent.h" />
@@ -145,9 +144,6 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Components\Box2DComponent.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\Button2DComponent.cpp">
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Singletons\CollisionManager.cpp">

@@ -17,8 +17,8 @@ protected:
 	void Render();
 private:
 	friend class Scene;
-	TextureComponent* m_pTexture{};
-	SpriteComponent* m_pSprite{};
-	TextComponent* m_pText{};
+	std::weak_ptr<TextureComponent> m_pTexture{};
+	std::weak_ptr<SpriteComponent> m_pSprite{};
+	std::weak_ptr<TextComponent> m_pText{};
 };
 

@@ -9,12 +9,11 @@ class Observer;
 class Subject
 {
 public:
-	void AddObserver(Observer* observer);
-	void RemoveObserver(Observer* observer);
+	void AddObserver(const std::shared_ptr<Observer>& observer);
 protected:
 	virtual void NotifyAll(Event event);
 private:
-	Observer* m_Observers[MAX_OBSERVERS]{};
+	std::weak_ptr<Observer> m_Observers[MAX_OBSERVERS]{};
 	size_t m_NrOfObservers{};
 };
 

@@ -14,8 +14,8 @@ public:
 	~PlayerCommand() override = default;
 protected:
 	std::weak_ptr<GameObject> m_pGameObj{};
-	PeterPepperComponent* m_pPeterPepperComp;
-	GridComponent* m_pGrid{};
+	std::weak_ptr<PeterPepperComponent> m_pPeterPepperComp;
+	std::weak_ptr<GridComponent> m_pGrid{};
 };
 
 class KillCommand final : public PlayerCommand
@@ -24,8 +24,10 @@ public:
 	explicit KillCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
+		if (m_pGameObj.expired()) return;
 		if (!m_pGameObj.lock()->IsEnabled()) return;
-		m_pPeterPepperComp->OnDie();
+
+		m_pPeterPepperComp.lock()->OnDie();
 		m_pGameObj.lock()->GetScene()->OnSceneReload();
 	}
 };
@@ -36,8 +38,9 @@ public:
 	explicit ScoreCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
 	void Execute() override
 	{
+		if (m_pGameObj.expired()) return;
 		if (!m_pGameObj.lock()->IsEnabled()) return;
-		m_pPeterPepperComp->OnBurgerDropped();
+		m_pPeterPepperComp.lock()->OnBurgerDropped();
 	}
 };
 
@@ -47,7 +50,7 @@ public:
 	explicit MoveLeftCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) { m_pController = pActor->GetComponent<ControllerComponent>(); }
 	void Execute() override;
 private:
-	ControllerComponent* m_pController{};
+	std::weak_ptr<ControllerComponent> m_pController{};
 };
 
 class MoveRightCommand final : public PlayerCommand
@@ -56,7 +59,7 @@ public:
 	explicit MoveRightCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) { m_pController = pActor->GetComponent<ControllerComponent>(); }
 	void Execute() override;
 private:
-	ControllerComponent* m_pController{};
+	std::weak_ptr<ControllerComponent> m_pController{};
 };
 
 class MoveUpCommand final : public PlayerCommand
@@ -65,7 +68,7 @@ public:
 	explicit MoveUpCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) { m_pController = pActor->GetComponent<ControllerComponent>(); }
 	void Execute() override;
 private:
-	ControllerComponent* m_pController{};
+	std::weak_ptr<ControllerComponent> m_pController{};
 };
 
 class MoveDownCommand final : public PlayerCommand
@@ -74,5 +77,5 @@ public:
 	explicit MoveDownCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) { m_pController = pActor->GetComponent<ControllerComponent>(); }
 	void Execute() override;
 private:
-	ControllerComponent* m_pController{};
+	std::weak_ptr<ControllerComponent> m_pController{};
 };

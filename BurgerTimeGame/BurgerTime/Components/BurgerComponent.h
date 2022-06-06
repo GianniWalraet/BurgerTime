@@ -25,8 +25,8 @@ public:
 	void OnDrop() { m_IsDropping = true; }
 	bool IsDropping() { return m_IsDropping; }
 
-	PeterPepperComponent* GetTriggerActor() { return m_pTriggerActor; }
-	PeterPepperComponent* SetTriggerActor() { return m_pTriggerActor; }
+	std::shared_ptr<PeterPepperComponent> GetTriggerActor() { return m_pTriggerActor.lock(); }
+	std::shared_ptr<PeterPepperComponent> SetTriggerActor() { return m_pTriggerActor.lock(); }
 protected:
 	void Initialize() override;
 	void Update() override;
@@ -34,8 +34,8 @@ private:
 	std::vector<int> m_CellIndices{};
 	std::vector<bool> m_IsSteppedOn{ false, false, false, false };
 
-	PeterPepperComponent* m_pTriggerActor{};
-	GridComponent* m_pGrid{};
+	std::weak_ptr<PeterPepperComponent> m_pTriggerActor{};
+	std::weak_ptr<GridComponent> m_pGrid{};
 	
 	float m_DefaultFallVelocity{ -200.f };
 	float m_FallVelocity{ -200.f };

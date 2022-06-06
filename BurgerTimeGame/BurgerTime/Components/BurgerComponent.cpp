@@ -19,13 +19,14 @@ void BurgerComponent::Initialize()
 void BurgerComponent::Update()
 {
 	if (m_OnPlate) return;
+	if (m_pGrid.expired()) return;
 
 	if (m_NextPlatformTriggered)
 	{
 		for (int i = 0; i < m_CellIndices.size(); i++)
 		{
-			m_pGrid->GetCell(m_CellIndices[i]).isTriggered = false;
-			m_pGrid->GetCell(m_CellIndices[i]).pActor = std::weak_ptr<GameObject>();
+			m_pGrid.lock()->GetCell(m_CellIndices[i]).isTriggered = false;
+			m_pGrid.lock()->GetCell(m_CellIndices[i]).pActor = std::weak_ptr<GameObject>();
 			ServiceLocator::GetSoundManager()->PlayEffect("Sounds/BurgerCollide.mp3", GameData::SoundeffectVolume, 0, false);
 		}
 
@@ -40,16 +41,16 @@ void BurgerComponent::CheckCanDrop()
 {
 	for (size_t i = 0; i < m_CellIndices.size(); i++)
 	{
-		if (m_pGrid->GetCell(m_CellIndices[i]).isTriggered)
+		if (m_pGrid.lock()->GetCell(m_CellIndices[i]).isTriggered)
 		{
 			if (!m_IsSteppedOn[i])
 			{
 				m_IsSteppedOn[i] = true;
-				if (m_pGrid->GetCell(m_CellIndices[i]).pActor.lock())
+				if (m_pGrid.lock()->GetCell(m_CellIndices[i]).pActor.lock())
 					ServiceLocator::GetSoundManager()->PlayEffect("Sounds/StepOnBurger.mp3", GameData::SoundeffectVolume, 0, false);
 			}
 
-			if (auto actor = m_pGrid->GetCell(m_CellIndices[i]).pActor.lock())
+			if (auto actor = m_pGrid.lock()->GetCell(m_CellIndices[i]).pActor.lock())
 			{
 				m_pTriggerActor = actor->GetComponent<PeterPepperComponent>();
 			}
@@ -58,9 +59,9 @@ void BurgerComponent::CheckCanDrop()
 	if (std::all_of(m_IsSteppedOn.begin(), m_IsSteppedOn.end(), [](bool v) { return v; }))
 	{
 		m_IsDropping = true;
-		if (m_pTriggerActor)
+		if (m_pTriggerActor.lock())
 		{
-			m_pTriggerActor->OnBurgerDropped();
+			m_pTriggerActor.lock()->OnBurgerDropped();
 		}
 	}
 }
@@ -72,13 +73,13 @@ void BurgerComponent::HandleBurgerDropping()
 	auto& transform = m_pGameObject.lock()->GetTransform();
 	auto pos = transform.GetPosition();
 
-	auto idx = m_pGrid->PositionToIndex({ pos.x, pos.y });
+	auto idx = m_pGrid.lock()->PositionToIndex({ pos.x, pos.y });
 	if (std::find(m_CellIndices.begin(), m_CellIndices.end(), idx) != m_CellIndices.end())
 		return;
 
 	if (CheckOnPlate(idx)) return;
 
-	auto cell = m_pGrid->GetCell(idx);
+	auto cell = m_pGrid.lock()->GetCell(idx);
 	if (cell.isBurgerPlatform)
 	{
 		if (pos.y > cell.boundingbox.y)
@@ -92,8 +93,8 @@ void BurgerComponent::HandleBurgerDropping()
 
 			for (int i = 0; i < m_CellIndices.size(); i++)
 			{
-				m_pGrid->GetCell(m_CellIndices[i]).isTriggered = true;
-				m_pGrid->GetCell(m_CellIndices[i]).pActor = m_pTriggerActor->GetGameObject().lock();
+				m_pGrid.lock()->GetCell(m_CellIndices[i]).isTriggered = true;
+				m_pGrid.lock()->GetCell(m_CellIndices[i]).pActor = m_pTriggerActor.lock()->GetGameObject().lock();
 			}
 			m_NextPlatformTriggered = true;
 		}
@@ -122,16 +123,17 @@ void BurgerComponent::UpdateCellsOnFall()
 		if (utils::IsOverlapping(burgerCollider, enemyCollider))
 		{
 			enemy->GetScene()->Remove(enemy);
-			m_pTriggerActor->OnBurgerDropped();
+			m_pTriggerActor.lock()->OnBurgerDropped();
 		}
 	}
 }
 bool BurgerComponent::CheckOnPlate(int cellIdx)
 {
+	const auto& pGrid = m_pGrid.lock();
 	auto pos = m_pGameObject.lock()->GetTransform().GetPosition();
 
-	auto& cell = m_pGrid->GetCell(cellIdx);
-	auto& cellBelow = m_pGrid->GetCell(cellIdx + m_pGrid->GetNrCols());
+	auto& cell = pGrid->GetCell(cellIdx);
+	auto& cellBelow = pGrid->GetCell(cellIdx + pGrid->GetNrCols());
 	if (cell.isPlate || cellBelow.hasBurger)
 	{
 		m_OnPlate = true;

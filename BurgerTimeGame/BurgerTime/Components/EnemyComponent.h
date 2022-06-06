@@ -2,7 +2,7 @@
 #include "Components/EnemyComponent.h"
 #include "PeterPepperComponent.h"
 
-class EnemyComponent : public BaseComponent
+class EnemyComponent : public BaseComponent, public std::enable_shared_from_this<EnemyComponent>
 {
 public:
 	EnemyComponent() = default;
@@ -18,7 +18,7 @@ private:
 	std::vector<std::weak_ptr<GameObject>> m_pPlayers{};
 	std::weak_ptr<GameObject> m_pTarget{};
 
-	GridComponent* m_pGrid{};
+	std::weak_ptr<GridComponent> m_pGrid{};
 	glm::vec2 m_MovementSpeed{ 100.f, 80.f };
 
 	Direction m_Dir{ Direction::left };

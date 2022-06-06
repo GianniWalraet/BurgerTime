@@ -17,27 +17,28 @@ public:
 	GameObject& operator=(const GameObject& other) = delete;
 	GameObject& operator=(GameObject&& other) = delete;
 
-	template <typename T, typename... Args> T* AddComponent(Args... args)
+	template <typename T, typename... Args> std::shared_ptr<T> AddComponent(Args... args)
 	{
-		auto co = new T(std::forward<Args>(args)...);
+		auto co = std::make_shared<T>(std::forward<Args>(args)...);
 		RootAddComponent(co);
 		return co;
 	}
-	template <typename T> T* AddComponent(T* comp)
+	template <typename T> std::shared_ptr<T> AddComponent(T* comp)
 	{
 		RootAddComponent(comp);
 		return comp;
 	}
-	template <typename T> T* GetComponent() const
+	template <typename T> std::shared_ptr<T> GetComponent() const
 	{
 		for (const auto comp : m_pComponents)
 		{
-			if (dynamic_cast<T*>(comp) != nullptr)
+			if (dynamic_cast<T*>(comp.get()) != nullptr)
 			{
-				return dynamic_cast<T*>(comp);
+				return std::dynamic_pointer_cast<T>(comp);
 			}
 		}
 		return nullptr;
+
 	}
 	template <typename T> void RemoveComponent()
 	{
@@ -111,12 +112,12 @@ private:
 	Tag m_Tag{};
 
 	Transform m_Transform{};
-	std::vector<BaseComponent*> m_pComponents{};
+	std::vector<std::shared_ptr<BaseComponent>> m_pComponents{};
 
 	//std::vector<std::shared_ptr<GameObject>> m_pChildren{};
 	//std::weak_ptr<GameObject> m_pParent{};
 
 	void RootInitialize();
 	void RootUpdate();
-	void RootAddComponent(BaseComponent* pComp);
+	void RootAddComponent(const std::shared_ptr<BaseComponent>& pComp);
 };

@@ -31,9 +31,6 @@
     <ClCompile Include="Components\BurgerComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="State\PeterPepperStates.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Singletons\GameState.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -78,7 +75,6 @@
     <ClInclude Include="LevelParser\LevelParser.h" />
     <ClInclude Include="Components\BurgerComponent.h" />
     <ClInclude Include="Base\GameData.h" />
-    <ClInclude Include="State\PeterPepperStates.h" />
     <ClInclude Include="Singletons\GameState.h" />
     <ClInclude Include="Scenes\Level01Scene.h" />
     <ClInclude Include="Scenes\Level02Scene.h" />

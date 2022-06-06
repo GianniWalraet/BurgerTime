@@ -22,11 +22,11 @@ void EnemyComponent::Initialize()
 				if (ppComp->IsStunned()) return;
 				if (type == CollisionType::ENTER)
 				{
-					ppComp->AddCloseEnemy(this);
+					ppComp->AddCloseEnemy(shared_from_this());
 				}
 				else if (type == CollisionType::EXIT)
 				{
-					ppComp->RemoveCloseEnemy(this);
+					ppComp->RemoveCloseEnemy(shared_from_this());
 				}
 
 			});
@@ -79,7 +79,10 @@ void EnemyComponent::MoveToTarget()
 }
 void EnemyComponent::HandlePathChoice()
 {
-	if (m_pTarget.expired()) return;
+	if (m_pTarget.expired() || m_pGrid.expired()) return;
+
+	const auto& pGrid = m_pGrid.lock();
+
 	if (m_PathChanged)
 	{
 		m_ElapsedTime += Timer::GetInstance().GetElapsed();
@@ -102,15 +105,15 @@ void EnemyComponent::HandlePathChoice()
 	else if (pos.y > wh) { m_Dir = Direction::up; return; }
 
 
-	int cellIdxEnemy = m_pGrid->PositionToIndex({ pos.x, pos.y });
-	auto currentCell = m_pGrid->GetCell(cellIdxEnemy);
+	int cellIdxEnemy = pGrid->PositionToIndex({ pos.x, pos.y });
+	auto currentCell = pGrid->GetCell(cellIdxEnemy);
 
-	auto cellLeftOut = m_pGrid->GetCell({ pos.x - (currentCell.boundingbox.w + 1.f), pos.y });
-	auto cellRightOut = m_pGrid->GetCell({ pos.x + (currentCell.boundingbox.w + 1.f), pos.y });
-	auto cellLeftIn = m_pGrid->GetCell({ pos.x - (currentCell.boundingbox.w - 1.f), pos.y });
-	auto cellRightIn = m_pGrid->GetCell({ pos.x + (currentCell.boundingbox.w - 1.f), pos.y });
-	auto cellTop = m_pGrid->GetCell(cellIdxEnemy - m_pGrid->GetNrCols());
-	auto cellBottom = m_pGrid->GetCell(cellIdxEnemy + m_pGrid->GetNrCols());
+	auto cellLeftOut = pGrid->GetCell({ pos.x - (currentCell.boundingbox.w + 2.f), pos.y });
+	auto cellRightOut = pGrid->GetCell({ pos.x + (currentCell.boundingbox.w + 2.f), pos.y });
+	auto cellLeftIn = pGrid->GetCell({ pos.x - (currentCell.boundingbox.w - 2.f), pos.y });
+	auto cellRightIn = pGrid->GetCell({ pos.x + (currentCell.boundingbox.w - 2.f), pos.y });
+	auto cellTop = pGrid->GetCell(cellIdxEnemy - pGrid->GetNrCols());
+	auto cellBottom = pGrid->GetCell(cellIdxEnemy + pGrid->GetNrCols());
 
 	switch (m_Dir)
 	{
@@ -127,7 +130,7 @@ void EnemyComponent::HandlePathChoice()
 				m_Dir = Direction::up;
 				m_PathChanged = true;
 			}
-			else if (cellBottom.isVoid && cellTop.isVoid)
+			else if (cellBottom.isVoid || cellTop.isVoid)
 			{
 				m_Dir = Direction::right;
 			}
@@ -146,7 +149,7 @@ void EnemyComponent::HandlePathChoice()
 				m_Dir = Direction::up;
 				m_PathChanged = true;
 			}
-			else if (cellBottom.isVoid && cellTop.isVoid)
+			else if (cellBottom.isVoid || cellTop.isVoid)
 			{
 				m_Dir = Direction::left;
 			}
@@ -165,7 +168,7 @@ void EnemyComponent::HandlePathChoice()
 				m_Dir = Direction::right;
 				m_PathChanged = true;
 			}
-			else if (cellLeftOut.isVoid && cellRightOut.isVoid)
+			else if (cellLeftOut.isVoid || cellRightOut.isVoid)
 			{
 				m_Dir = Direction::down;
 			}

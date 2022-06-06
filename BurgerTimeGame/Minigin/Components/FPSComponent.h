@@ -18,7 +18,7 @@ public:
 	void Initialize() override;
 	void Update() override;
 private:
-	TextComponent* m_pText{};
+	std::weak_ptr<TextComponent> m_pText{};
 	uint32_t m_PreviousFPS{};
 };
 

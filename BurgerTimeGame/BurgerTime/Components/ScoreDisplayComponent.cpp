@@ -3,15 +3,15 @@
 #include "PeterPepperComponent.h"
 
 
-ScoreDisplayComponent::ScoreDisplayComponent(PeterPepperComponent* pPlayerC, TextComponent* pTextC)
+ScoreDisplayComponent::ScoreDisplayComponent(const std::shared_ptr<PeterPepperComponent>& pPlayerC, const std::shared_ptr<TextComponent>& pTextC)
 {
 	m_pPlayer = pPlayerC;
 	m_pText = pTextC;
 
-	assert(m_pPlayer != nullptr);
-	assert(m_pText != nullptr);
+	assert(!m_pPlayer.expired());
+	assert(!m_pText.expired());
 
-	m_pText->SetText("Score: " + std::to_string(m_pPlayer->GetScore()));
+	m_pText.lock()->SetText("Score: " + std::to_string(m_pPlayer.lock()->GetScore()));
 }
 
 void ScoreDisplayComponent::OnNotify(Event event)
@@ -27,8 +27,8 @@ void ScoreDisplayComponent::OnNotify(Event event)
 
 void ScoreDisplayComponent::UpdateText()
 {
-	if (!m_pPlayer || !m_pText)
+	if (m_pPlayer.expired() || m_pText.expired())
 		return;
 
-	m_pText->SetText("Score: " + std::to_string(m_pPlayer->GetScore()));
+	m_pText.lock()->SetText("Score: " + std::to_string(m_pPlayer.lock()->GetScore()));
 }

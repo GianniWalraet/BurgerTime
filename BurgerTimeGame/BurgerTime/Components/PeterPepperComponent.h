@@ -39,8 +39,8 @@ public:
 	const int GetScore() const { return m_Score; }
 
 	void SetState(State state, Direction dir) { m_State = state; m_Dir = dir; }
-	void AddCloseEnemy(EnemyComponent* pComp);
-	void RemoveCloseEnemy(EnemyComponent* pComp);
+	void AddCloseEnemy(const std::shared_ptr<EnemyComponent>& pComp);
+	void RemoveCloseEnemy(const std::shared_ptr<EnemyComponent>& pComp);
 protected:
 	void Initialize() override;
 	void Update() override;
@@ -53,9 +53,10 @@ private:
 	int m_CellIdx{};
 	int m_PrevCellIdx{};
 
-	SpriteComponent* m_pSpriteComponent{};
-	GridComponent* m_pGrid{};
-	std::vector<EnemyComponent*> m_pCloseEnemies{};
+	std::weak_ptr<SpriteComponent> m_pSpriteComponent{};
+	std::weak_ptr<GridComponent> m_pGrid{};
+	std::vector<std::weak_ptr<EnemyComponent>> m_pCloseEnemies{};
+
 	int8_t m_Lives{};
 	int32_t m_Score{};
 
