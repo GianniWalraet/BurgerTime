@@ -31,12 +31,12 @@ void MainMenuScene::Update()
 {
 	if(InputManager::GetInstance().WentDownThisFrame(SDLK_s))
 	{
-		GameState::GetInstance().Reset(GameMode::SINGLEPLAYER);
+		GameState::GetInstance().OnReset(GameMode::SINGLEPLAYER);
 		SceneManager::GetInstance().SetActiveScene("Level01Scene");
 	}
 	else if (InputManager::GetInstance().WentDownThisFrame(SDLK_m))
 	{
-		GameState::GetInstance().Reset(GameMode::MULTIPLAYER);
+		GameState::GetInstance().OnReset(GameMode::MULTIPLAYER);
 		SceneManager::GetInstance().SetActiveScene("Level01Scene");
 	}
 }

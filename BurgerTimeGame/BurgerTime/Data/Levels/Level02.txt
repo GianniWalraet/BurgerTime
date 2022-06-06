@@ -29,10 +29,12 @@ oovvvvoo====oo====oovvvvoo
 ##########################
 #######pppp###pppp########
 -
-p 21 13 // player spawncells x y
-p 17 13
+p 18 13 // player spawncells row & col
+p 14 13
 
-e 3 1 // enemy spawncells x y
-e 21 1
-e 3 26
-e 21 26
+e 4 1 // enemy spawncells row & col
+e 10 1
+e 4 25
+e 10 25
+
+m 6

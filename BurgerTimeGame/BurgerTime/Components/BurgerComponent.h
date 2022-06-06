@@ -45,10 +45,13 @@ private:
 	bool m_OnPlate{};
 	bool m_NextPlatformTriggered{};
 
+	static const int m_NumBurgerPieces{ 4 };
+
 	void CheckCanDrop();
 	bool CheckOnPlate(int cellIdx);
 
 	void HandleBurgerDropping();
 	void ApplyFallAcceleration();
+	void UpdateCellsOnFall();
 };
 

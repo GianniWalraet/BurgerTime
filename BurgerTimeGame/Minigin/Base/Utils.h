@@ -12,6 +12,11 @@ namespace utils
 		return sqrtf(DistanceSquared(p1, p2));
 	}
 
+	inline int RandomInt(int min, int max)
+	{
+		return rand() % (max + 1 - min) + min;
+	}
+
 	inline bool IsOverlapping(const Rectf& r1, const Rectf& r2)
 	{
 		// If one rectangle is on left side of the other

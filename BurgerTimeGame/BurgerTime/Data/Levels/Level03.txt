@@ -1,0 +1,40 @@
+Level03.png
+26 26 // rows x cols
+8 8 // cellw x cellh
+
+##########################
+##########################
+oonnnnoonnnnoonnnnoonnnnoo
+oo####oo####oo####oo####oo
+ooccccoossssoottttooccccoo
+###oo####oo####oo####oo###
+oottttoottttoossssoossssoo
+oo####oo####oo####oo####oo
+oossssoobbbboottttoobbbboo
+###oo####oo#oo#oo####oo###
+oobbbboottttoobbbboottttoo
+oo####oo####oo####oo####oo
+oossssooccccooccccoossssoo
+oo#oo####oo####oo####oo#oo
+oottttoossssoossssoottttoo
+oo####oo####oo####oo####oo
+oovvvvoovvvvoovvvvoovvvvoo
+##########################
+##########################
+##########################
+##########################
+##########################
+##########################
+##########################
+##########################
+##pppp##pppp##pppp##pppp##
+-
+p 3 1 // player spawncells row & col
+p 3 25
+
+e 3 1 // enemy spawncells row & col
+e 15 1
+e 3 25
+e 11 25
+
+m 8

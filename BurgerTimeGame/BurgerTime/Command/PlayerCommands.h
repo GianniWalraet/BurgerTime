@@ -26,6 +26,7 @@ public:
 	{
 		if (!m_pGameObj.lock()->IsEnabled()) return;
 		m_pPeterPepperComp->OnDie();
+		m_pGameObj.lock()->GetScene()->OnSceneReload();
 	}
 };
 

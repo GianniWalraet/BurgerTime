@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Helpers.h"
-#include <Components/MrHotDogComponent.h>
+#include "Components/MrHotDogComponent.h"
 
 std::shared_ptr<GameObject> Helpers::AddPlayer(const std::shared_ptr<Scene>& scene, PlayerID id)
 {
@@ -85,12 +85,12 @@ std::shared_ptr<GameObject> Helpers::AddPlayer(const std::shared_ptr<Scene>& sce
 }
 std::shared_ptr<GameObject> Helpers::AddMrHotDog(const std::shared_ptr<Scene>& scene)
 {
-	auto mrHotDog = scene->Add(std::make_shared<GameObject>());
+	std::shared_ptr<GameObject> mrHotDog = scene->Add(std::make_shared<GameObject>());
 	mrHotDog->AddComponent<SpriteComponent>("BurgerTimeSprite.png", 1, 2, 1 / 10.f, glm::vec2{ 0.5f,1.f }, SDL_Rect{ 0, GameData::SpriteCellSize * 2, GameData::SpriteCellSize * 2, GameData::SpriteCellSize });
 	mrHotDog->AddComponent<RenderComponent>();
 	mrHotDog->AddComponent<MrHotDogComponent>();
 	mrHotDog->AddComponent<Box2DComponent>(float(GameData::SpriteCellSize), float(GameData::SpriteCellSize), true);
-	mrHotDog->GetTransform().SetScale(GameData::GameScale - 1.f);
+	mrHotDog->GetTransform().SetScale(GameData::GameScale);
 	mrHotDog->SetTag("Enemy");
 
 	return mrHotDog;

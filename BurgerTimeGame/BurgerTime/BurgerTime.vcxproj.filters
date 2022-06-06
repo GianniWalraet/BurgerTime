@@ -58,6 +58,15 @@
     <ClCompile Include="Components\EnemySpawnerComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\DefeatScene.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Level03Scene.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\EnemyComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -78,5 +87,8 @@
     <ClInclude Include="Components\MrHotDogComponent.h" />
     <ClInclude Include="Singletons\EnemyManager.h" />
     <ClInclude Include="Components\EnemySpawnerComponent.h" />
+    <ClInclude Include="Scenes\DefeatScene.h" />
+    <ClInclude Include="Scenes\Level03Scene.h" />
+    <ClInclude Include="Components\EnemyComponent.h" />
   </ItemGroup>
 </Project>

@@ -62,6 +62,13 @@ public:
 		m_pKeyboardCommands[sceneID].erase(it);
 	}
 
+	// General functions
+	void RemoveAllCommands(const std::string sceneID)
+	{
+		m_pKeyboardCommands[sceneID].clear();
+		m_pConsoleCommands[sceneID].clear();
+	}
+
 private:
 	friend class Singleton<InputManager>;
 	InputManager() = default;

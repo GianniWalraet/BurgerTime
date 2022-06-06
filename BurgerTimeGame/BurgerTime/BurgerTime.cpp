@@ -3,6 +3,8 @@
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/Level01Scene.h"
 #include "Scenes/Level02Scene.h"
+#include "Scenes/DefeatScene.h"
+#include "Scenes/Level03Scene.h"
 
 void BurgerTime::LoadGame() const
 {
@@ -17,6 +19,8 @@ void BurgerTime::LoadGame() const
 	SceneManager::GetInstance().AddScene(std::make_shared<MainMenuScene>());
 	SceneManager::GetInstance().AddScene(std::make_shared<Level01Scene>());
 	SceneManager::GetInstance().AddScene(std::make_shared<Level02Scene>());
+	SceneManager::GetInstance().AddScene(std::make_shared<Level03Scene>());
+	SceneManager::GetInstance().AddScene(std::make_shared<DefeatScene>());
 }
 
 void BurgerTime::PrintGameInfo() const

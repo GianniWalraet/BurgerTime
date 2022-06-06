@@ -37,7 +37,7 @@ void SpriteComponent::Update()
 	}
 }
 
-void SpriteComponent::Reset(const SDL_Rect& newSrc, int rows, int cols, bool mirror)
+void SpriteComponent::Reset(const SDL_Rect& newSrc, int rows, int cols, bool mirror, float frameSec)
 {
 	if (cols == 1 && rows == 1)
 	{
@@ -49,6 +49,8 @@ void SpriteComponent::Reset(const SDL_Rect& newSrc, int rows, int cols, bool mir
 	}
 	m_Rows = rows;
 	m_Cols = cols;
+	m_FrameSec = frameSec;
+	m_AccuSec = 0.f;
 	m_IsMirrored = mirror;
 }
 

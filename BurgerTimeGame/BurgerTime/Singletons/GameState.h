@@ -15,11 +15,14 @@ public:
 	GameState& operator=(const GameState& other) = delete;
 	GameState& operator=(GameState&& other) = delete;
 	
-	void Reset(GameMode mode);
+	void OnReset(GameMode mode);
+	void OnRespawn();
 
 	void OnSliceCompleted();
-	void OnGameLoss();
-	bool LevelCompleted() { return m_LevelComplete; }
+	void OnPlayerKill();
+
+	bool PlayerKilled() const { return m_PlayerKilled; }
+	bool LevelCompleted() const { return m_LevelComplete; }
 
 	void SetNrOfSlices(uint32_t nr) { m_NumBurgerSlices = nr; }
 
@@ -30,6 +33,8 @@ private:
 
 	GameMode m_GameMode{};
 	size_t m_NumBurgerSlices{};
+
 	bool m_LevelComplete{};
+	bool m_PlayerKilled{};
 };
 

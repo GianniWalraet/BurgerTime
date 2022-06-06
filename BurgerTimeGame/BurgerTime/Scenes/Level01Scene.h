@@ -22,6 +22,15 @@ private:
 	glm::vec2 m_P1SpawnPos{};
 	glm::vec2 m_P2SpawnPos{};
 
+	float m_ElapsedTimeSinceWin{};
+	float m_NextLevelWaitTime{3.f};
+
+	float m_ElapsedTimeSinceKill{};
+	float m_LevelReloadWaitTime{3.f};
+
+	void HandleWinState();
+	void HandleKillState();
+
 	void LoadLevel();
 	void LoadPlayers();
 	void LoadHUD();

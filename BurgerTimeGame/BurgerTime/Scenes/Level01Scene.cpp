@@ -24,7 +24,11 @@ void Level01Scene::Update()
 {
 	if (GameState::GetInstance().LevelCompleted())
 	{
-		SceneManager::GetInstance().SetActiveScene("Level02Scene");
+		HandleWinState();
+	}
+	else if (GameState::GetInstance().PlayerKilled())
+	{
+		HandleKillState();
 	}
 }
 
@@ -33,7 +37,7 @@ void Level01Scene::OnSceneActivated()
 	auto& gameState = GameState::GetInstance();
 	m_pP1.lock()->GetTransform().SetPosition({ m_P1SpawnPos.x, m_P1SpawnPos.y, 0 });
 
-	gameState.Reset(gameState.GetGameMode());
+	gameState.OnReset(gameState.GetGameMode());
 	gameState.SetNrOfSlices(FindNumObjectsWithTag("BurgerSlice"));
 
 	if (gameState.GetGameMode() == GameMode::MULTIPLAYER)
@@ -54,6 +58,46 @@ void Level01Scene::OnSceneDeactivated()
 	ServiceLocator::GetSoundManager()->StopStream();
 }
 
+void Level01Scene::HandleWinState()
+{
+	m_ElapsedTimeSinceWin += Timer::GetInstance().GetElapsed();
+	if (m_ElapsedTimeSinceWin > m_NextLevelWaitTime)
+	{
+		SceneManager::GetInstance().SetActiveScene("Level02Scene");
+		m_ElapsedTimeSinceWin = 0.f;
+	}
+
+	if (!m_pP1.expired())
+	{
+		m_pP1.lock()->GetComponent<PeterPepperComponent>()->SetState(State::win, Direction::none);
+	}
+	if (!m_pP2.expired())
+	{
+		m_pP2.lock()->GetComponent<PeterPepperComponent>()->SetState(State::win, Direction::none);
+	}
+}
+void Level01Scene::HandleKillState()
+{
+	m_ElapsedTimeSinceKill += Timer::GetInstance().GetElapsed();
+	if (m_ElapsedTimeSinceKill > m_LevelReloadWaitTime)
+	{
+		if (m_pP1.lock()->GetComponent<PeterPepperComponent>()->GetLives() == 0)
+		{
+			SceneManager::GetInstance().SetActiveScene("DefeatScene");
+		}
+
+		RemoveObjectsWithTag("Enemy");
+		m_pP1.lock()->GetTransform().SetPosition(m_P1SpawnPos.x, m_P1SpawnPos.y, 0.f);
+		m_pP2.lock()->GetTransform().SetPosition(m_P2SpawnPos.x, m_P2SpawnPos.y, 0.f);
+		m_ElapsedTimeSinceKill = 0.f;
+
+		GameState::GetInstance().OnRespawn();
+		ServiceLocator::GetSoundManager()->PlayStream("Sounds/LevelTheme01.mp3", GameData::SoundtrackVolume, true);
+	}
+
+	m_pP1.lock()->GetComponent<PeterPepperComponent>()->SetState(State::dead, Direction::none);
+}
+
 void Level01Scene::LoadLevel()
 {
 	// Read in level data
@@ -71,16 +115,15 @@ void Level01Scene::LoadLevel()
 	for (size_t i = 0; i < data.enemySpawnCellIndices.size(); ++i)
 	{
 		auto pos = grid->IndexToPosition(data.enemySpawnCellIndices[i]);
-		if (pos.x > Renderer::GetInstance().GetWindowWidth())
-			pos.x += GameData::EnemySpawnOffset * 3.f;
+		if (pos.x > Renderer::GetInstance().GetWindowWidth() / 2.f)
+			pos.x += GameData::EnemySpawnOffset;
 		else
-			pos.x -= GameData::EnemySpawnOffset * 3.f;
+			pos.x -= GameData::EnemySpawnOffset;
 		enemySpawnPositions.emplace_back(glm::vec3{ pos.x, pos.y, 0.f });
 	}
 
 	levelGO->AddComponent<EnemySpawnerComponent>(enemySpawnPositions, data.maxEnemies);
 	levelGO->SetTag("Level");
-
 
 	std::for_each(data.burgers.begin(), data.burgers.end(), [&](const std::shared_ptr<GameObject>& burger) { Add(burger); });
 

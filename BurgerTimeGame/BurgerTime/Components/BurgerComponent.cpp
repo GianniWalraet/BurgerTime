@@ -26,6 +26,7 @@ void BurgerComponent::Update()
 		{
 			m_pGrid->GetCell(m_CellIndices[i]).isTriggered = false;
 			m_pGrid->GetCell(m_CellIndices[i]).pActor = std::weak_ptr<GameObject>();
+			ServiceLocator::GetSoundManager()->PlayEffect("Sounds/BurgerCollide.mp3", GameData::SoundeffectVolume, 0, false);
 		}
 
 		m_NextPlatformTriggered = false;
@@ -54,7 +55,6 @@ void BurgerComponent::CheckCanDrop()
 			}
 		}
 	}
-
 	if (std::all_of(m_IsSteppedOn.begin(), m_IsSteppedOn.end(), [](bool v) { return v; }))
 	{
 		m_IsDropping = true;
@@ -67,6 +67,7 @@ void BurgerComponent::CheckCanDrop()
 void BurgerComponent::HandleBurgerDropping()
 {
 	ApplyFallAcceleration();
+	UpdateCellsOnFall();
 
 	auto& transform = m_pGameObject.lock()->GetTransform();
 	auto pos = transform.GetPosition();
@@ -95,8 +96,6 @@ void BurgerComponent::HandleBurgerDropping()
 				m_pGrid->GetCell(m_CellIndices[i]).pActor = m_pTriggerActor->GetGameObject().lock();
 			}
 			m_NextPlatformTriggered = true;
-
-			ServiceLocator::GetSoundManager()->PlayEffect("Sounds/BurgerCollide.mp3", GameData::SoundeffectVolume, 0, false);
 		}
 	}
 }
@@ -110,6 +109,22 @@ void BurgerComponent::ApplyFallAcceleration()
 	m_FallVelocity += m_FallAcceleration * elapsedTime;
 	pos.y -= m_FallVelocity * elapsedTime;
 	transform.SetPosition(pos.x, pos.y, 0.f);
+}
+void BurgerComponent::UpdateCellsOnFall()
+{
+	const auto& pos = m_pGameObject.lock()->GetTransform().GetPosition();
+	auto enemies = m_pGameObject.lock()->GetScene()->FindObjectsWithTag("Enemy");
+	auto burgerPieceSize = GameData::BurgerPieceSize * GameData::GameScale;
+	for (const auto& enemy : enemies)
+	{
+		auto burgerCollider = Rectf(pos.x, pos.y, burgerPieceSize * m_NumBurgerPieces, burgerPieceSize);
+		auto enemyCollider = enemy->GetComponent<Box2DComponent>()->GetCollider();
+		if (utils::IsOverlapping(burgerCollider, enemyCollider))
+		{
+			enemy->GetScene()->Remove(enemy);
+			m_pTriggerActor->OnBurgerDropped();
+		}
+	}
 }
 bool BurgerComponent::CheckOnPlate(int cellIdx)
 {

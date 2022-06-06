@@ -21,7 +21,7 @@ public:
 
 	const bool IsMirrored() const { return m_IsMirrored; }
 
-	void Reset(const SDL_Rect& newSrc, int rows, int cols, bool mirror);
+	void Reset(const SDL_Rect& newSrc, int rows, int cols, bool mirror, float frameSec = 1/10.f);
 private:
 	std::shared_ptr<Texture2D> m_pTexture{};
 	SDL_Rect m_CurrentFrame{};

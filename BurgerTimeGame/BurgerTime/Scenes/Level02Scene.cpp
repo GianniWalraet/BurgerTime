@@ -7,6 +7,7 @@
 #include "Components/HealthDisplayComponent.h"
 #include "Components/ScoreDisplayComponent.h"
 #include "Components/BurgerComponent.h"
+#include "Components/EnemySpawnerComponent.h"
 #pragma endregion
 
 #include "LevelParser/LevelParser.h"
@@ -23,37 +24,78 @@ void Level02Scene::Update()
 {
 	if (GameState::GetInstance().LevelCompleted())
 	{
-
+		HandleWinState();
+	}
+	else if (GameState::GetInstance().PlayerKilled())
+	{
+		HandleKillState();
 	}
 }
 
 void Level02Scene::OnSceneActivated()
 {
 	auto& gameState = GameState::GetInstance();
-	if(!m_pP1.expired()) m_pP1.lock()->GetTransform().SetPosition({ 30, 80, 0 });
+	m_pP1.lock()->GetTransform().SetPosition({ m_P1SpawnPos.x, m_P1SpawnPos.y, 0 });
+
+	gameState.OnReset(gameState.GetGameMode());
+	gameState.SetNrOfSlices(FindNumObjectsWithTag("BurgerSlice"));
 
 	if (gameState.GetGameMode() == GameMode::MULTIPLAYER)
 	{
-		if (!m_pP2.expired())
-		{
-			m_pP2.lock()->Enable();
-			m_pP2.lock()->GetTransform().SetPosition(30, 160, 0);
-		}
+		m_pP2.lock()->Enable();
+		m_pP2.lock()->GetTransform().SetPosition(m_P2SpawnPos.x, m_P2SpawnPos.y, 0);
 	}
 	else
 	{
-		if (!m_pP2.expired())
-		{
-			m_pP2.lock()->Disable();
-		}
+		m_pP2.lock()->Disable();
 	}
 
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", GameData::SoundtrackVolume, false);
-	ServiceLocator::GetSoundManager()->PlayStream("Sounds/LevelTheme02.mp3", GameData::SoundtrackVolume, true);
+	ServiceLocator::GetSoundManager()->PlayStream("Sounds/LevelTheme01.mp3", GameData::SoundtrackVolume, true);
 }
 void Level02Scene::OnSceneDeactivated()
 {
 	ServiceLocator::GetSoundManager()->StopStream();
+}
+
+void Level02Scene::HandleWinState()
+{
+	m_ElapsedTimeSinceWin += Timer::GetInstance().GetElapsed();
+	if (m_ElapsedTimeSinceWin > m_NextLevelWaitTime)
+	{
+		SceneManager::GetInstance().SetActiveScene("Level03Scene");
+		m_ElapsedTimeSinceWin = 0.f;
+	}
+
+	if (!m_pP1.expired())
+	{
+		m_pP1.lock()->GetComponent<PeterPepperComponent>()->SetState(State::win, Direction::none);
+	}
+	if (!m_pP2.expired())
+	{
+		m_pP2.lock()->GetComponent<PeterPepperComponent>()->SetState(State::win, Direction::none);
+	}
+}
+void Level02Scene::HandleKillState()
+{
+	m_ElapsedTimeSinceKill += Timer::GetInstance().GetElapsed();
+	if (m_ElapsedTimeSinceKill > m_LevelReloadWaitTime)
+	{
+		if (m_pP1.lock()->GetComponent<PeterPepperComponent>()->GetLives() == 0)
+		{
+			SceneManager::GetInstance().SetActiveScene("DefeatScene");
+		}
+
+		RemoveObjectsWithTag("Enemy");
+		m_pP1.lock()->GetTransform().SetPosition(m_P1SpawnPos.x, m_P1SpawnPos.y, 0.f);
+		m_pP2.lock()->GetTransform().SetPosition(m_P2SpawnPos.x, m_P2SpawnPos.y, 0.f);
+		m_ElapsedTimeSinceKill = 0.f;
+
+		GameState::GetInstance().OnRespawn();
+		ServiceLocator::GetSoundManager()->PlayStream("Sounds/LevelTheme01.mp3", GameData::SoundtrackVolume, true);
+	}
+
+	m_pP1.lock()->GetComponent<PeterPepperComponent>()->SetState(State::dead, Direction::none);
 }
 
 void Level02Scene::LoadLevel()
@@ -68,6 +110,19 @@ void Level02Scene::LoadLevel()
 	levelGO->AddComponent<TextureComponent>(data.backgroundFileName);
 	levelGO->AddComponent<RenderComponent>();
 	auto grid = levelGO->AddComponent<GridComponent>(data.gridCells, data.nrOfRows, data.nrOfCols);
+
+	std::vector<glm::vec3> enemySpawnPositions{};
+	for (size_t i = 0; i < data.enemySpawnCellIndices.size(); ++i)
+	{
+		auto pos = grid->IndexToPosition(data.enemySpawnCellIndices[i]);
+		if (pos.x > Renderer::GetInstance().GetWindowWidth() / 2.f)
+			pos.x += GameData::EnemySpawnOffset;
+		else
+			pos.x -= GameData::EnemySpawnOffset;
+		enemySpawnPositions.emplace_back(glm::vec3{ pos.x, pos.y, 0.f });
+	}
+
+	levelGO->AddComponent<EnemySpawnerComponent>(enemySpawnPositions, data.maxEnemies);
 	levelGO->SetTag("Level");
 
 	std::for_each(data.burgers.begin(), data.burgers.end(), [&](const std::shared_ptr<GameObject>& burger) { Add(burger); });
