@@ -58,9 +58,9 @@ void PeterPepperComponent::Update()
 void PeterPepperComponent::OnDie()
 {
 	if (m_Lives == 0 || m_IsStunned) return;
+	if (GameState::GetInstance().LevelCompleted()) return;
 
 	--m_Lives;
-
 	m_IsStunned = true;
 	m_pCloseEnemies.clear();
 	GameState::GetInstance().OnPlayerKill();
@@ -75,7 +75,7 @@ void PeterPepperComponent::OnBurgerDropped()
 
 	m_Score += m_ScoreGain;
 
-	NotifyAll(Event::BurgerDropped);
+	NotifyAll(Event::ScoreChanged);
 	if (m_Score >= 500)
 	{
 		AchievementObserver::GetInstance().Notify(EAchievements::GameWin);

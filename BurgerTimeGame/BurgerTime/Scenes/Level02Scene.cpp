@@ -35,19 +35,17 @@ void Level02Scene::Update()
 void Level02Scene::OnSceneActivated()
 {
 	auto& gameState = GameState::GetInstance();
-	m_pP1.lock()->GetTransform().SetPosition({ m_P1SpawnPos.x, m_P1SpawnPos.y, 0 });
-
 	gameState.OnReset(gameState.GetGameMode());
 	gameState.SetNrOfSlices(FindNumObjectsWithTag("BurgerSlice"));
 
-	if (gameState.GetGameMode() == GameMode::MULTIPLAYER)
+
+	m_pP1.lock()->GetTransform().SetPosition({ m_P1SpawnPos.x, m_P1SpawnPos.y, 0 });
+	m_pP1.lock()->GetComponent<PeterPepperComponent>()->AddScore(gameState.GetScoreP1());
+	if (gameState.GetGameMode() == GameMode::COOP)
 	{
 		m_pP2.lock()->Enable();
 		m_pP2.lock()->GetTransform().SetPosition(m_P2SpawnPos.x, m_P2SpawnPos.y, 0);
-	}
-	else
-	{
-		m_pP2.lock()->Disable();
+		m_pP2.lock()->GetComponent<PeterPepperComponent>()->AddScore(gameState.GetScoreP2());
 	}
 
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", GameData::SoundtrackVolume, false);
@@ -56,6 +54,11 @@ void Level02Scene::OnSceneActivated()
 void Level02Scene::OnSceneDeactivated()
 {
 	ServiceLocator::GetSoundManager()->StopStream();
+	GameState::GetInstance().SetScoreP1(m_pP1.lock()->GetComponent<PeterPepperComponent>()->GetScore());
+	if (GameState::GetInstance().GetGameMode() == GameMode::COOP)
+	{
+		GameState::GetInstance().SetScoreP2(m_pP2.lock()->GetComponent<PeterPepperComponent>()->GetScore());
+	}
 }
 
 void Level02Scene::HandleWinState()
@@ -92,7 +95,7 @@ void Level02Scene::HandleKillState()
 		m_ElapsedTimeSinceKill = 0.f;
 
 		GameState::GetInstance().OnRespawn();
-		ServiceLocator::GetSoundManager()->PlayStream("Sounds/LevelTheme01.mp3", GameData::SoundtrackVolume, true);
+		ServiceLocator::GetSoundManager()->PlayStream("Sounds/LevelTheme02.mp3", GameData::SoundtrackVolume, true);
 	}
 
 	m_pP1.lock()->GetComponent<PeterPepperComponent>()->SetState(State::dead, Direction::none);

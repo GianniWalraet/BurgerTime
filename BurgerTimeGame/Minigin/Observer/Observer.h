@@ -4,7 +4,7 @@
 enum class Event
 {
 	PlayerDied = 0,
-	BurgerDropped = 1,
+	ScoreChanged = 1,
 };
 
 class Observer abstract

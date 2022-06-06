@@ -12,6 +12,5 @@ public:
 	DefeatScene& operator=(DefeatScene&& other) noexcept = delete;
 protected:
 	void Initialize() override;
-	void Update() override;
 };
 

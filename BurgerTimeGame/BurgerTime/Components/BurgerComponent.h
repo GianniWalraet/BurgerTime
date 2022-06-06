@@ -45,6 +45,9 @@ private:
 	bool m_OnPlate{};
 	bool m_NextPlatformTriggered{};
 
+	int32_t m_ScoreFromBurgers{};
+	int32_t m_DefaultScore{ 500 };
+
 	static const int m_NumBurgerPieces{ 4 };
 
 	void CheckCanDrop();
@@ -52,6 +55,6 @@ private:
 
 	void HandleBurgerDropping();
 	void ApplyFallAcceleration();
-	void UpdateCellsOnFall();
+	void CheckEnemyCollision();
 };
 

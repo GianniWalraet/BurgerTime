@@ -6,7 +6,6 @@
 BurgerComponent::BurgerComponent(const std::vector<int>& cellIndices)
 	: m_CellIndices(cellIndices)
 {
-
 }
 
 void BurgerComponent::Initialize()
@@ -23,8 +22,13 @@ void BurgerComponent::Update()
 
 	if (m_NextPlatformTriggered)
 	{
-		for (int i = 0; i < m_CellIndices.size(); i++)
+		for (int i = 0; i < static_cast<int>(m_CellIndices.size()); i++)
 		{
+			if (auto pActor = m_pGrid.lock()->GetCell(m_CellIndices[i]).pActor; !pActor.expired())
+			{
+				pActor.lock()->GetComponent<PeterPepperComponent>()->AddScore(m_ScoreFromBurgers);
+				m_ScoreFromBurgers = 0;
+			}
 			m_pGrid.lock()->GetCell(m_CellIndices[i]).isTriggered = false;
 			m_pGrid.lock()->GetCell(m_CellIndices[i]).pActor = std::weak_ptr<GameObject>();
 			ServiceLocator::GetSoundManager()->PlayEffect("Sounds/BurgerCollide.mp3", GameData::SoundeffectVolume, 0, false);
@@ -68,7 +72,7 @@ void BurgerComponent::CheckCanDrop()
 void BurgerComponent::HandleBurgerDropping()
 {
 	ApplyFallAcceleration();
-	UpdateCellsOnFall();
+	CheckEnemyCollision();
 
 	auto& transform = m_pGameObject.lock()->GetTransform();
 	auto pos = transform.GetPosition();
@@ -85,13 +89,13 @@ void BurgerComponent::HandleBurgerDropping()
 		if (pos.y > cell.boundingbox.y)
 		{
 			transform.SetPosition(pos.x, float(cell.boundingbox.y), pos.z);
-			for (int i = 0; i < m_IsSteppedOn.size(); ++i) m_IsSteppedOn[i] = false;
+			for (int i = 0; i < static_cast<int>(m_IsSteppedOn.size()); ++i) m_IsSteppedOn[i] = false;
 			m_CellIndices.clear();
 			m_CellIndices = { idx, idx + 1, idx + 2, idx + 3 };
 			m_FallVelocity = m_DefaultFallVelocity;
 			m_IsDropping = false;
 
-			for (int i = 0; i < m_CellIndices.size(); i++)
+			for (int i = 0; i < static_cast<int>(m_CellIndices.size()); i++)
 			{
 				m_pGrid.lock()->GetCell(m_CellIndices[i]).isTriggered = true;
 				m_pGrid.lock()->GetCell(m_CellIndices[i]).pActor = m_pTriggerActor.lock()->GetGameObject().lock();
@@ -111,7 +115,7 @@ void BurgerComponent::ApplyFallAcceleration()
 	pos.y -= m_FallVelocity * elapsedTime;
 	transform.SetPosition(pos.x, pos.y, 0.f);
 }
-void BurgerComponent::UpdateCellsOnFall()
+void BurgerComponent::CheckEnemyCollision()
 {
 	const auto& pos = m_pGameObject.lock()->GetTransform().GetPosition();
 	auto enemies = m_pGameObject.lock()->GetScene()->FindObjectsWithTag("Enemy");
@@ -120,11 +124,14 @@ void BurgerComponent::UpdateCellsOnFall()
 	{
 		auto burgerCollider = Rectf(pos.x, pos.y, burgerPieceSize * m_NumBurgerPieces, burgerPieceSize);
 		auto enemyCollider = enemy->GetComponent<Box2DComponent>()->GetCollider();
-		if (utils::IsOverlapping(burgerCollider, enemyCollider))
+		auto enemyPos = enemy->GetTransform().GetPosition();
+		if (utils::IsPointInRect(Point2f{enemyPos.x, enemyPos.y - GameData::BurgerPieceSize}, burgerCollider))
 		{
 			enemy->GetScene()->Remove(enemy);
-			m_pTriggerActor.lock()->OnBurgerDropped();
+			if (m_ScoreFromBurgers == 0) m_ScoreFromBurgers = m_DefaultScore;
+			else m_ScoreFromBurgers *= 2;
 		}
+
 	}
 }
 bool BurgerComponent::CheckOnPlate(int cellIdx)

@@ -9,7 +9,3 @@ void DefeatScene::Initialize()
 	textGO->AddComponent<RenderComponent>();
 	textGO->GetTransform().SetPosition(Renderer::GetInstance().GetWindowWidth() / 2.f, Renderer::GetInstance().GetWindowHeight() / 2.f, 0.f);
 }
-void DefeatScene::Update()
-{
-
-}

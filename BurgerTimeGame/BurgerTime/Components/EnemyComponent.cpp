@@ -108,10 +108,10 @@ void EnemyComponent::HandlePathChoice()
 	int cellIdxEnemy = pGrid->PositionToIndex({ pos.x, pos.y });
 	auto currentCell = pGrid->GetCell(cellIdxEnemy);
 
-	auto cellLeftOut = pGrid->GetCell({ pos.x - (currentCell.boundingbox.w + 2.f), pos.y });
-	auto cellRightOut = pGrid->GetCell({ pos.x + (currentCell.boundingbox.w + 2.f), pos.y });
-	auto cellLeftIn = pGrid->GetCell({ pos.x - (currentCell.boundingbox.w - 2.f), pos.y });
-	auto cellRightIn = pGrid->GetCell({ pos.x + (currentCell.boundingbox.w - 2.f), pos.y });
+	auto cellLeftOut = pGrid->GetCell({ pos.x - (currentCell.boundingbox.w + 1.f), pos.y });
+	auto cellRightOut = pGrid->GetCell({ pos.x + (currentCell.boundingbox.w + 1.f), pos.y });
+	auto cellLeftIn = pGrid->GetCell({ pos.x - (currentCell.boundingbox.w - 1.f), pos.y });
+	auto cellRightIn = pGrid->GetCell({ pos.x + (currentCell.boundingbox.w - 1.f), pos.y });
 	auto cellTop = pGrid->GetCell(cellIdxEnemy - pGrid->GetNrCols());
 	auto cellBottom = pGrid->GetCell(cellIdxEnemy + pGrid->GetNrCols());
 
@@ -130,7 +130,7 @@ void EnemyComponent::HandlePathChoice()
 				m_Dir = Direction::up;
 				m_PathChanged = true;
 			}
-			else if (cellBottom.isVoid || cellTop.isVoid)
+			else if (cellBottom.isVoid && cellTop.isVoid)
 			{
 				m_Dir = Direction::right;
 			}
@@ -149,7 +149,7 @@ void EnemyComponent::HandlePathChoice()
 				m_Dir = Direction::up;
 				m_PathChanged = true;
 			}
-			else if (cellBottom.isVoid || cellTop.isVoid)
+			else if (cellBottom.isVoid && cellTop.isVoid)
 			{
 				m_Dir = Direction::left;
 			}
@@ -168,7 +168,7 @@ void EnemyComponent::HandlePathChoice()
 				m_Dir = Direction::right;
 				m_PathChanged = true;
 			}
-			else if (cellLeftOut.isVoid || cellRightOut.isVoid)
+			else if (cellLeftOut.isVoid && cellRightOut.isVoid)
 			{
 				m_Dir = Direction::down;
 			}
@@ -179,7 +179,7 @@ void EnemyComponent::HandlePathChoice()
 		{
 			if (playerPos.x < pos.x && !cellLeftOut.isVoid)
 			{
-				if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h)
+				if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h / 2.f)
 				{
 					m_Dir = Direction::left;
 					m_PathChanged = true;
@@ -187,7 +187,7 @@ void EnemyComponent::HandlePathChoice()
 			}
 			if (playerPos.x > pos.x && !cellRightOut.isVoid)
 			{
-				if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h)
+				if (pos.y > cellLeftOut.boundingbox.y + cellLeftOut.boundingbox.h / 2.f)
 				{
 					m_Dir = Direction::right;
 					m_PathChanged = true;

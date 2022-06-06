@@ -18,7 +18,7 @@ void ScoreDisplayComponent::OnNotify(Event event)
 {
 	switch (event)
 	{
-	case Event::BurgerDropped:
+	case Event::ScoreChanged:
 	case Event::PlayerDied:
 		UpdateText();
 		break;

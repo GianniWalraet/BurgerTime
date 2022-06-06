@@ -38,6 +38,7 @@ public:
 	const uint8_t GetLives() const { return m_Lives; }
 	const int GetScore() const { return m_Score; }
 
+	void AddScore(int32_t toAdd) { m_Score += toAdd; NotifyAll(Event::ScoreChanged); }
 	void SetState(State state, Direction dir) { m_State = state; m_Dir = dir; }
 	void AddCloseEnemy(const std::shared_ptr<EnemyComponent>& pComp);
 	void RemoveCloseEnemy(const std::shared_ptr<EnemyComponent>& pComp);

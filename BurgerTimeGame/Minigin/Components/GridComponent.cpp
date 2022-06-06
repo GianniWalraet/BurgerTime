@@ -32,7 +32,7 @@ glm::vec2 GridComponent::IndexToPosition(int index) const
     int ww = Renderer::GetInstance().GetWindowWidth();
     int wh = Renderer::GetInstance().GetWindowHeight();
 
-    if (index < m_Grid.size() && index >= 0)
+    if (index < static_cast<int>(m_Grid.size()) && index >= 0)
     {
         int xIdx = index % m_NrOfCols;
         int yIdx = index / m_NrOfRows;

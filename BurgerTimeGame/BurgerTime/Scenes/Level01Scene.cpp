@@ -35,19 +35,16 @@ void Level01Scene::Update()
 void Level01Scene::OnSceneActivated()
 {
 	auto& gameState = GameState::GetInstance();
-	m_pP1.lock()->GetTransform().SetPosition({ m_P1SpawnPos.x, m_P1SpawnPos.y, 0 });
-
 	gameState.OnReset(gameState.GetGameMode());
 	gameState.SetNrOfSlices(FindNumObjectsWithTag("BurgerSlice"));
+	gameState.SetScoreP1(0);
+	gameState.SetScoreP2(0);
 
-	if (gameState.GetGameMode() == GameMode::MULTIPLAYER)
+	m_pP1.lock()->GetTransform().SetPosition({ m_P1SpawnPos.x, m_P1SpawnPos.y, 0 });
+	if (gameState.GetGameMode() == GameMode::COOP)
 	{
 		m_pP2.lock()->Enable();
 		m_pP2.lock()->GetTransform().SetPosition(m_P2SpawnPos.x, m_P2SpawnPos.y, 0);
-	}
-	else
-	{
-		m_pP2.lock()->Disable();
 	}
 
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", GameData::SoundtrackVolume, false);
@@ -56,6 +53,11 @@ void Level01Scene::OnSceneActivated()
 void Level01Scene::OnSceneDeactivated()
 {
 	ServiceLocator::GetSoundManager()->StopStream();
+	GameState::GetInstance().SetScoreP1(m_pP1.lock()->GetComponent<PeterPepperComponent>()->GetScore());
+	if (GameState::GetInstance().GetGameMode() == GameMode::COOP)
+	{
+		GameState::GetInstance().SetScoreP2(m_pP2.lock()->GetComponent<PeterPepperComponent>()->GetScore());
+	}
 }
 
 void Level01Scene::HandleWinState()
@@ -71,9 +73,13 @@ void Level01Scene::HandleWinState()
 	{
 		m_pP1.lock()->GetComponent<PeterPepperComponent>()->SetState(State::win, Direction::none);
 	}
-	if (!m_pP2.expired())
+
+	if (GameState::GetInstance().GetGameMode() == GameMode::COOP)
 	{
-		m_pP2.lock()->GetComponent<PeterPepperComponent>()->SetState(State::win, Direction::none);
+		if (!m_pP2.expired())
+		{
+			m_pP2.lock()->GetComponent<PeterPepperComponent>()->SetState(State::win, Direction::none);
+		}
 	}
 }
 void Level01Scene::HandleKillState()
@@ -95,7 +101,18 @@ void Level01Scene::HandleKillState()
 		ServiceLocator::GetSoundManager()->PlayStream("Sounds/LevelTheme01.mp3", GameData::SoundtrackVolume, true);
 	}
 
-	m_pP1.lock()->GetComponent<PeterPepperComponent>()->SetState(State::dead, Direction::none);
+	if (!m_pP1.expired())
+	{
+		m_pP1.lock()->GetComponent<PeterPepperComponent>()->SetState(State::dead, Direction::none);
+	}
+
+	if (GameState::GetInstance().GetGameMode() == GameMode::COOP)
+	{
+		if (!m_pP2.expired())
+		{
+			m_pP2.lock()->GetComponent<PeterPepperComponent>()->SetState(State::dead, Direction::none);
+		}
+	}
 }
 
 void Level01Scene::LoadLevel()

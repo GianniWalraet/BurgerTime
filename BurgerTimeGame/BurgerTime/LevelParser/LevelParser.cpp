@@ -41,7 +41,7 @@ void LevelParser::ParseLevel(const std::string& fileName, float scale, LevelData
 			if (line.front() == '-') 
 				break;
 
-			for (int j = 0; j < line.size(); j++)
+			for (int j = 0; j < static_cast<int>(line.size()); j++)
 			{
 				bool isBurgerPlatform = burgerPlatformChars.find(line[j]) != std::string::npos;
 				data.gridCells.emplace_back(Cell{ SDL_Rect{ int(j * cellW * scale), int(i * cellH * scale),int(cellW * scale), int(cellH * scale) }, line[j] == '#', isBurgerPlatform, line[j] == 'p' });
