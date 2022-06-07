@@ -18,31 +18,6 @@ protected:
 	std::weak_ptr<GridComponent> m_pGrid{};
 };
 
-class KillCommand final : public PlayerCommand
-{
-public:
-	explicit KillCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
-	void Execute() override
-	{
-		if (m_pGameObj.expired()) return;
-		if (!m_pGameObj.lock()->IsEnabled()) return;
-
-		m_pPeterPepperComp.lock()->OnDie();
-		m_pGameObj.lock()->GetScene()->OnSceneReload();
-	}
-};
-
-class ScoreCommand final : public PlayerCommand
-{
-public:
-	explicit ScoreCommand(std::shared_ptr<GameObject> pActor) : PlayerCommand(pActor) {}
-	void Execute() override
-	{
-		if (m_pGameObj.expired()) return;
-		if (!m_pGameObj.lock()->IsEnabled()) return;
-		m_pPeterPepperComp.lock()->OnBurgerDropped();
-	}
-};
 
 class MoveLeftCommand final : public PlayerCommand
 {

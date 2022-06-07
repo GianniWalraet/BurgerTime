@@ -49,7 +49,7 @@ void Level02Scene::OnSceneActivated()
 	}
 
 	ServiceLocator::GetSoundManager()->PlayStream("Sounds/Start.mp3", GameData::SoundtrackVolume, false);
-	ServiceLocator::GetSoundManager()->PlayStream("Sounds/LevelTheme01.mp3", GameData::SoundtrackVolume, true);
+	ServiceLocator::GetSoundManager()->PlayStream("Sounds/LevelTheme02.mp3", GameData::SoundtrackVolume, true);
 }
 void Level02Scene::OnSceneDeactivated()
 {

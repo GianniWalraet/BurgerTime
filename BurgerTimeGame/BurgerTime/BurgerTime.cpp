@@ -5,6 +5,7 @@
 #include "Scenes/Level02Scene.h"
 #include "Scenes/DefeatScene.h"
 #include "Scenes/Level03Scene.h"
+#include "Scenes/VictoryScene.h"
 
 void BurgerTime::LoadGame() const
 {
@@ -16,11 +17,12 @@ void BurgerTime::LoadGame() const
 #endif
 	PrintGameInfo();
 
+	SceneManager::GetInstance().AddScene(std::make_shared<Level03Scene>());
 	SceneManager::GetInstance().AddScene(std::make_shared<MainMenuScene>());
 	SceneManager::GetInstance().AddScene(std::make_shared<Level01Scene>());
 	SceneManager::GetInstance().AddScene(std::make_shared<Level02Scene>());
-	SceneManager::GetInstance().AddScene(std::make_shared<Level03Scene>());
 	SceneManager::GetInstance().AddScene(std::make_shared<DefeatScene>());
+	SceneManager::GetInstance().AddScene(std::make_shared<VictoryScene>());
 }
 
 void BurgerTime::PrintGameInfo() const
@@ -31,16 +33,12 @@ void BurgerTime::PrintGameInfo() const
 
 	std::cout << "PLAYER CONTROLS - XBOX CONTROLLER:\n";
 	std::cout << "Movement: DPAD left-right-up-down\n";
-	std::cout << "Health Decrease: A\n";
-	std::cout << "Score Increase: X\n";
 
 	std::cout << '\n';
 
 	std::cout << "PLAYER CONTROLS - KEYBOARD:\n";
 	std::cout << "PLAYER 1:\n";
 	std::cout << "Movement: W(up), A(left), S(down), D(right)\n";
-	std::cout << "Health Decrease: J\n";
-	std::cout << "Score Increase: K\n";
 	std::cout << "PLAYER 2:\n";
 	std::cout << "Movement: ARROW KEYS\n";
 	std::cout << "Health Decrease: L\n";

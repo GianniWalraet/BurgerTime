@@ -71,14 +71,14 @@ std::shared_ptr<GameObject> Helpers::AddPlayer(const std::shared_ptr<Scene>& sce
 	InputManager::GetInstance().AddCommand<MoveDownCommand>(sceneName, static_cast<int>(id), pp, ControllerButton::GAMEPAD_DPAD_DOWN);
 
 	// keyboard commands for debug testing
-#ifdef _DEBUG
-	InputManager::GetInstance().AddCommand<KillCommand>(sceneName, pp, SDLK_j, InputState::down);
-	InputManager::GetInstance().AddCommand<ScoreCommand>(sceneName, pp, SDLK_k, InputState::down);
-	InputManager::GetInstance().AddCommand<MoveLeftCommand>(sceneName, pp, SDLK_a);
-	InputManager::GetInstance().AddCommand<MoveRightCommand>(sceneName, pp, SDLK_d);
-	InputManager::GetInstance().AddCommand<MoveUpCommand>(sceneName, pp, SDLK_w);
-	InputManager::GetInstance().AddCommand<MoveDownCommand>(sceneName, pp, SDLK_s);
-#endif
+
+	if (id == PlayerID::PLAYERONE)
+	{
+		InputManager::GetInstance().AddCommand<MoveLeftCommand>(sceneName, pp, SDLK_a);
+		InputManager::GetInstance().AddCommand<MoveRightCommand>(sceneName, pp, SDLK_d);
+		InputManager::GetInstance().AddCommand<MoveUpCommand>(sceneName, pp, SDLK_w);
+		InputManager::GetInstance().AddCommand<MoveDownCommand>(sceneName, pp, SDLK_s);
+	}
 
 	pp->SetTag("Player");
 	return pp;
